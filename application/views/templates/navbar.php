@@ -42,6 +42,77 @@
         });
     }
 
+    function save_nav(weiter)
+    {
+
+        var url;
+
+        if(weiter == 1) {
+            console.log("Save Rep");
+            url = "<?php echo site_url('admintab/ajax_updaterep/')?>";
+
+        }
+        if(weiter == 2) {
+            url = "<?php echo site_url('admintab/ajax_add/')?>";
+
+        }
+        if(weiter == 3) {
+            url = "<?php echo site_url('admintab/ajax_add/')?>";
+
+        }
+
+        // ajax adding data to database
+        $.ajax({
+            url : url,
+            type: "POST",
+            data: $('#SettingsForm').serialize(),
+
+            dataType: "JSON",
+            success: function(data)
+            {
+
+                if(data.status) //if success close modal and reload ajax table
+                {
+                    if(weiter == 1){
+                        $('#Settings').modal('hide');
+                        $('#myTable').DataTable().ajax.reload();
+
+
+                    }
+
+                }
+                else
+                {
+                    for (var i = 0; i < data.inputerror.length; i++)
+                    {
+                        $('[name="'+data.inputerror[i]+'"]').parent().parent().addClass('has-error'); //select parent twice to select div form-group class and add has-error class
+                        $('[name="'+data.inputerror[i]+'"]').next().text(data.error_string[i]); //select span help-block class set text error string
+                    }
+                }
+
+
+
+            },
+            error: function (jqXHR, textStatus, errorThrown)
+            {
+                //alert('Error adding / update data');
+                alert('An error occurred... Look at the console (F12 or Ctrl+Shift+I, Console tab) for more information!');
+
+                $('#result').html('<p>status code: '+jqXHR.status+'</p><p>errorThrown: ' + errorThrown + '</p><p>jqXHR.responseText:</p><div>'+jqXHR.responseText + '</div>');
+                console.log('jqXHR:');
+                console.log(jqXHR);
+                console.log('textStatus:');
+                console.log(textStatus);
+                console.log('errorThrown:');
+                console.log(errorThrown);
+                $('#btnSave').text('save'); //change button text
+                $('#btnSave').attr('disabled',false); //set button enable
+
+            }
+        });
+    }
+
+
 </script>      
         
 <nav class="navbar navbar-default navbar-static-top navbar-inverse">
@@ -175,7 +246,7 @@
                         <input class="form-control" id="reputation" name="reputation" placeholder="42" type="text"/>
 
                     </div>
-                    <div class="form-group "><button type="button" onclick="save_rep()" class="btn btn-success" form="SettingsForm">Speichern</button></div>
+                    <div class="form-group "><button type="button" onclick="save_nav(1)" class="btn btn-success" form="SettingsForm">Speichern</button></div>
                     <div class="form-group ">
                         <label class="control-label requiredField" for="email">
                             Email
@@ -183,7 +254,7 @@
                         </label>
                         <input class="form-control" id="email" name="email" type="text"/>
                     </div>
-                    <div class="form-group "><button type="button" onclick="save_mail()" class="btn btn-success" form="SettingsForm">Speichern</button></div>
+                    <div class="form-group "><button type="button" onclick="save_nav(2)" class="btn btn-success" form="SettingsForm">Speichern</button></div>
                     <div class="form-group ">
                         <label class="control-label " for="oldpw">
                             Altes Passwort
@@ -202,7 +273,7 @@
                         </label>
                         <input class="form-control" id="newpwrepeat" name="newpwrepeat" type="text"/>
                     </div>
-                    <div class="form-group "><button type="button" onclick="save_pw()" class="btn btn-success" form="SettingsForm">Ändern</button></div>
+                    <div class="form-group "><button type="button" onclick="save_nav(3)" class="btn btn-success" form="SettingsForm">Ändern</button></div>
                     <div class="form-group ">
                         <label class="control-label " for="token">
                             Token

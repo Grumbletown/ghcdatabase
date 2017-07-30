@@ -47,6 +47,25 @@ class Admintab extends CI_Controller {
         $this->table_ajax->update(array('id' => $this->input->post('id')), $data, $this->table);
         echo json_encode(array("status" => TRUE));
     }
+
+    public function ajax_updaterep()
+    {
+
+        $data = array(
+
+
+            'Reputation' => $this->input->post('reputation'),
+
+        );
+        $this->table_ajax->update(array('id' => $_SESSION['uid']), $data, $this->table);
+        echo json_encode(array("status" => TRUE));
+    }
+
+
+
+
+
+
     public function ajax_delete()
     {
         $this->table_ajax->delete_by_id($this->input->post('id'), $this->table);
