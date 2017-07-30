@@ -53,11 +53,11 @@
 
         }
         if(weiter == 2) {
-            url = "<?php echo site_url('admintab/ajax_add/')?>";
+            url = "<?php echo site_url('admintab/ajax_updatemail/')?>";
 
         }
         if(weiter == 3) {
-            url = "<?php echo site_url('admintab/ajax_add/')?>";
+            url = "<?php echo site_url('admintab/ajax_updatepw/')?>";
 
         }
 

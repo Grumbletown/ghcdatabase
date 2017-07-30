@@ -14,6 +14,7 @@ class Admintab extends CI_Controller {
         $this->load->model('table_ajax');
         $this->load->helper('url');
         $this->load->helper('date');
+        $this->load->model('user_model');
 
     }
 
@@ -62,7 +63,42 @@ class Admintab extends CI_Controller {
     }
 
 
+    public function ajax_updatemail()
+    {
 
+        $data = array(
+
+
+            'Email' => $this->input->post('email'),
+
+        );
+        $this->table_ajax->update(array('id' => $_SESSION['uid']), $data, $this->table);
+        echo json_encode(array("status" => TRUE));
+    }
+
+    public function ajax_updatepw()
+    {
+
+        $result = $this->user_model->login($_SESSION['uname'], $this->input->post('oldpw'));
+        if($result){
+           if($this->input->post('newpw') == $this->input->post('newpwrepeat')){
+               $new_password = password_hash($this->input->post('newpw'), PASSWORD_DEFAULT);
+               $data = array(
+
+
+                   'Password' => $new_password,
+               );
+           }
+
+
+
+
+
+
+        }
+        $this->table_ajax->update(array('id' => $_SESSION['uid']), $data, $this->table);
+        echo json_encode(array("status" => TRUE));
+    }
 
 
 
