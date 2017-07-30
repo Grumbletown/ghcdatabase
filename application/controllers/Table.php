@@ -24,30 +24,8 @@ class Table extends CI_Controller {
 
         $this->output->enable_profiler(TRUE);
 
-       /*$ips = $this->table_ajax->debug_ips($this->sql);
 
-        $data2 = array();
 
-        foreach($ips->result() as $row) {
-
-            $data2[] = array(
-
-                $row->IP,
-                $row->Name,
-                $row->Reputation,
-                $row->Description,
-                $row->Miners,
-                $row->Clan,
-                $row->Last_Updated,
-                $row->UserIPFav,
-                $row->ID,
-                $row->UserIPRepo,
-                $row->CountIPRepo,
-            );
-
-        }
-        var_dump($data2);
-*/
 		$this->load->view('templates/header.php');
         $this->load->view('templates/navbar.php');
         //lädt die template seite xD

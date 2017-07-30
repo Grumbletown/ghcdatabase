@@ -31,7 +31,7 @@
 
                 $('[name="reputation"]').val(data.Reputation);
                 $('[name="email"]').val(data.Email);
-                $('[name="Token"]').val(data.Token);
+                $('[name="token"]').val(data.Token);
                 $('#Settings').modal('show'); // show bootstrap modal when complete loaded
 
 
@@ -53,11 +53,18 @@
 
         }
         if(weiter == 2) {
+            console.log("Save Mail");
             url = "<?php echo site_url('admintab/ajax_updatemail/')?>";
 
         }
         if(weiter == 3) {
+            console.log("Save PW");
             url = "<?php echo site_url('admintab/ajax_updatepw/')?>";
+
+        }
+        if(weiter == 4) {
+            console.log("Save Token");
+            url = "<?php echo site_url('admintab/generate_token/')?>";
 
         }
 
@@ -73,12 +80,12 @@
 
                 if(data.status) //if success close modal and reload ajax table
                 {
-                    if(weiter == 1){
+
                         $('#Settings').modal('hide');
                         $('#myTable').DataTable().ajax.reload();
 
 
-                    }
+
 
                 }
                 else
@@ -169,7 +176,7 @@
        
         
         <li id='HOInfo' class=''><a href="<?php echo base_url('index.php/home/hotut/'); ?>"><i class='fa fa-book fa-fw' aria-hidden='true'></i>&nbsp; Hackers Online Tuts</a></li>
-        <li id='HOInfo' class=''><a href="<?php echo base_url('index.php/home/hostats/'); ?>"><i class='fa fa-bar-chart fa-fw' aria-hidden='true'></i>&nbsp; Hackers Online Stats</a></li>
+          <!--<li id='HOInfo' class=''><a href="<?php echo base_url('index.php/home/hostats/'); ?>"><i class='fa fa-bar-chart fa-fw' aria-hidden='true'></i>&nbsp; Hackers Online Stats</a></li>-->
        <?php if(!$userid){ ?>
         <li id='Login' class=''><a href="<?php echo $pfad; ?>"><i class='fa fa-battery-full fa-lg' aria-hidden='true'></i>&nbsp; <?php echo $link; ?></a></li>
         
@@ -188,10 +195,10 @@
         
           
           <li class='dropdown'>
-          <a href='#' class='dropdown-toggle' data-toggle='dropdown' role='button' aria-haspopup='true' aria-expanded='false'><i class='fa fa-user-circle-o fa-lg' aria-hidden='true'></i>&nbsp;<i class="fa fa-empire fa-spin fa-1x fa-lg aria-hidden="true""></i>&nbsp;<?php  echo $this->session->userdata('uname'); ?>&nbsp;<i class="fa fa-rebel fa-spin fa-1x fa-lg aria-hidden="true""></i>&nbsp;<span class='caret'></span></a>
+          <a href='#' class='dropdown-toggle' data-toggle='dropdown' role='button' aria-haspopup='true' aria-expanded='false'><i class='fa fa-user-circle-o fa-lg' aria-hidden='true'></i>&nbsp;<?php  echo $this->session->userdata('uname'); ?>&nbsp;<span class='caret'></span></a>
           <ul class='dropdown-menu' role='menu'>
-                <li><a href='usersettings.php'><i class='fa fa-bar-chart fa-fw' aria-hidden='true'></i>&nbsp; Stats</a></li>
-                <li><a href='usersettings.php'><i class='fa fa-bar-chart fa-fw' aria-hidden='true'></i>&nbsp; Game Account wechseln</a></li>
+              <!--<li><a href='usersettings.php'><i class='fa fa-bar-chart fa-fw' aria-hidden='true'></i>&nbsp; Stats</a></li>
+                <li><a href='usersettings.php'><i class='fa fa-bar-chart fa-fw' aria-hidden='true'></i>&nbsp; Game Account wechseln</a></li>-->
             <li><a  class="MainNavText" id="settings" onclick="edit_userset()"><i class='fa fa-wrench fa-fw' aria-hidden='true'></i>&nbsp; Settings</a></li>
             <?php
             if($this->session->userdata('Role') == "Admin" OR $this->session->userdata('Role') == "Moderator")
@@ -206,7 +213,7 @@
             	?>
             
             <li id='admin.php' class=''><a href='<?php echo base_url('index.php/admintab/'); ?>'><i class='fa fa-pencil-square-o fa-lg' aria-hidden='true'></i>&nbsp; Admin</a></li>
-            <li id='botCI.php' class=''><a href='botCI.php'><i class='fa fa-commenting-o fa-lg' aria-hidden='true'></i>&nbsp; BotCI</a></li>
+              <!--<li id='botCI.php' class=''><a href='botCI.php'><i class='fa fa-commenting-o fa-lg' aria-hidden='true'></i>&nbsp; BotCI</a></li>-->
             <?php
              } ?>
              <li id='Login' class=''><a href="<?php echo $pfad; ?>"><i class='fa fa-battery-empty fa-lg' aria-hidden='true'></i>&nbsp; <?php echo $link; ?></a></li>
@@ -280,7 +287,7 @@
                         </label>
                         <input class="form-control" id="token" name="token" type="text"/>
                     </div>
-                    <div class="form-group "><button type="button" id="tokenbtn" onclick="new_token()" class="btn btn-danger" form="SettingsForm">Neues Token</button></div>
+                    <div class="form-group "><button type="button" id="tokenbtn" onclick="save_nav(4)" class="btn btn-danger" form="SettingsForm">Neues Token</button></div>
                     <div class="modal-footer">
                         <div>
                             <button type="button" class="btn btn-default" data-dismiss="modal">Schließen</button>

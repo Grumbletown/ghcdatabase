@@ -69,4 +69,12 @@ class user_model extends CI_Model
     {
 		return $this->db->insert('Users', $data);
 	}
+
+	function get_token($id){
+
+        $this->db->where('UserID', $id);
+        $query = $this->db->get('APIToken');
+        return $query->result();
+
+    }
 }?>

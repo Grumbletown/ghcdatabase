@@ -100,7 +100,32 @@ class Admintab extends CI_Controller {
         echo json_encode(array("status" => TRUE));
     }
 
+    public function generate_token(){
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ*-_*.()';
+        $string = '';
 
+        for ($i = 0; $i < 50; $i++) {
+            $string .= $characters[mt_rand(0, strlen($characters) - 1)];
+        }
+
+        $data = array(
+
+            'UserID' => $_SESSION['uid'],
+            'Token' => $string,
+        );
+        if($this->user_model->get_token($_SESSION['uid']) == false){
+
+            $this->table_ajax->save($data, 'APIToken');
+            echo json_encode(array("status" => TRUE));
+
+        } else {
+            $this->table_ajax->update(array('UserID' => $_SESSION['uid']), $data, 'APIToken');
+            echo json_encode(array("status" => TRUE));
+        }
+
+
+
+    }
 
     public function ajax_delete()
     {
