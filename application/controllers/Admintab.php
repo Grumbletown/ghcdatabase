@@ -22,9 +22,7 @@ class Admintab extends CI_Controller {
     public function index()
     {
 
-        $data2 = $this->table_ajax->get_settings($_SESSION['uid'], $this->table);
-        $this->output->enable_profiler(TRUE);
-var_dump($data2);
+
 
         $this->load->view('templates/header.php');
         $this->load->view('templates/navbar.php');
@@ -61,9 +59,9 @@ var_dump($data2);
 
         echo json_encode($data);
     }
-    public function user_settings()
+    public function user_settings($id)
     {
-        
+        $data = $this->table_ajax->get_settings($id, $this->table);
 
         echo json_encode($data);
     }

@@ -165,7 +165,7 @@ class Table_Ajax extends CI_Model
     {
         $this->db->from($table);
         $this->db->where('ID',$id);
-        //$this->db->join('APIToken', 'APIToken.UserID = Users.ID');
+        $this->db->join('APIToken', 'APIToken.UserID = Users.ID', 'Left');
         $query = $this->db->get();
 
         return $query->row();

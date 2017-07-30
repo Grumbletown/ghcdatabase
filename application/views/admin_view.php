@@ -236,11 +236,7 @@
         <h4>Um die Tabelle nach mehreren Spalten gleichzeitig zu sortieren, halte 'Shift' und wähle die anderen Spalten aus.</h4>
         <h4>Du kannst eine IP kopieren, indem du auf sie klickst.</h4>
 
-        <form class="form-inline">
 
-
-            <button type="button" id="neueip" class="btn btn-primary" data-toggle="modal" data-target="#EditUser" style="height: 25px; line-height: 1px;">Neue IP</button>
-        </form>
     </div>
 
 

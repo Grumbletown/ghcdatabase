@@ -21,7 +21,7 @@
         }
 //Ajax Load data from ajax
         $.ajax({
-            url: "<?php echo site_url('admintab/user_edit')?>/" + id + "/",
+            url: "<?php echo site_url('admintab/user_settings')?>/" + id + "/",
             type: "GET",
             dataType: "JSON",
             success: function (data) {
@@ -31,8 +31,9 @@
 
                 $('[name="reputation"]').val(data.Reputation);
                 $('[name="email"]').val(data.Email);
+                $('[name="Token"]').val(data.Token);
                 $('#Settings').modal('show'); // show bootstrap modal when complete loaded
-                $('.modal-title').text('Edit User'); // Set title to Bootstrap modal title
+
 
             },
             error: function (jqXHR, textStatus, errorThrown) {
@@ -120,7 +121,7 @@
           <ul class='dropdown-menu' role='menu'>
                 <li><a href='usersettings.php'><i class='fa fa-bar-chart fa-fw' aria-hidden='true'></i>&nbsp; Stats</a></li>
                 <li><a href='usersettings.php'><i class='fa fa-bar-chart fa-fw' aria-hidden='true'></i>&nbsp; Game Account wechseln</a></li>
-            <li><a data-target="#Settings" data-toggle="modal" class="MainNavText" id="settings" href="#Settings"><i class='fa fa-wrench fa-fw' aria-hidden='true'></i>&nbsp; Settings</a></li>
+            <li><a  class="MainNavText" id="settings" onclick="edit_userset()"><i class='fa fa-wrench fa-fw' aria-hidden='true'></i>&nbsp; Settings</a></li>
             <?php
             if($this->session->userdata('Role') == "Admin" OR $this->session->userdata('Role') == "Moderator")
            {
