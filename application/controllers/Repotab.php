@@ -10,7 +10,7 @@
 //ob_implicit_flush(true);
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Repotab extends CI_Controller {
+class Repotab extends My_Login_Check {
     public $sql = 0;
     public $table = "HackersIP";
 
@@ -39,30 +39,7 @@ WHERE `Users`.`Last_Login` < DATE_SUB( now(), INTERVAL 30 DAY) OR `Users`.`Last_
 
         $this->output->enable_profiler(TRUE);
 
-        /* $ips = $this->table_ajax->debug_ips();
 
-          $data2 = array();
-
-          foreach($ips->result() as $row) {
-
-              $data2[] = array(
-
-                  $row->IP,
-                  $row->Name,
-                  $row->Reputation,
-                  $row->Description,
-                  $row->Miners,
-                  $row->Clan,
-                  $row->Last_Updated,
-                  $row->UserIPFav,
-                  $row->ID,
-                  $row->UserIPRepo,
-                  $row->CountIPRepo,
-              );
-
-          }
-          var_dump($data2);
-  */
         $this->load->view('templates/header.php');
         $this->load->view('templates/navbar.php');
         //lädt die template seite xD

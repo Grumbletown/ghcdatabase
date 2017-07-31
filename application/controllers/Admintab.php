@@ -2,7 +2,7 @@
 //ob_implicit_flush(true);
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Admintab extends CI_Controller {
+class Admintab extends My_Login_Check {
     public $sql = "Users";
     public $table = "Users";
 

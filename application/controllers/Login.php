@@ -34,6 +34,7 @@ class Login extends CI_Controller
         $data['error'] = FALSE;
                     $data['errormsg'] = '';
         $ip = $this->input->ip_address();
+        echo $ip;
         if($this->input->valid_ip($ip))
         {
         	$result = $this->user_model->ip_check($ip);
