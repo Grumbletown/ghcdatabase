@@ -10,7 +10,7 @@
 //ob_implicit_flush(true);
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Repotab extends My_Login_Check {
+class Repotab extends MY_Controller {
     public $sql = 0;
     public $table = "HackersIP";
 

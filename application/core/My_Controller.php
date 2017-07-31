@@ -7,7 +7,7 @@
  */
 
 if (!defined('BASEPATH')) exit('No direct script access allowed');
-class My_Login_Check extends CI_Controller {
+class My_Controller extends CI_Controller {
 
     public function __construct() {
         parent::__construct();

@@ -33,37 +33,7 @@ class Login extends CI_Controller
         );
         $data['error'] = FALSE;
                     $data['errormsg'] = '';
-        $ip = $this->input->ip_address();
-        echo $ip;
-        if($this->input->valid_ip($ip))
-        {
-        	$result = $this->user_model->ip_check($ip);
-            if($result)
-            {
-            	$attempt = $result[0]->Attempts;
-                if($attempt > 12)
-                {
-                	$attempt = 12;
-                }
-            	$lastattempt = $result[0]->LastAttempt;
-            }
-            else
-            {
-            	
-            $attempt = 0;
-        	$insert = array(
-                'UIP' => $ip,
-                'Attempts' => 0
-             );
-             $this->user_model->ip_add($insert);
-             
-            }
-        }
-        else
-        {
-        	$data['error'] = TRUE;
-            $data['errormsg'] = "Ungültige IP!";
-        }
+
     	$this->load->view('templates/header.php');
         $this->load->view('templates/navbar.php');
         $email = $this->input->post("email");
@@ -77,7 +47,36 @@ class Login extends CI_Controller
         if ($this->form_validation->run() == FALSE)
         {
             // validation fail
-           
+            $ip = $this->input->ip_address();
+            echo $ip;
+
+            if($this->input->valid_ip($ip)) {
+                $result = $this->user_model->ip_check($ip);
+
+                if ($result) {
+                    $attempt = $result[0]->Attempts;
+                    if ($attempt > 12) {
+                        $attempt = 12;
+                    }
+                    $lastattempt = $result[0]->LastAttempt;
+                } else {
+
+                    $attempt = 0;
+                    $insert = array(
+                        'UIP' => $ip,
+                        'Attempts' => 0
+                    );
+                    $this->user_model->ip_add($insert);
+
+
+                }
+            }
+            else
+            {
+                $data['error'] = TRUE;
+                $data['errormsg'] = "Ungültige IP!";
+            }
+
             if(isset($lastattempt))
             {
             
@@ -106,7 +105,10 @@ class Login extends CI_Controller
         }
         else
         {
-        	redirect('home');
+            echo $ip;
+            $this->user_model->delete_ip_attmepts($ip);
+            redirect('home');
+
         } //end von form validation
        
           $this->load->view('templates/footer.php');

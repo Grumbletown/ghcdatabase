@@ -9,7 +9,7 @@ class user_model extends CI_Model
 	
 	function login($uname, $pwd)
 	{
-		
+
         $this->db->where('Username', $uname);
 		
         $query = $this->db->get('Users');
@@ -35,7 +35,17 @@ class user_model extends CI_Model
 			return FALSE;
 		}
 	}
-	
+
+    public function delete_ip_attmepts($ip)
+    {
+
+        echo '<script type="text/javascript">console.log("reset attempts");</script>';
+        $this->db->set('Attempts', 0, FALSE);
+        $this->db->where('UIP', $ip);
+        $this->db->update('Loginattempt');
+
+    }
+
 	function ip_check($ip)
 	{
 		$this->db->where('UIP', $ip);

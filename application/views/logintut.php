@@ -35,7 +35,7 @@ var_dump($errormsg); ?>
 				<span class="text-danger"><?php echo form_error('password'); ?></span>
 			</div>
 			<div class="form-group">
-				<button name="submit" type="submit" class="btn btn-info"<?php echo $buttondis; ?>>Login</button>
+				<button name="loginbtn" type="submit" class="btn btn-info"<?php echo $buttondis; ?>>Login</button>
 				<button name="cancel" type="reset" class="btn btn-info">Cancel</button>
 			</div>
 		<?php echo form_close(); ?>
