@@ -2,4 +2,4 @@
 
 
 
-echo "hallo welt";
+phpinfo();
