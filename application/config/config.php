@@ -25,7 +25,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 */
 $root = "http://".$_SERVER['HTTP_HOST'];
 $root .= dirname($_SERVER['SCRIPT_NAME']);
-$config['base_url'] = "https://ghcomm.de";
+$config['base_url'] = $root;
 
 
 
@@ -40,7 +40,7 @@ $config['base_url'] = "https://ghcomm.de";
 | variable so that it is blank.
 |
 */
-$config['index_page'] = 'index.php';
+$config['index_page'] = '';
 
 /*
 |--------------------------------------------------------------------------

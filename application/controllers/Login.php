@@ -8,103 +8,111 @@ class Login extends CI_Controller
     public function __construct()
     {
         parent::__construct();
-        $this->load->helper(array('form', 'url', 'html'));
+        $this->load->helper(array('form','url','html'));
         $this->load->model('user_model');
-
+        
     }
-
+    
     function index()
     {
-        $sperrzeit = array(
-            0 => 0,
-            1 => 0,
-            2 => 0,
-            3 => 30,
-            4 => 30,
-            5 => 30,
-            6 => 180,
-            7 => 180,
-            8 => 180,
-            9 => 1800,
-            10 => 1800,
-            11 => 1800,
-            12 => 18000
-
+    	$sperrzeit = array(
+           0 => 0,
+           1 => 0,
+           2 => 0,
+           3 => 30,
+           4 => 30,
+           5 => 30,
+           6 => 180,
+           7 => 180,
+           8 => 180,
+           9 => 1800,
+           10 => 1800,
+           11 => 1800,
+           12 => 18000
+    
         );
         $data['error'] = FALSE;
-        $data['errormsg'] = '';
+                    $data['errormsg'] = '';
 
-        $this->load->view('templates/header.php');
+    	$this->load->view('templates/header.php');
         $this->load->view('templates/navbar.php');
         $email = $this->input->post("email");
         $password = $this->input->post("password");
         $error = '';
-        $ip = $this->input->ip_address();
+        
+        
+        // form validation
+       $this->form_validation->set_rules("email", "Username", "trim|required");
+       $this->form_validation->set_rules("password", "Password", "trim|required|callback_check_database");
+        if ($this->form_validation->run() == FALSE)
+        {
+            // validation fail
+            $ip = $this->input->ip_address();
+            echo $ip;
 
+            if($this->input->valid_ip($ip)) {
+                $result = $this->user_model->ip_check($ip);
 
-        if ($this->input->valid_ip($ip)) {
-            $result = $this->user_model->ip_check($ip);
-
-            if ($result) {
-
-                $attempt = $result[0]->Attempts;
-                if ($attempt > 12) {
-                    $attempt = 12;
-                }
-                $lastattempt = $result[0]->LastAttempt;
-
-            } else {
-
-                $attempt = 0;
-                $insert = array(
-                    'UIP' => $ip,
-                    'Attempts' => 0
-                );
-                $this->user_model->ip_add($insert);
-
-
-            }
-        } else {
-            $data['error'] = TRUE;
-            $data['errormsg'] = "Ungültige IP!";
-        }
-
-// form validation
-        $this->form_validation->set_rules("email", "Username", "trim|required");
-        $this->form_validation->set_rules("password", "Password", "trim|required|callback_check_database");
-
-            if ($this->form_validation->run() == FALSE) {
-                // validation fail
-
-
-                if (isset($lastattempt)) {
-
-                    $now = strtotime(date("Y-m-d H:i:s"));
-                    $sperre = strtotime($lastattempt) + $sperrzeit[$attempt] * 60;
-                    $minute = floor(($sperre - $now) / 60);
-                    $second = fmod($sperre, $now);
-                    //$timeleft2 = date("i:s", $timeleft);
-                    if ($now > $sperre) {
-                        $data['error'] = FALSE;
-                        $data['errormsg'] = '';
-                        $this->user_model->ip_update($ip);
-                    } else {
-                        $data['error'] = TRUE;
-                        $data['errormsg'] = 'Zu viele fehlgeschlagene Login versuche!';
+                if ($result) {
+                    $attempt = $result[0]->Attempts;
+                    if ($attempt > 12) {
+                        $attempt = 12;
                     }
-
-                    $this->load->view('logintut', $data);
-
+                    $lastattempt = $result[0]->LastAttempt;
                 } else {
-                    echo $ip;
-                    //$this->user_model->delete_ip_attmepts($ip);
-                    redirect('home');
 
-                } //end von form validation
+                    $attempt = 0;
+                    $insert = array(
+                        'UIP' => $ip,
+                        'Attempts' => 0
+                    );
+                    $this->user_model->ip_add($insert);
+
+
+                }
             }
-                $this->load->view('templates/footer.php');
+            else
+            {
+                $data['error'] = TRUE;
+                $data['errormsg'] = "Ungültige IP!";
+            }
 
-    }
+            if(isset($lastattempt))
+            {
+            
+                $now = strtotime(date("Y-m-d H:i:s"));
+                $sperre = strtotime($lastattempt) + $sperrzeit[$attempt] * 60;
+                $minute = floor(($sperre - $now) / 60);
+                $second = fmod($sperre, $now);
+                //$timeleft2 = date("i:s", $timeleft);
+                if($now > $sperre)
+                {
+                	$data['error'] = FALSE;
+                    $data['errormsg'] = '';
+                   $this->user_model->ip_update($ip);
+                }
+                else
+                {
+                	$data['error'] = TRUE;
+                    $data['errormsg'] = 'Zu viele fehlgeschlagene Login versuche!';
+                }
+                
+                $this->load->view('logintut', $data);
+            
+            }
+            
+            
+        }
+        else
+        {
+        	redirect('home');
+            //$this->user_model->delete_ip_attempts($ip, "Loginattempt");
+        } //end von form validation
+       
+          $this->load->view('templates/footer.php');
+    } 
+    
+
 function check_database($password)
 {
   //Field validation succeeded.  Validate against database
