@@ -2,7 +2,7 @@
 //ob_implicit_flush(true);
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Table extends MY_Controller {
+class Table extends My_Controller {
     public $sql = 0;
     public $table = "HackersIP";
 
