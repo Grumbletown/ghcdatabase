@@ -23,7 +23,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
-$root = "http://".$_SERVER['HTTP_HOST'];
+$protocol = ( isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on' ) ? 'https' : 'http';
+$root = $protocol ."://".$_SERVER['HTTP_HOST'];
 if(!dirname($_SERVER['SCRIPT_NAME']) == '\\'){
 $root .= dirname($_SERVER['SCRIPT_NAME']);
 }
