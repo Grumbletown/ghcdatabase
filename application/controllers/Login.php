@@ -69,7 +69,7 @@ class Login extends CI_Controller
             $data['error'] = TRUE;
             $data['errormsg'] = "Ungültige IP!";
         }
-        if(isset($_POST['loginbtn']) || $attempt > 2)
+        if(isset($_POST['loginbtn']) || $attempt > 2 && !isset($_SESSION['uid']))
         {
 
             $now = strtotime(date("Y-m-d H:i:s"));
@@ -106,8 +106,9 @@ class Login extends CI_Controller
         }
         else
         {
-        	redirect('home');
-            //$this->user_model->delete_ip_attempts($ip, "Loginattempt");
+            $this->user_model->delete_ip_attmepts($ip);
+            redirect('home');
+
         } //end von form validation
        
           $this->load->view('templates/footer.php');
@@ -163,7 +164,7 @@ function check_database($password)
     {
     	session_unset();
         session_destroy();
-        redirect('/home/index/');
+        redirect('home');
      }
         
 }
