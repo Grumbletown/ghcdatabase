@@ -12,7 +12,7 @@ class Home extends CI_Controller {
         $this->load->view('templates/navbar.php');
        // $this->load->view('welcome_message');
         $this->load->view('templates/footer.php');
-		phpinfo ();
+		//phpinfo ();
 	}
 	
 	public function hotut()
