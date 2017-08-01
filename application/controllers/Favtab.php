@@ -9,7 +9,7 @@
 //ob_implicit_flush(true);
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Favtab extends My_Controller {
+class Favtab extends MY_Controller {
     public $sql = 0;
     public $table = "HackersIP";
 
