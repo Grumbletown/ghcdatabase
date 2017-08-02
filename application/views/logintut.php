@@ -17,7 +17,7 @@ else
 	$buttondis = ' ';
 }
 
-var_dump($errormsg); ?>
+ ?>
 <div class="container">
 	<div class="row">
 		<div class="col-md-4 col-md-offset-4 well">
@@ -26,7 +26,7 @@ var_dump($errormsg); ?>
 			<legend>Login</legend>
 			<div class="form-group">
 				<label for="name">Username</label>
-				<input class="form-control" name="email" placeholder="Enter Email-ID" type="text" autocomplete="off"/>
+				<input class="form-control" name="email" placeholder="Enter Nickname" type="text" autocomplete="off"/>
 				<span class="text-danger"><?php echo form_error('email'); ?></span>
 			</div>
 			<div class="form-group">

@@ -1,19 +1,19 @@
 <div class="container">
+    <div class="container">
+        <div class="form-group text-center" id="succmsg" >
+            <h4><b><span aria-hidden="true" id="successmsg"></span></b></h4>
+        </div>
     <?php
 
 
-            if(isset($_GET["editsuccess"])){
-
-                echo '<div class="alert alert-success" role="alert">
-                        <a href="#" class="alert-link">Daten erfolgreich bearbeitet!</a>
-                    </div>';
-            }
-                        if($_SESSION["Rep"] ==  0){
-                            echo    '<div class="alert alert-warning alert-dismissible" role="alert">
+           
+                        if($_SESSION['Rep'] ==  0){
+                            ?>
+                            <div class="alert alert-warning alert-dismissible" role="alert">
                       <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                       <p>Gib deine Reputation in den Einstellungen an, damit wir für dich relevante IPs anzeigen können!</p>
-                    </div>';
-                        }
+                    </div>
+                        <?php }
     ?>
 <script type="text/javascript">
     var rep = "<?php echo $_SESSION['Rep'];?>"
@@ -148,7 +148,7 @@
         $('.help-block').empty(); // clear error string
 
 
-        //$('#IPModal').append('<button type="button" class="btn btn-default btn-ok" >Delete</button>' );
+
         $('#IPModal').modal('show'); // show bootstrap modal
         $('.modal-title').text('Neue IP hinzufügen'); // Set Title to Bootstrap modal title
     }
@@ -278,7 +278,8 @@
                     if(weiter == 1){
                         $('#IPModal').modal('hide');
                         $('#myTable').DataTable().ajax.reload();
-
+                        $('#successmsg').parent().addClass('text-success');
+                        $('#successmsg').text('Daten erfolgreich gespeichert!');
 
                     }
 
@@ -288,7 +289,8 @@
                         $('.form-group').removeClass('has-error'); // clear error class
                         $('.help-block').empty();
                         $('#myTable').DataTable().ajax.reload();
-
+                        $('#successmsg').parent().addClass('text-success');
+                        $('#successmsg').text('Daten erfolgreich gespeichert!');
 
                     }
                 }

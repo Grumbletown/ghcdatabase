@@ -1,4 +1,21 @@
 <div class="container">
+    <?php
+
+
+    if(isset($_GET["editsuccess"])){
+
+        echo '<div class="alert alert-success" role="alert">
+                        <a href="#" class="alert-link">Daten erfolgreich bearbeitet!</a>
+                    </div>';
+    }
+    if(isset($_SESSION['Rep']) && $_SESSION['Rep'] ==  0){
+        ?>
+        <div class="alert alert-warning alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <p>Gib deine Reputation in den Einstellungen an, damit wir für dich relevante IPs anzeigen können!</p>
+        </div>
+    <?php }
+    ?>
     <div id="welcome" style="display: flex; margin-top: 5%;"></div>
     <script>
         if ($(window).width() < 600) {

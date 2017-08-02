@@ -86,7 +86,8 @@ if(isset($_SESSION['login'])){
 
                         $('#Settings').modal('hide');
                         $('#myTable').DataTable().ajax.reload();
-
+                    $('#successmsg').parent().addClass('text-success');
+                    $('#successmsg').text('Daten erfolgreich gespeichert!');
 
 
 
@@ -274,19 +275,19 @@ if(isset($_SESSION['login'])){
                         <label class="control-label " for="oldpw">
                             Altes Passwort
                         </label>
-                        <input class="form-control" id="oldpw" name="oldpw" type="text"/>
+                        <input class="form-control" id="oldpw" name="oldpw" type="password"/>
                     </div>
                     <div class="form-group ">
                         <label class="control-label " for="newpw">
                             Neues Passwort
                         </label>
-                        <input class="form-control" id="newpw" name="newpw" type="text"/>
+                        <input class="form-control" id="newpw" name="newpw" type="password"/>
                     </div>
                     <div class="form-group ">
                         <label class="control-label " for="newpwrepeat">
                             Wiederholen
                         </label>
-                        <input class="form-control" id="newpwrepeat" name="newpwrepeat" type="text"/>
+                        <input class="form-control" id="newpwrepeat" name="newpwrepeat" type="password"/>
                     </div>
                     <div class="form-group "><button type="button" onclick="save_nav(3)" class="btn btn-success" form="SettingsForm">Ändern</button></div>
                     <div class="form-group ">

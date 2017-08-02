@@ -58,6 +58,7 @@ class Admintab extends MY_Controller {
 
         );
         $this->table_ajax->update(array('id' => $_SESSION['uid']), $data, $this->table);
+        $_SESSION['Rep'] = $this->input->post('reputation');
         echo json_encode(array("status" => TRUE));
     }
 

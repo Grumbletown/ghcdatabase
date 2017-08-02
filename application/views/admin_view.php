@@ -1,5 +1,20 @@
 <div class="container">
-    
+    <div class="container">
+        <div class="form-group text-center" id="succmsg" >
+            <h4><b><span aria-hidden="true" id="successmsg"></span></b></h4>
+        </div>
+    <?php
+
+
+
+    if($_SESSION['Rep'] ==  0){
+        ?>
+        <div class="alert alert-warning alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <p>Gib deine Reputation in den Einstellungen an, damit wir für dich relevante IPs anzeigen können!</p>
+        </div>
+    <?php }
+    ?>
     <script type="text/javascript">
         $(document).ready(function(){
 
@@ -193,7 +208,8 @@
 
                             $('#EditUser').modal('hide');
                             $('#myTable').DataTable().ajax.reload();
-
+                        $('#successmsg').parent().addClass('text-success');
+                        $('#successmsg').text('Daten erfolgreich gespeichert!');
 
 
                     }
