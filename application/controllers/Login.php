@@ -40,7 +40,7 @@ class Login extends CI_Controller
         $password = $this->input->post("password");
         $error = '';
         $ip = $this->input->ip_address();
-        echo $ip;
+
 
         if($this->input->valid_ip($ip)) {
             $result = $this->user_model->ip_check($ip);
@@ -69,7 +69,7 @@ class Login extends CI_Controller
             $data['error'] = TRUE;
             $data['errormsg'] = "Ungültige IP!";
         }
-        if(isset($_POST['loginbtn']) || $attempt > 2 && !isset($_SESSION['uid']))
+        if(isset($_POST['loginbtn']) && $data['error'] == TRUE)
         {
 
             $now = strtotime(date("Y-m-d H:i:s"));
