@@ -37,7 +37,7 @@
             $('#myTable').DataTable({
 
                 "processing": true,
-
+                "keys": true,
                 "serverSide": true,
                 "order": [
                     [1, "asc" ]
@@ -390,7 +390,7 @@
                     </form>
                 </div> <!-- Modal Body -->
                 <div class="modal-footer">
-                    <button type="button" id="loeschen" onclick="save()" class="btn btn-danger" form="IPForm">Löschen</button>
+                    <button type="button" id="loeschen" onclick="delete_ip()" class="btn btn-danger" form="IPForm">Löschen</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Schließen</button>
                     <button type="button" onclick="save(1)" class="btn btn-primary" form="IPForm">Speichern > Schließen!</button>
                     <button type="button" id="speichern" onclick="save(2)" class="btn btn-primary" form="IPForm">Speichern > Weiter!</button>
@@ -401,6 +401,7 @@
     </div> <!-- Modal -->
     <div class="page">
         <div class="table-responsive">
+            <center><b><caption class="btn btn-danger">Reported IPs Table</caption></b></center>
             <table class="table dt-responsive nowrap table-bordered table-condensed " id="myTable" style="margin-top: 25px;">
                 <thead>
                 <tr>

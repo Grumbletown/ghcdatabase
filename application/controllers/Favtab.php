@@ -125,7 +125,7 @@ WHERE `Users`.`Last_Login` < DATE_SUB( now(), INTERVAL 30 DAY) OR `Users`.`Last_
         echo json_encode(array("status" => TRUE));
     }
 
-    public function ajax_delete($id)
+    public function ajax_delete()
     {
         $this->table_ajax->delete_by_id($this->input->post('id'), $this->table);
         echo json_encode(array("status" => TRUE));

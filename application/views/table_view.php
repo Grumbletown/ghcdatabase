@@ -40,7 +40,8 @@
             $('#myTable').DataTable({
 
                 "processing": true,
-
+                
+                keys: true,
                 "serverSide": true,
                 "order": [
                     [1, "asc" ]
@@ -119,6 +120,8 @@
                     type : 'GET'
 
                 },
+
+
 
 
 
@@ -404,7 +407,9 @@
             </div> <!-- Modal -->
             <div class="page">
             <div class="table-responsive">
-            <table class="table dt-responsive nowrap table-bordered table-condensed " id="myTable" style="margin-top: 25px;">
+                <center><b><caption class="btn btn-danger">IP Table</caption></b></center>
+                <table class="table dt-responsive nowrap table-bordered table-condensed " id="myTable" style="margin-top: 25px;">
+
                 <thead>
                     <tr>
                         <th class="col-md-1" style="padding-right: 20px;">IP</th>

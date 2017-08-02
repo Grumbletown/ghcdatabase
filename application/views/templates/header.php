@@ -34,11 +34,7 @@
       <script type="text/javascript" src="<?php echo base_url('assets/js/dataTables.min.js') ?>"></script>
       <script type="text/javascript" src="<?php echo base_url('assets/js/bootstrap-datepicker.min.js') ?>"></script>
 <script type="text/javascript" src="<?php echo base_url('assets/js/DataTables-1.10.15/js/dataTables.bootstrap.min.js') ?>"></script>
-<script type="text/javascript" src="<?php echo base_url('assets/js/ColReorder-1.3.3/js/dataTables.colReorder.min.js') ?>"></script>
-<script type="text/javascript" src="<?php echo base_url('assets/js/FixedColumns-3.2.2/js/dataTables.fixedColumns.min.js') ?>"></script>
-<script type="text/javascript" src="<?php echo base_url('assets/js/FixedHeader-3.1.2/js/dataTables.fixedHeader.min.js') ?>"></script>
-<script type="text/javascript" src="<?php echo base_url('assets/js/KeyTable-2.2.1/js/dataTables.keyTable.min.js') ?>"></script>
-<!--<script type="text/javascript" src="<?php //echo base_url('assets/js/Scroller-1.4.2/js/dataTables.scroller.min.js') ?>"></script>-->
+
  
   
 

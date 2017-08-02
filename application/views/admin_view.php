@@ -18,7 +18,7 @@
             $('#myTable').DataTable({
 
                 "processing": true,
-
+                "keys": true,
                 "serverSide": true,
                 "order": [
                     [1, "asc" ]
@@ -310,6 +310,7 @@
 
     <div class="page">
         <div class="table-responsive">
+            <center><b><caption class="btn btn-danger">User Table</caption></b></center>
             <table class="table dt-responsive nowrap table-bordered table-condensed " id="myTable" style="margin-top: 25px;">
                 <thead>
                 <tr>
