@@ -38,7 +38,7 @@
 <script type="text/javascript" src="<?php echo base_url('assets/js/FixedColumns-3.2.2/js/dataTables.fixedColumns.min.js') ?>"></script>
 <script type="text/javascript" src="<?php echo base_url('assets/js/FixedHeader-3.1.2/js/dataTables.fixedHeader.min.js') ?>"></script>
 <script type="text/javascript" src="<?php echo base_url('assets/js/KeyTable-2.2.1/js/dataTables.keyTable.min.js') ?>"></script>
-<script type="text/javascript" src="<?php echo base_url('assets/js/Scroller-1.4.2/js/dataTables.scroller.min.js') ?>"></script>
+<!--<script type="text/javascript" src="<?php //echo base_url('assets/js/Scroller-1.4.2/js/dataTables.scroller.min.js') ?>"></script>-->
  
   
 
