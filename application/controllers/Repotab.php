@@ -37,15 +37,14 @@ WHERE `Users`.`Last_Login` < DATE_SUB( now(), INTERVAL 30 DAY) OR `Users`.`Last_
     public function index()
     {
 
-        $this->output->enable_profiler(TRUE);
+        
 
 
         $this->load->view('templates/header.php');
         $this->load->view('templates/navbar.php');
-        //lädt die template seite xD
         $this->load->view('repo_view');
         $this->load->view('templates/footer.php');
-        //$this->ips_page();
+
     }
 
 
@@ -79,7 +78,7 @@ WHERE `Users`.`Last_Login` < DATE_SUB( now(), INTERVAL 30 DAY) OR `Users`.`Last_
             'Last_Updated' => $date,
         );
         $insert = $this->table_ajax->save($data, $this->table);
-        //echo json_encode($insert);
+
         echo json_encode(array("status" => TRUE));
     }
 

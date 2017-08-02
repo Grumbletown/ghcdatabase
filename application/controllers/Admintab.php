@@ -27,10 +27,9 @@ class Admintab extends MY_Controller {
 
         $this->load->view('templates/header.php');
         $this->load->view('templates/navbar.php');
-        //lädt die template seite xD
         $this->load->view('admin_view');
         $this->load->view('templates/footer.php');
-        //$this->ips_page();
+
     }
 
     public function ajax_update()

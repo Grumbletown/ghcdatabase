@@ -140,21 +140,21 @@ if(isset($_SESSION['login'])){
         <span class="icon-bar"></span>
        <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand"  href="<?php base_url('index.php/home/index');?>" id="navbarBrandText"></a>
+      <a class="navbar-brand"  href="<?php base_url('index.php/home/');?>" id="navbarBrandText"></a>
       <script>
-     //   if ($(window).width() < 400) {
-     //     try {
-     //     document.getElementById("navbarBrandText").innerHTML = '<img src="images/icon.svg" width="30" height="30" style="margin-right: 10px; display: inline-block!important; vertical-align: top!important" />GHC';
-     //  } catch (e) {
-     //      console.log("Nicht wichtiger Fehler!: " + e);
-     //  }
-     // } else {
-     //  try {
-     //      document.getElementById("navbarBrandText").innerHTML = '<img src="images/icon.svg" width="30" height="30" style="margin-right: 10px; display: inline-block!important; vertical-align: top!important" />German Hacker Community';
-     //  } catch (e) {
-     //      console.log("Nicht wichtiger Fehler!: " + e);
-     //  }
-     //}
+      if ($(window).width() < 400) {
+          try {
+          document.getElementById("navbarBrandText").innerHTML = '<img src="<?php echo base_url('assets/images/icon.svg') ?>" width="30" height="30" style="margin-right: 10px; display: inline-block!important; vertical-align: top!important" />GHC';
+       } catch (e) {
+           console.log("Nicht wichtiger Fehler!: " + e);
+       }
+      } else {
+       try {
+           document.getElementById("navbarBrandText").innerHTML = '<img src="<?php echo base_url('assets/images/icon.svg') ?>" width="30" height="30" style="margin-right: 10px; display: inline-block!important; vertical-align: top!important" />German Hackerz Community';
+       } catch (e) {
+           console.log("Nicht wichtiger Fehler!: " + e);
+       }
+     }
       </script>
     </div>
     <?php
