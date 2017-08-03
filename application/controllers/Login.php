@@ -98,7 +98,7 @@ class Login extends CI_Controller
         if ($this->form_validation->run() == FALSE)
         {
             // validation fail
-            $this->load->view('logintut', $data);
+            $this->load->view('logintut.php', $data);
 
 
             
@@ -107,7 +107,7 @@ class Login extends CI_Controller
         else
         {
             $this->user_model->delete_ip_attmepts($ip);
-            redirect('home');
+            redirect('home.php');
 
         } //end von form validation
        
@@ -164,7 +164,7 @@ function check_database($password)
     {
     	session_unset();
         session_destroy();
-        redirect('home');
+        redirect('home.php');
      }
         
 }
