@@ -67,7 +67,7 @@ class Login extends CI_Controller
         else
         {
             $data['error'] = TRUE;
-            $data['errormsg'] = "Ungültige IP!";
+            $data['errormsg'] = "UngÃ¼ltige IP!";
         }
         if(isset($_POST['loginbtn']) && $data['error'] == TRUE)
         {

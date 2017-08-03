@@ -307,3 +307,44 @@ if(isset($_SESSION['login'])){
         </div>
     </div>
 </div>
+
+
+<div class="modal fade" id="TableInfo" tabindex="-1" role="dialog" aria-labelledby="SettingsUserLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="InfoTable">Infos zur Tabelle</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group ">
+                    <label class="control-label ">
+                        Sortieren:
+                    </label>
+                    <p>Um die Tabelle nach mehreren Spalten gleichzeitig zu sortieren, halte 'Shift' und wähle die anderen Spalten aus.</p>
+                    <p>Du kannst eine IP kopieren, indem du auf sie klickst.</p>
+                </div>
+                <div class="form-group ">
+                    <label class="control-label ">
+                        Ips kopieren:
+                    </label>
+
+                    <p>Du kannst eine IP kopieren, indem du auf sie klickst.</p>
+                </div>
+                <div class="form-group ">
+                    <label class="control-label ">
+                        Navigation:
+                    </label>
+                    <p>Benutzt die Tabulator Taste, um durch die Seite zu navigieren, oder klickt in die Tabelle und benutzt die Pfeiltasten!</p>
+
+                </div>
+                    <div class="modal-footer">
+                        <div>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Schließen</button>
+                        </div>
+                    </div>
+
+            </div>
+        </div>
+    </div>
+</div>

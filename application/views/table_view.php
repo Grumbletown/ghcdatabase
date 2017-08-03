@@ -1,7 +1,9 @@
-<script>
-    //   document.getElementById('navIPs').classList.add("active");
-</script>
 <div class="container">
+    <div class="text-right">
+        <a href="#" data-toggle="modal" data-target="#TableInfo" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-question-sign" ></span></a>
+
+
+    </div>
     <div class="form-group text-center" id="succmsg" >
        <h4><b><span aria-hidden="true" id="successmsg"></span></b></h4>
 </div>
@@ -333,26 +335,6 @@
 
 
     </script>
-   <!-- <script type="text/javascript">
-        $('#addIPModal').on('shown.bs.modal', function () {
-
-            getElementById("inputIP").focus()
-            return false
-        })
-        $('.modal-title').text('Add IP');
-    </script> -->
-
-         <div id="tableInfo" style="margin-top: 15px;">
-            <h4>Um die Tabelle nach mehreren Spalten gleichzeitig zu sortieren, halte 'Shift' und wähle die anderen Spalten aus.</h4>
-            <h4>Du kannst eine IP kopieren, indem du auf sie klickst.</h4>
-        </div>
-
-
-
-       
-
-        
-
         <!-- Modal begins here -->
             <div class="modal fade" id="IPModal" tabindex="-1" role="dialog" aria-labelledby="addIPLabel">
                 <div class="modal-dialog" role="document">

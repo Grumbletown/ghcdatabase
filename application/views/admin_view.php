@@ -1,5 +1,9 @@
 <div class="container">
-    <div class="container">
+    <div class="text-right">
+        <a href="#" data-toggle="modal" data-target="#TableInfo" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-question-sign" ></span></a>
+
+
+    </div>
         <div class="form-group text-center" id="succmsg" >
             <h4><b><span aria-hidden="true" id="successmsg"></span></b></h4>
         </div>
@@ -247,19 +251,6 @@
 
 
     </script>
-    
-    <div id="tableInfo" style="margin-top: 15px;">
-        <h4>Um die Tabelle nach mehreren Spalten gleichzeitig zu sortieren, halte 'Shift' und wähle die anderen Spalten aus.</h4>
-        <h4>Du kannst eine IP kopieren, indem du auf sie klickst.</h4>
-
-
-    </div>
-
-
-
-
-
-
 
     <!-- Modal -->
     <div class="modal fade" id="EditUser" tabindex="-1" role="dialog" aria-labelledby="EditUserLabel" aria-hidden="true">
