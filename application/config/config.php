@@ -28,7 +28,7 @@ $root = $protocol ."://".$_SERVER['HTTP_HOST'];
 if(!dirname($_SERVER['SCRIPT_NAME']) == '\\'){
 $root .= dirname($_SERVER['SCRIPT_NAME']);
 }
-$config['base_url'] = '';
+$config['base_url'] = $root;
 
 
 
@@ -43,7 +43,7 @@ $config['base_url'] = '';
 | variable so that it is blank.
 |
 */
-$config['index_page'] = '';
+$config['index_page'] = 'index.php';
 
 /*
 |--------------------------------------------------------------------------
