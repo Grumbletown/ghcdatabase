@@ -2,7 +2,7 @@
 //ob_implicit_flush(true);
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Admintab extends My_controller {
+class Admintab extends MY_Controller {
     public $sql = "Users";
     public $table = "Users";
 

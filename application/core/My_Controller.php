@@ -2,10 +2,9 @@
 /**
  * Created by PhpStorm.
  * User: zeroc
- * Date: 31.07.2017
- * Time: 01:56
+ * Date: 03.08.2017
+ * Time: 21:15
  */
-
 if (!defined('BASEPATH')) exit('No direct script access allowed');
 class MY_Controller extends CI_Controller {
 
