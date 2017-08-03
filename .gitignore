@@ -4,10 +4,11 @@ application/cache/*
 !application/cache/index.html
 !application/cache/.htaccess
 
+
 application/logs/*
 !application/logs/index.html
 !application/logs/.htaccess
-
+!application/config/database.php
 composer.lock
 
 user_guide_src/build/*
@@ -28,3 +29,4 @@ user_guide_src/cilexer/pycilexer.egg-info/*
 *.sublime-workspace
 *.sublime-project
 application/controllers/Login.php
+application/config/database.php
