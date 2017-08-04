@@ -39,7 +39,7 @@ class User_model extends CI_Model
     public function delete_ip_attmepts($ip)
     {
 
-        echo '<script type="text/javascript">console.log("reset attempts");</script>';
+        
         $this->db->set('Attempts', 0, FALSE);
         $this->db->where('UIP', $ip);
         $this->db->update('Loginattempt');
