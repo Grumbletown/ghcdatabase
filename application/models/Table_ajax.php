@@ -9,7 +9,7 @@
 
 
 
-class table_ajax extends CI_Model
+class Table_ajax extends CI_Model
 {
 
     /**
