@@ -195,8 +195,8 @@ if(isset($_SESSION['login'])){
         {
         ?>
         	
-        <li id='IPs' class=''><a href="<?php echo base_url('index.php/table/'); ?>"><i class='fa fa-laptop fa-lg' aria-hidden='true'></i>&nbsp; IPs</a></li>
-        <li id='Favoriten,' class=''><a href="<?php echo base_url('index.php/favtab/'); ?>"><i class='fa fa-star fa-lg' aria-hidden='true'></i>&nbsp; Favoriten</a></li>
+        <li id='IPs' class=''><a href="<?php echo base_url('index.php/table/iptable/'); ?>"><i class='fa fa-laptop fa-lg' aria-hidden='true'></i>&nbsp; IPs</a></li>
+        <li id='Favoriten,' class=''><a href="<?php echo base_url('index.php/table/favtable/'); ?>"><i class='fa fa-star fa-lg' aria-hidden='true'></i>&nbsp; Favoriten</a></li>
         
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -214,7 +214,7 @@ if(isset($_SESSION['login'])){
            {
            	?>
            
-            <li id='reportedips.php' class=''><a href='<?php echo base_url('index.php/repotab/'); ?>'><i class='fa fa-pencil-square-o fa-lg' aria-hidden='true'></i>&nbsp; Gemeldete IPs</a></li>
+            <li id='reportedips.php' class=''><a href='<?php echo base_url('index.php/table/repotable/'); ?>'><i class='fa fa-pencil-square-o fa-lg' aria-hidden='true'></i>&nbsp; Gemeldete IPs</a></li>
             <?php
             }
             if($this->session->userdata('Role') == "Admin")

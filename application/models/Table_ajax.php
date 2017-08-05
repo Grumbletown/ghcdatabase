@@ -15,6 +15,14 @@ class Table_ajax extends CI_Model
     /**
      * @return string
      */
+
+    public $ipsql = 0;
+    public $adminsql = 0;
+    public $favsql = 0;
+    public $reposql = 0;
+
+
+
     var $column_order = array(
         "`T`.`IP`",
         "`T`.`Name`",
@@ -37,6 +45,32 @@ class Table_ajax extends CI_Model
     var $column_search = array('`T`.`IP`','`T`.`Name`','`T`.`Description`','`T`.`Clan`'); //set column field database for datatable searchable
     var $column_search_user = array('Username', 'Role'); //set column field database for datatable searchable
     var $order = array('id' => 'asc'); // default order
+
+    function __construct()
+    {
+        parent::__construct();
+        $this->ipsql = "(SELECT STRAIGHT_JOIN `HackersIP`.`ID`, `IP`, `HackersIP`.`Name`, `HackersIP`.`Reputation`, `Last_Updated`, `Description`, `Miners`, `Clan`, COALESCE(`CountsIPRepo`.`CountIPRepo`, 0) AS `CountIPRepo`, COALESCE(`UsersIPRepo`.`UserIPRepo`, 0) AS `UserIPRepo`, COALESCE(`UsersIPFav`.`UserIPFav`, 0) AS `UserIPFav`FROM `HackersIP` LEFT JOIN `Users` ON `HackersIP`.`Name` = `Users`.`Username` LEFT JOIN (SELECT COUNT(1) AS `CountIPRepo`, `IPUserReport`.`IPID` FROM `IPUserReport` GROUP BY `IPUserReport`.`IPID`) AS `CountsIPRepo` ON `CountsIPRepo`.`IPID` = `HackersIP`.`ID` LEFT JOIN (SELECT COUNT(1) AS `UserIPRepo`, `IPUserReport`.`IPID` FROM `IPUserReport` WHERE `IPUserReport`.`UserID` = ".$_SESSION['uid']." GROUP BY `IPUserReport`.`IPID`) AS `UsersIPRepo` ON `UsersIPRepo`.`IPID` = `HackersIP`.`ID` LEFT JOIN (SELECT COUNT(1) AS `UserIPFav`, `IPUserFav`.`IPID` FROM `IPUserFav` WHERE `IPUserFav`.`UserID` = ".$_SESSION['uid']." GROUP BY `IPUserFav`.`IPID`) AS `UsersIPFav` ON `UsersIPFav`.`IPID` = `HackersIP`.`ID` WHERE `Users`.`Last_Login` < DATE_SUB( now(), INTERVAL 30 DAY) OR `Users`.`Last_Login` IS NULL) AS T";
+        $this->adminsql = "Users";
+        $this->favsql = "(SELECT STRAIGHT_JOIN `HackersIP`.`ID`, `IP`, `HackersIP`.`Name`, `HackersIP`.`Reputation`, `Last_Updated`, `Description`, `Miners`, `Clan`, `Adder`.`Username`, COALESCE(`CountsName`.`CountName`,0) AS `CountName`, COALESCE(`CountsIPRepo`.`CountIPRepo`, 0) AS `CountIPRepo`, COALESCE(`UsersIPRepo`.`UserIPRepo`, 0) AS `UserIPRepo`, COALESCE(`UsersIPFav`.`UserIPFav`, 0) AS `UserIPFav` FROM `HackersIP` 
+LEFT JOIN `Users` ON `HackersIP`.`Name` = `Users`.`Username` 
+JOIN `Users` AS `Adder` ON `HackersIP`.`Added_By` = `Adder`.`ID` 
+LEFT JOIN (SELECT COUNT(1) AS `CountName`, `HackersIP`.`Name` FROM `HackersIP` GROUP BY `HackersIP`.`Name`) AS `CountsName` ON `CountsName`.`Name` = `HackersIP`.`Name`
+LEFT JOIN (SELECT COUNT(1) AS `CountIPRepo`, `IPUserReport`.`IPID` FROM `IPUserReport` GROUP BY `IPUserReport`.`IPID`) AS `CountsIPRepo` ON `CountsIPRepo`.`IPID` = `HackersIP`.`ID`
+LEFT JOIN (SELECT COUNT(1) AS `UserIPRepo`, `IPUserReport`.`IPID` FROM `IPUserReport` WHERE `IPUserReport`.`UserID` = ".$_SESSION['uid']." GROUP BY `IPUserReport`.`IPID`) AS `UsersIPRepo` ON `UsersIPRepo`.`IPID` = `HackersIP`.`ID`
+LEFT JOIN (SELECT COUNT(1) AS `UserIPFav`, `IPUserFav`.`IPID` FROM `IPUserFav` WHERE `IPUserFav`.`UserID` =".$_SESSION['uid']." GROUP BY `IPUserFav`.`IPID`) AS `UsersIPFav` ON `UsersIPFav`.`IPID` = `HackersIP`.`ID`
+WHERE `Users`.`Last_Login` < DATE_SUB( now(), INTERVAL 30 DAY) OR `Users`.`Last_Login` IS NULL) AS T";
+        $this->reposql = "(SELECT STRAIGHT_JOIN `HackersIP`.`ID`, `IP`, `HackersIP`.`Name`, `HackersIP`.`Reputation`, `Last_Updated`, `Description`, `Miners`, `Clan`, `Adder`.`Username`, COALESCE(`CountsName`.`CountName`,0) AS `CountName`, COALESCE(`CountsIPRepo`.`CountIPRepo`, 0) AS `CountIPRepo`, COALESCE(`UsersIPRepo`.`UserIPRepo`, 0) AS `UserIPRepo`, COALESCE(`UsersIPFav`.`UserIPFav`, 0) AS `UserIPFav` FROM `HackersIP` 
+LEFT JOIN `Users` ON `HackersIP`.`Name` = `Users`.`Username` 
+JOIN `Users` AS `Adder` ON `HackersIP`.`Added_By` = `Adder`.`ID` 
+LEFT JOIN (SELECT COUNT(1) AS `CountName`, `HackersIP`.`Name` FROM `HackersIP` GROUP BY `HackersIP`.`Name`) AS `CountsName` ON `CountsName`.`Name` = `HackersIP`.`Name`
+LEFT JOIN (SELECT COUNT(1) AS `CountIPRepo`, `IPUserReport`.`IPID` FROM `IPUserReport` GROUP BY `IPUserReport`.`IPID`) AS `CountsIPRepo` ON `CountsIPRepo`.`IPID` = `HackersIP`.`ID`
+LEFT JOIN (SELECT COUNT(1) AS `UserIPRepo`, `IPUserReport`.`IPID` FROM `IPUserReport` WHERE `IPUserReport`.`UserID` = ".$_SESSION['uid']." GROUP BY `IPUserReport`.`IPID`) AS `UsersIPRepo` ON `UsersIPRepo`.`IPID` = `HackersIP`.`ID`
+LEFT JOIN (SELECT COUNT(1) AS `UserIPFav`, `IPUserFav`.`IPID` FROM `IPUserFav` WHERE `IPUserFav`.`UserID` =".$_SESSION['uid']." GROUP BY `IPUserFav`.`IPID`) AS `UsersIPFav` ON `UsersIPFav`.`IPID` = `HackersIP`.`ID`
+WHERE `Users`.`Last_Login` < DATE_SUB( now(), INTERVAL 30 DAY) OR `Users`.`Last_Login` IS NULL) AS T";
+    }
+
+
+
     public function _get_ips($page)
     {
 
@@ -104,7 +138,7 @@ class Table_ajax extends CI_Model
     }
 
 
-    public function get_ips($sql,$page){
+    public function get_ips($page){
 //        $this->db->cache_on();
         $this->_get_ips($page);
         if($_GET['length'] != -1)
@@ -112,39 +146,39 @@ class Table_ajax extends CI_Model
 
         switch ($page){
             case 'ip':
-                        $query = $this->db->get($sql);
+                        $query = $this->db->get($this->ipsql);
                         break;
             case 'user':
-                        $query = $this->db->get($sql);
+                        $query = $this->db->get($this->adminsql);
                         break;
 
             case 'fav':
-                        $query = $this->db->where('UserIPFav', 1)->get($sql);
+                        $query = $this->db->where('UserIPFav', 1)->get($this->favsql);
                         break;
             case 'repo':
-                $query = $this->db->where('UserIPRepo', 1)->get($sql);
+                $query = $this->db->where('UserIPRepo', 1)->get($this->reposql);
                 break;
         }
         return $query;
     }
-    public function count_filtered($sql, $page)
+    public function count_filtered($page)
     {
 
         
         $this->_get_ips($page);
         switch ($page){
             case 'ip':
-                $query = $this->db->get($sql);
+                $query = $this->db->get($this->ipsql);
                 break;
             case 'user':
-                $query = $this->db->get($sql);
+                $query = $this->db->get($this->adminsql);
                 break;
 
             case 'fav':
-                $query = $this->db->where('UserIPFav', 1)->get($sql);
+                $query = $this->db->where('UserIPFav', 1)->get($this->favsql);
                 break;
             case 'repo':
-                $query = $this->db->where('UserIPRepo', 1)->get($sql);
+                $query = $this->db->where('UserIPRepo', 1)->get($this->reposql);
                 break;
         }
         return $query->num_rows();

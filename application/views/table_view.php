@@ -20,8 +20,9 @@
     <?php }
     ?>
     <script type="text/javascript">
-        var rep = "<?php echo $_SESSION['Rep'];?>"
-        var role = "<?php echo $_SESSION['Role'];?>"
+        var rep = "<?php echo $_SESSION['Rep'];?>";
+        var role = "<?php echo $_SESSION['Role'];?>";
+        var tableswitch = "<?php echo $switch; ?>";
         var save_method;
         var favtab = "IPUserFav";
         var repotab = "IPUserReport";
@@ -41,8 +42,12 @@
             $('#myTable').DataTable({
 
                 "processing": true,
-                
+                scrollX: true,
+                "autoWidth": false,
                 keys: true,
+                fixedColumns: {
+                    leftColumns: 3
+                },
                 "serverSide": true,
                 "order": [
                     [1, "asc" ]
@@ -59,6 +64,10 @@
                     }
                     if ( data[2] < rep * 0.25 ) {
                         $(row).addClass('warning');
+
+                    }
+                    if ( data[10] > 4 ) {
+                        $(row).addClass('alert');
 
                     }
 
@@ -117,7 +126,7 @@
                 ],
 
                 "ajax": {
-                    url : "<?php echo site_url("table/ips_page") ?>",
+                    url : "<?php echo site_url("table/ips_page")?>/"+ tableswitch + "/",
                     type : 'GET'
 
                 },
@@ -130,7 +139,7 @@
 
 
 
-                "dom": "<'row'<'col-sm-6'l><'col-sm-6'f>>" +
+                "dom": "<'row'<'col-sm-6'l><'col-sm-4'f>>" +
                 "<'row'<'col-sm-12'tr>>" +
                 "<'row text-center'<'col-md-8 text-center'p>>",
 
@@ -389,22 +398,22 @@
                 </div> <!-- Modal-Dialog -->
             </div> <!-- Modal -->
             <div class="page">
-            <div class="table-responsive">
-                <center><b><caption class="btn btn-danger">IP Table</caption></b></center>
-                <table class="table dt-responsive nowrap table-bordered table-condensed " id="myTable" style="margin-top: 25px;">
+            <div class="table-responsive text-center">
+                <center><b><caption class="btn btn-danger"><?php echo $title; ?></caption></b></center>
+                <table class="table dt-responsive nowrap table-bordered table-condensed " id="myTable" style="margin-top: 25px; margin: 0px auto;" width="100%">
 
                 <thead>
                     <tr>
                         <th class="col-md-1" style="padding-right: 20px;">IP</th>
                         <th class="col-md-1" style="padding-right: 20px;">Name</th>
-                        <th class="col-md-1" style="padding-right: 20px;">Rep</th>
+                        <th class="col-sm-1" style="padding-right: 20px;">Rep</th>
                      
                         <th class="col-md-1" style="padding-right: 20px;">Beschreibung</th>
-                        <th class="col-md-1" style="padding-right: 20px;">Miners</th>
+                        <th class="col-sm-1" style="padding-right: 20px;">Miners</th>
                         <th class="col-md-1" style="padding-right: 20px;">Gilde</th>
                         <th class="col-md-2" style="padding-right: 20px;">Updated</th>
                     <!--    <th class="col-md-2" style="padding-right: 20px;">Added By</th> -->
-                        <th class='nosort' width="40%" valign="top" border="0px">
+                        <th class='nosort text-center' width="40%" valign="top" border="0px">
 
 
 

@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <html lang="de">
   <head>
+      <style>
+          div#body{display:none;}
+          table.DTFC_Cloned thead,
+          table.DTFC_Cloned tfoot {
+              background-color: black;
+          }
+
+      </style>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -20,13 +28,9 @@
 
 
 
-<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/js/datatables.min.css') ?>"/>
+      <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/js/datatables.min.css') ?>"/>
       <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/css/bootstrap-datepicker3.min.css') ?>"/>
-<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/js/ColReorder-1.3.3/css/colReorder.bootstrap.min.css') ?>"/>
-<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/js/FixedColumns-3.2.2/css/fixedColumns.bootstrap.min.css') ?>"/>
-<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/js/FixedHeader-3.1.2/css/fixedHeader.bootstrap.min.css') ?>"/>
-<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/js/KeyTable-2.2.1/css/keyTable.bootstrap.min.css') ?>"/>
-<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/js/Scroller-1.4.2/css/scroller.bootstrap.min.css') ?>"/>
+
 
 <script type="text/javascript" src="<?php echo base_url('assets/js/jQuery-2.2.4/jquery-2.2.4.min.js') ?>"></script>
 
@@ -34,7 +38,7 @@
       <script type="text/javascript" src="<?php echo base_url('assets/js/datatables.min.js') ?>"></script>
       <script type="text/javascript" src="<?php echo base_url('assets/js/bootstrap-datepicker.min.js') ?>"></script>
 <script type="text/javascript" src="<?php echo base_url('assets/js/DataTables-1.10.15/js/dataTables.bootstrap.min.js') ?>"></script>
-
+      <script type="text/javascript" src="<?php echo base_url('assets/js/jquery.countdown.min.js') ?>"></script>
  
   
 

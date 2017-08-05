@@ -6,16 +6,54 @@
 	
 </head>
 <body>
-<?php 
+<div class="container">
+<noscript>JavaScript ist nicht aktiviert!</noscript>
+<noscript><div id="body"></noscript>
+<script type="text/javascript">
+	$(document).ready(function() {
+		var sperren = <?php echo $time ?> *
+		1000;
+		var Seconds = new Date().getTime() + sperren;
+		$('#loginbtn').countdown(Seconds, {elapse: true})
+			.on('update.countdown', function (event) {
+				var $this = $(this);
+				if (event.elapsed) {
+
+					console.log('klar');
+					$('#loginbtn').text('Login');
+					$("#loginbtn").removeClass('disabled');
+					<?php $this->session->set_flashdata('msg', ''); ?>
+				} else {
+					console.log('lmaa');
+					$('#loginbtn').text(event.strftime('%H:%M:%S'));
+					$("#loginbtn").addClass('disabled');
+					<?php
+					if(!$errormsg == ''){
+					$this->session->set_flashdata('msg', '<div class="alert alert-danger text-center">'.$errormsg.'</div>');
+
+					}
+					?>
+				}
+			});
+	});
+
+</script>
+
+
+
+
+
+
+
+
+<?php
+
 if($error){
 	$this->session->set_flashdata('msg', '<div class="alert alert-danger text-center">'.$errormsg.'</div>');
-	$buttondis = 'disabled="disabled"';
-	
+
+
 }
-else
-{
-	$buttondis = ' ';
-}
+
 
  ?>
 <div class="container">
@@ -26,7 +64,7 @@ else
 			<legend>Login</legend>
 			<div class="form-group">
 				<label for="name">Username</label>
-				<input class="form-control" name="email" placeholder="Enter Nickname" type="text" autocomplete="off"/>
+				<input class="form-control" name="email" placeholder="Enter Username" type="text" autocomplete="off"/>
 				<span class="text-danger"><?php echo form_error('email'); ?></span>
 			</div>
 			<div class="form-group">
@@ -35,8 +73,8 @@ else
 				<span class="text-danger"><?php echo form_error('password'); ?></span>
 			</div>
 			<div class="form-group">
-				<button name="loginbtn" type="submit" class="btn btn-info"<?php echo $buttondis; ?>>Login</button>
-				<button name="cancel" type="reset" class="btn btn-info">Cancel</button>
+				<button id="loginbtn" name="loginbtn" type="submit" class="btn btn-info"></button>
+				<button name="cancel" type="reset" class="btn btn-danger">Cancel</button>
 			</div>
 		<?php echo form_close(); ?>
 		<?php echo $this->session->flashdata('msg'); ?>
@@ -44,6 +82,7 @@ else
 	</div>
 	
 </div>
-
+</div></noscript>
+</div>
 </body>
 </html>
