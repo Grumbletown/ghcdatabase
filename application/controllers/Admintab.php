@@ -189,7 +189,7 @@ class Admintab extends MY_Controller {
 
 
         $ips = $this->table_ajax->get_ips('user');
-$x = 0;
+        $x = 0;
         $data = array();
         $expired = "";
         $today = date("Y-m-d");

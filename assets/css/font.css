@@ -1,0 +1,43 @@
+p,
+a,
+div,
+span,
+button,
+input {
+    font-family: 'Oswald', sans-serif;
+    letter-spacing: 0.5px;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+nav div,
+nav span,
+nav button,
+nav a,
+nav input,
+nav p {
+    font-family: 'Orbitron', sans-serif;
+}
+
+#navbarBrandText {
+    font-weight: 900;
+    letter-spacing: 2px;
+}
+
+.navElement {
+    font-weight: 500;
+    letter-spacing: 1px;
+}
+
+.navUser {
+    letter-spacing: 1px;
+    font-weight: 600;
+}
+
+.liNavElement>a {
+    padding: 5px 20px;
+}

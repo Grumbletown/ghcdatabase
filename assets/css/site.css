@@ -1,0 +1,22 @@
+div,
+span,
+input,
+button,
+a,
+select {
+    border-radius: 0 !important;
+}
+
+.footer-p {
+    display: inline-block;
+    text-align: center;
+    letter-spacing: 0.5px;
+}
+
+.footer-p a {
+    color: #09aa81;
+}
+
+.navbar-brand {
+    line-height: 0;
+}
