@@ -24,7 +24,7 @@ class Table extends MY_Controller {
 
         $this->output->enable_profiler(TRUE);
         $data = array(
-          'title' => 'IP Table',
+          'title' => 'IPs',
           'switch' => 'ip'
         );
         $this->load->view('templates/header.php');
@@ -39,7 +39,7 @@ class Table extends MY_Controller {
 
         $this->output->enable_profiler(TRUE);
         $data = array(
-            'title' => 'IP Table',
+            'title' => 'Favourites',
             'switch' => 'fav'
         );
         $this->load->view('templates/header.php');
@@ -54,7 +54,7 @@ class Table extends MY_Controller {
 
         $this->output->enable_profiler(TRUE);
         $data = array(
-            'title' => 'IP Table',
+            'title' => 'Reported IPs',
             'switch' => 'repo'
         );
         $this->load->view('templates/header.php');
