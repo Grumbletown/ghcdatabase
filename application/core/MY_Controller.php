@@ -17,7 +17,7 @@ class MY_Controller extends CI_Controller {
         // If the user has not logged in will redirect back to login
         if (!$this->session->userdata('login') == TRUE) {
             $this->session->unset_userdata('uid');
-            redirect('Home');
+            redirect('Login');
         }
     }
 }

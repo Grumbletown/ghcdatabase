@@ -15,7 +15,9 @@ class Admintab extends MY_Controller {
         $this->load->helper('url');
         $this->load->helper('date');
         $this->load->model('user_model');
-
+        if(!$_SESSION['Role'] === "Admin"){
+            redirect('Home');
+        }
     }
 
 
@@ -186,7 +188,7 @@ class Admintab extends MY_Controller {
         }
 
 
-        $ips = $this->table_ajax->get_ips($this->sql, 'user');
+        $ips = $this->table_ajax->get_ips('user');
 $x = 0;
         $data = array();
         $expired = "";
@@ -233,7 +235,7 @@ $x = 0;
         $output = array(
             "draw" => $draw,
             "recordsTotal" => $total_users,
-            "recordsFiltered" => $this->table_ajax->count_filtered($this->sql, 'user'),
+            "recordsFiltered" => $this->table_ajax->count_filtered('user'),
             "data" => $data
         );
 
