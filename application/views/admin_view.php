@@ -38,6 +38,11 @@
 
                 "processing": true,
                 "keys": true,
+                scrollX: true,
+                
+                fixedColumns: {
+                    leftColumns: 3
+                },
                 "serverSide": true,
                 "order": [
                     [1, "asc" ]
@@ -71,13 +76,13 @@
                     {
 
                         "width": "6%",
-                        targets: 8,
+                        targets: 7,
                         render: function (data, type, row, meta) {
                             if (type === 'display') {
 
-                                if (role === 'Admin' || role === 'Moderator'){
+                                if (role === 'Admin'){
                                     data = '<a id="edituserlink"  onclick="edit_user('+row[0]+')" data-placement="top" data-toggle="tooltip" title="Edit" ><button id="edituser'+row[0]+'" class="btn btn-primary btn-xs" ><span class="glyphicon glyphicon-pencil" id="editipclass"></span></button></a>';
-
+                                    data += '<a id="pwrlink"  onclick="pwr_link('+row[0]+')" data-placement="top" data-toggle="tooltip" title="PW Reset" ><button id="pwrlink'+row[0]+'" class="btn btn-primary btn-xs" ><span class="glyphicon glyphicon-pencil" id="pwrclass"></span></button></a>';
 
 
                                 }
@@ -118,6 +123,30 @@
 
 
         });
+        function pwr_link(id)
+        {
+
+            //Ajax Load data from ajax
+            $.ajax({
+                url : "<?php echo site_url('admintab/pwr_gen_admin')?>/" + id + "/",
+                type: "GET",
+                dataType: "JSON",
+
+                success: function(data)
+                {
+                    var linkcp = "<button class='btn btn-link btn-xs'data-clipboard-text = '<?php echo base_url('index.php/reset/'); ?>" + data.key + "/' > <?php echo base_url('index.php/reset/'); ?>" + data.key + "/ </button>";
+                    $('#successmsg').parent().addClass('text-success');
+                    $('#successmsg').text('Link zum Passwort zurücksetzen:');
+                    $('#successmsg').append(linkcp);
+
+
+                },
+                error: function (jqXHR, textStatus, errorThrown)
+                {
+                    alert('Error get data from ajax');
+                }
+            });
+        }
 
         function edit_user(id)
         {
@@ -174,6 +203,8 @@
                             //if success reload ajax table
                             $('#EditUser').modal('hide');
                             $('#myTable').DataTable().ajax.reload(null, false);
+                            $('#successmsg').parent().addClass('text-success');
+                            $('#successmsg').text('User erfolgreich gelöscht!');
                         }
                     },
                     error: function (jqXHR, textStatus, errorThrown)
@@ -269,7 +300,7 @@
                         <span id="nameMessage" class="help-block"></span>
                     </div>
                     <div class="form-group" id="selectDiv">
-                        <label for="sel1">Select list</label>
+                        <label for="sel1">Rolle</label>
                         <select class="form-control" id="sel1" name="role">
 
 
@@ -291,11 +322,7 @@
 
 
                     </div>
-                        <div class="form-group" id="emailDiv">
-                            <label for="inputEmail">Email</label>
-                            <input type="text" name="email" class="form-control" id="inputEmail" placeholder="a@ghc">
-                            <span id="EmailMessage" class="help-block"></span>
-                        </div>
+
                     <div class="form-group" id="discordDiv">
                         <label for="inputDiscord">Discord</label>
                         <input type="number" name="discord" class="form-control" id="inputDiscord" placeholder="42">
@@ -329,7 +356,7 @@
                     <th class="col-md-1" style="padding-right: 20px;">Last Login (Y-M-D H:M:S)</th>
 
                     <th class="nosort" style="padding-right: 20px;">Gültigkeit</th>
-                    <th class="nosort" style="padding-right: 20px;">Email</th>
+
                     <th class="nosort" style="padding-right: 20px;">Discord</th>
 
                     <th class='nosort' width="40%" valign="top" border="0px">Edit</th>
@@ -344,7 +371,15 @@
     </div>
 
 </div> <!-- /Container-->
-
+<script>
+    var clipboard = new Clipboard('.btn');
+    clipboard.on('success', function(e) {
+        console.log(e);
+    });
+    clipboard.on('error', function(e) {
+        console.log("Fehler oderso :" + e);
+    });
+</script>
 
 
 

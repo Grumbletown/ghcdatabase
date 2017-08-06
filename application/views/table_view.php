@@ -252,7 +252,7 @@
                     $('[name="reputation"]').val(data.Reputation);
                     $('[name="miners"]').val(data.Miners);
                     $('[name="clan"]').val(data.Clan);
-                    $('[name="description"]').val(data.Description);
+
                     $('#IPModal').modal('show'); // show bootstrap modal when complete loaded
                     $('.modal-title').text('Edit IP'); // Set title to Bootstrap modal title
 
@@ -381,9 +381,14 @@
                                     <span id="clanMessage" class="help-block"></span>
                                 </div>
                                 <div class="form-group" id="descriptionDiv">
-                                    <label for="inputDescription">Description</label>
-                                    <textarea type="text" name="description" class="form-control" rows="5" id="inputDescription" placeholder="i = inaktiv"></textarea>
-                                    <span id="descriptionMessage" class="help-block"></span>
+                                    <label for="sel1">Status</label>
+                                    <select class="form-control" id="sel1" name="role">
+
+
+                                        <option><div data-value="User">Aktiv</div></option>
+                                        <option><div data-value="Moderator">Inaktiv</div></option>
+                                        <option><div data-value="Admin">???</div></option>
+                                    </select>
                                 </div>
                             </form>
                         </div> <!-- Modal Body -->
@@ -408,7 +413,7 @@
                         <th class="col-md-1" style="padding-right: 20px;">Name</th>
                         <th class="col-sm-1" style="padding-right: 20px;">Rep</th>
                      
-                        <th class="col-md-1" style="padding-right: 20px;">Beschreibung</th>
+                        <th class="col-md-1" style="padding-right: 20px;">Status</th>
                         <th class="col-sm-1" style="padding-right: 20px;">Miners</th>
                         <th class="col-md-1" style="padding-right: 20px;">Gilde</th>
                         <th class="col-md-2" style="padding-right: 20px;">Updated</th>

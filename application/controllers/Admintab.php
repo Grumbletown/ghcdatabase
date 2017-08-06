@@ -49,7 +49,7 @@ class Admintab extends MY_Controller {
         $this->table_ajax->update(array('id' => $this->input->post('id')), $data, $this->table);
         echo json_encode(array("status" => TRUE));
     }
-
+    
     public function ajax_updaterep()
     {
 
@@ -65,7 +65,8 @@ class Admintab extends MY_Controller {
     }
 
 
-    public function ajax_updatemail()
+    
+   /* public function ajax_updatemail()
     {
 
         $data = array(
@@ -77,7 +78,7 @@ class Admintab extends MY_Controller {
         $this->table_ajax->update(array('id' => $_SESSION['uid']), $data, $this->table);
         echo json_encode(array("status" => TRUE));
     }
-
+*/
     public function ajax_updatepw()
     {
 
@@ -128,6 +129,37 @@ class Admintab extends MY_Controller {
 
 
     }
+    public function generate_key($length)
+    {
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $charactersLength = strlen($characters);
+        $key = '';
+        for ($i = 0; $i <= $length; $i++) {
+            $key .= $characters[rand(0, $charactersLength - 1)];
+        }
+        return $key;
+    }
+    
+    public function pwr_gen_admin($id)
+    {
+        $key = $this->generate_key(25);
+        if($this->user_model->get_user_by_id($this->input->post('id')))
+        {
+            $this->user_model->insert_key($id, 'update', $key);
+            echo json_encode(array("status" => TRUE,
+                                   "key" => $key,
+                ));
+            
+        }
+        else
+        {
+            $this->user_model->insert_key($id, 'neu', $key);
+            echo json_encode(array("status" => TRUE,
+                                   "key" => $key,
+            ));
+        }
+    }
+
 
     public function ajax_delete()
     {
@@ -209,23 +241,15 @@ class Admintab extends MY_Controller {
                 $expired = "Moderator";
              
             }
-            
-            
-            
-            
-            
             $data[] = array(
-
                 $row->ID,
                 $row->Username,
-
                 $row->Role,
                 $row->Reputation,
                 $row->Last_Login,
                 $expired,
-                $row->Email,
+                
                 $row->DiscordName,
-
                 $x,
             );
 

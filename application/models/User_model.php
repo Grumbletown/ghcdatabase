@@ -86,4 +86,37 @@ class User_model extends CI_Model
         return $query->result();
 
     }
+
+    public function update($where, $data, $table)
+    {
+        $this->db->update($table, $data, $where);
+        return $this->db->affected_rows();
+    }
+
+    function get_key($key){
+
+        $this->db->where('Key', $key);
+        $query = $this->db->get('PWReset');
+        return $query->result();
+
+    }
+
+	function insert_key($id, $method, $key)
+    {
+        switch ($method)
+        {
+            case 'update':
+                $this->db->set('Key', $key, FALSE);
+                $this->db->where('UID', $id);
+                $this->db->update('PWReset');
+                break;
+            case 'neu':
+                $data = array(
+                    'UID' => $id,
+                    'Key' => $key
+                );
+                return $this->db->insert('PWReset', $data);
+                break;
+        }
+    }
 }

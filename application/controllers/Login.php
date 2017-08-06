@@ -5,6 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Login extends CI_Controller
 {
+    public $userid;
     var $data;
     public $now;
     public $sperre;
@@ -13,6 +14,7 @@ class Login extends CI_Controller
         parent::__construct();
         $this->load->helper(array('form','url','html'));
         $this->load->model('user_model');
+        //$this->load->model('table_ajax');
         $this->data = array(
             'error' => '',
             'errormsg' => '',
@@ -175,5 +177,28 @@ function check_database($password)
         session_destroy();
         redirect('home');
      }
+
+    public function set_pw()
+    {
+
+        if($this->input->post('newpw') == $this->input->post('newpwrepeat')){
+            $new_password = password_hash($this->input->post('newpw'), PASSWORD_DEFAULT);
+            $data = array(
+
+
+                'Password' => $new_password,
+            );
+            $this->user_model->update($this->userid, $data, 'Users');
+            echo json_encode(array("status" => TRUE));
+            
+        }
+        else
+        {
+            $data['inputerror'][] = 'pass';
+            $data['error_string'][] = 'Passwörter stimmen nicht überein!';
+            $data['status'] = FALSE;
+        }
+
+    }
         
 }
