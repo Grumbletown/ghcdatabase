@@ -19,17 +19,17 @@
 				var $this = $(this);
 				if (event.elapsed) {
 
-					console.log('klar');
+
 					$('#loginbtn').text('Login');
 					$("#loginbtn").removeClass('disabled');
-					<?php $this->session->set_flashdata('msg', ''); ?>
+
 				} else {
-					console.log('lmaa');
+
 					$('#loginbtn').text(event.strftime('%H:%M:%S'));
 					$("#loginbtn").addClass('disabled');
 					<?php
 					if(!$errormsg == ''){
-					$this->session->set_flashdata('msg', '<div class="alert alert-danger text-center">'.$errormsg.'</div>');
+					$erromsg = "Zu viele fehlgeschlagene versuche!";
 
 					}
 					?>
@@ -77,6 +77,7 @@ if($error){
 				<button name="cancel" type="reset" class="btn btn-danger">Cancel</button>
 			</div>
 		<?php echo form_close(); ?>
+			
 		<?php echo $this->session->flashdata('msg'); ?>
 		</div>
 	</div>

@@ -36,9 +36,7 @@
                 $("#speichern").show();
             });
 
-
-
-
+            
             $('#myTable').DataTable({
 
                 "processing": true,
@@ -52,6 +50,12 @@
                 "order": [
                     [1, "asc" ]
                 ],
+                "preDrawCallback": function (settings) {
+                    pageScrollPos = $('div.dataTables_scrollBody').scrollTop();
+                },
+                "drawCallback": function (settings) {
+                    $('div.dataTables_scrollBody').scrollTop(pageScrollPos);
+                },
                 'rowCallback': function(row, data, index){
                     $(row).find('td:eq(7)').css('background-color', '#222222');
                     $(row).find('td:eq(7)').css('border', '0px');

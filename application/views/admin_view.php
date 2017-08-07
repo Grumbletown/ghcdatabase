@@ -39,7 +39,12 @@
                 "processing": true,
                 "keys": true,
                 scrollX: true,
-                
+                "preDrawCallback": function (settings) {
+                    pageScrollPos = $('div.dataTables_scrollBody').scrollTop();
+                },
+                "drawCallback": function (settings) {
+                    $('div.dataTables_scrollBody').scrollTop(pageScrollPos);
+                },
                 fixedColumns: {
                     leftColumns: 3
                 },
@@ -48,8 +53,8 @@
                     [1, "asc" ]
                 ],
                 'rowCallback': function(row, data, index){
-                    $(row).find('td:eq(8)').css('background-color', '#222222');
-                    $(row).find('td:eq(8)').css('border', '0px');
+                    $(row).find('td:eq(7)').css('background-color', '#222222');
+                    $(row).find('td:eq(7)').css('border', '0px');
 
                 },
                 "createdRow": function( row, data, dataIndex ) {
@@ -82,7 +87,7 @@
 
                                 if (role === 'Admin'){
                                     data = '<a id="edituserlink"  onclick="edit_user('+row[0]+')" data-placement="top" data-toggle="tooltip" title="Edit" ><button id="edituser'+row[0]+'" class="btn btn-primary btn-xs" ><span class="glyphicon glyphicon-pencil" id="editipclass"></span></button></a>';
-                                    data += '<a id="pwrlink"  onclick="pwr_link('+row[0]+')" data-placement="top" data-toggle="tooltip" title="PW Reset" ><button id="pwrlink'+row[0]+'" class="btn btn-primary btn-xs" ><span class="glyphicon glyphicon-pencil" id="pwrclass"></span></button></a>';
+                                    data += '<a id="pwrlink"  onclick="pwr_link('+row[0]+')" data-placement="top" data-toggle="tooltip" title="PW Reset" ><button id="pwrlink'+row[0]+'" class="btn btn-danger btn-xs" ><span class="glyphicon glyphicon-thumbs-down" id="pwrclass"></span></button></a>';
 
 
                                 }

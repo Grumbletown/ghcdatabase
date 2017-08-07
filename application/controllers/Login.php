@@ -87,7 +87,12 @@ class Login extends CI_Controller
             $this->data['time'] = floor(($this->sperre - $this->now));
 
 
+        if($this->now < $this->sperre)
+        {
 
+            $this->data['error'] = TRUE;
+            $this->data['errormsg'] = 'Zu viele fehlgeschlagene versuche!';
+        }
 
 
 
@@ -98,7 +103,7 @@ class Login extends CI_Controller
         if ($this->form_validation->run() == FALSE)
         {
             // validation fail
-
+            
             $this->load->view('logintut', $this->data);
 
 
@@ -161,8 +166,15 @@ function check_database($password)
           $this->data['errormsg'] = '';
           $this->user_model->ip_update($this->input->ip_address());
       }
+      else
+      {
+          $this->data['error'] = TRUE;
+          $this->data['errormsg'] = 'Zu viele fehlgeschlagene versuche!';
+
+      }
 
      if(!$this->data['error'] === TRUE){
+         
       $this->session->set_flashdata('msg', '<div class="alert alert-danger text-center">Benutzername oder Passwort falsch!</div>');
      }
 
