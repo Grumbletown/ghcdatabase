@@ -84,7 +84,7 @@ if($error){
 				<span class="text-danger"><?php echo form_error('password'); ?></span>
 			</div>
 			<div class="form-group">
-				<button id="loginbtn" name="loginbtn" type="submit" class="btn btn-info"></button>
+				<button id="loginbtn" name="loginbtn" type="submit" class="btn btn-info">...</button>
 				<button name="cancel" type="reset" class="btn btn-danger">Cancel</button>
 			</div>
 		<?php echo form_close(); ?>
