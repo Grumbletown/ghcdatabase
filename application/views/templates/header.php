@@ -29,6 +29,9 @@
 <!-- font-awesome -->
 <link rel="stylesheet" href="<?php echo base_url('assets/fontawesome/css/font-awesome.min.css');?>">
 
+<!-- select2 -->
+<link rel="stylesheet" href="<?php echo base_url('assets/css/select2.min.css');?>"
+
 <!-- OWN FILE: font -->
 <link rel="stylesheet" href="<?php echo base_url('assets/css/font.css');?>">
 
@@ -47,11 +50,14 @@
 <script type="text/javascript" src="<?php echo base_url('assets/js/bootstrap-datepicker.min.js') ?>"></script>
 <!--- <script type="text/javascript" src="<?php echo base_url('assets/js/dataTables.bootstrap.min.js') ?>"></script> -->
 
-<!-- clipboard -->
+<!-- countdown -->
 <script type="text/javascript" src="<?php echo base_url('assets/js/jquery.countdown.min.js') ?>"></script>
 
 <!-- clipboard -->
 <script type="text/javascript" src="<?php echo base_url('assets/js/clipboard.min.js') ?>"></script>
+
+<!-- select2 -->
+<script type="text/javascript" src="<?php echo base_url('assets/js/select2.min.js') ?>"></script>
 
 <!-- OWN FILE: site -->
 <script type="text/javascript" src="<?php echo base_url('assets/js/site.js') ?>"></script>
