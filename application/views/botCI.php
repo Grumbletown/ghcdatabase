@@ -188,7 +188,7 @@
     </div>
 
 <?php 
-
+if (isset($_POST['botCommandJSON'])) {
 $json = $_POST['botCommandJSON'];
 
 if (json_decode($json) != null)
@@ -196,5 +196,6 @@ if (json_decode($json) != null)
     $file = fopen('../../assets/json/botCommands.json','w+');
     fwrite($file, $json);
     fclose($file);
+}
 }
 ?>
