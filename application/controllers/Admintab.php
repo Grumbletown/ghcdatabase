@@ -15,7 +15,9 @@ class Admintab extends MY_Controller {
         $this->load->helper('url');
         $this->load->helper('date');
         $this->load->model('user_model');
-
+        if(!$_SESSION['Role'] === "Admin"){
+            redirect('Home');
+        }
     }
 
 
@@ -47,85 +49,39 @@ class Admintab extends MY_Controller {
         $this->table_ajax->update(array('id' => $this->input->post('id')), $data, $this->table);
         echo json_encode(array("status" => TRUE));
     }
-
-    public function ajax_updaterep()
+    
+ 
+    public function generate_key($length)
     {
-
-        $data = array(
-
-
-            'Reputation' => $this->input->post('reputation'),
-
-        );
-        $this->table_ajax->update(array('id' => $_SESSION['uid']), $data, $this->table);
-        $_SESSION['Rep'] = $this->input->post('reputation');
-        echo json_encode(array("status" => TRUE));
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $charactersLength = strlen($characters);
+        $key = '';
+        for ($i = 0; $i <= $length; $i++) {
+            $key .= $characters[rand(0, $charactersLength - 1)];
+        }
+        return $key;
     }
-
-
-    public function ajax_updatemail()
+    
+    public function pwr_gen_admin($id)
     {
-
-        $data = array(
-
-
-            'Email' => $this->input->post('email'),
-
-        );
-        $this->table_ajax->update(array('id' => $_SESSION['uid']), $data, $this->table);
-        echo json_encode(array("status" => TRUE));
+        $key = $this->generate_key(25);
+        if($this->user_model->get_user_by_id($this->input->post('id')))
+        {
+            $this->user_model->insert_key($id, 'update', $key);
+            echo json_encode(array("status" => TRUE,
+                                   "key" => $key,
+                ));
+            
+        }
+        else
+        {
+            $this->user_model->insert_key($id, 'neu', $key);
+            echo json_encode(array("status" => TRUE,
+                                   "key" => $key,
+            ));
+        }
     }
 
-    public function ajax_updatepw()
-    {
-
-        $result = $this->user_model->login($_SESSION['uname'], $this->input->post('oldpw'));
-        if($result){
-           if($this->input->post('newpw') == $this->input->post('newpwrepeat')){
-               $new_password = password_hash($this->input->post('newpw'), PASSWORD_DEFAULT);
-               $data = array(
-
-
-                   'Password' => $new_password,
-               );
-           }
-
-
-
-
-
-
-        }
-        $this->table_ajax->update(array('id' => $_SESSION['uid']), $data, $this->table);
-        echo json_encode(array("status" => TRUE));
-    }
-
-    public function generate_token(){
-        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ*-_*.()';
-        $string = '';
-
-        for ($i = 0; $i < 50; $i++) {
-            $string .= $characters[mt_rand(0, strlen($characters) - 1)];
-        }
-
-        $data = array(
-
-            'UserID' => $_SESSION['uid'],
-            'Token' => $string,
-        );
-        if($this->user_model->get_token($_SESSION['uid']) == false){
-
-            $this->table_ajax->save($data, 'APIToken');
-            echo json_encode(array("status" => TRUE));
-
-        } else {
-            $this->table_ajax->update(array('UserID' => $_SESSION['uid']), $data, 'APIToken');
-            echo json_encode(array("status" => TRUE));
-        }
-
-
-
-    }
 
     public function ajax_delete()
     {
@@ -186,8 +142,8 @@ class Admintab extends MY_Controller {
         }
 
 
-        $ips = $this->table_ajax->get_ips($this->sql, 'user');
-$x = 0;
+        $ips = $this->table_ajax->get_ips('user');
+        $x = 0;
         $data = array();
         $expired = "";
         $today = date("Y-m-d");
@@ -207,23 +163,15 @@ $x = 0;
                 $expired = "Moderator";
              
             }
-            
-            
-            
-            
-            
             $data[] = array(
-
                 $row->ID,
                 $row->Username,
-
                 $row->Role,
                 $row->Reputation,
                 $row->Last_Login,
                 $expired,
-                $row->Email,
+                
                 $row->DiscordName,
-
                 $x,
             );
 
@@ -233,7 +181,7 @@ $x = 0;
         $output = array(
             "draw" => $draw,
             "recordsTotal" => $total_users,
-            "recordsFiltered" => $this->table_ajax->count_filtered($this->sql, 'user'),
+            "recordsFiltered" => $this->table_ajax->count_filtered('user'),
             "data" => $data
         );
 

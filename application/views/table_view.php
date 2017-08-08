@@ -20,8 +20,9 @@
     <?php }
     ?>
     <script type="text/javascript">
-        var rep = "<?php echo $_SESSION['Rep'];?>"
-        var role = "<?php echo $_SESSION['Role'];?>"
+        var rep = "<?php echo $_SESSION['Rep'];?>";
+        var role = "<?php echo $_SESSION['Role'];?>";
+        var tableswitch = "<?php echo $switch; ?>";
         var save_method;
         var favtab = "IPUserFav";
         var repotab = "IPUserReport";
@@ -35,18 +36,26 @@
                 $("#speichern").show();
             });
 
-
-
-
+            
             $('#myTable').DataTable({
 
                 "processing": true,
-                
+                scrollX: true,
+                "autoWidth": false,
                 keys: true,
+                fixedColumns: {
+                    leftColumns: 3
+                },
                 "serverSide": true,
                 "order": [
                     [1, "asc" ]
                 ],
+                "preDrawCallback": function (settings) {
+                    pageScrollPos = $('div.dataTables_scrollBody').scrollTop();
+                },
+                "drawCallback": function (settings) {
+                    $('div.dataTables_scrollBody').scrollTop(pageScrollPos);
+                },
                 'rowCallback': function(row, data, index){
                     $(row).find('td:eq(7)').css('background-color', '#222222');
                     $(row).find('td:eq(7)').css('border', '0px');
@@ -59,6 +68,10 @@
                     }
                     if ( data[2] < rep * 0.25 ) {
                         $(row).addClass('warning');
+
+                    }
+                    if ( data[10] > 4 ) {
+                        $(row).addClass('alert');
 
                     }
 
@@ -117,7 +130,7 @@
                 ],
 
                 "ajax": {
-                    url : "<?php echo site_url("table/ips_page") ?>",
+                    url : "<?php echo site_url("table/ips_page")?>/"+ tableswitch + "/",
                     type : 'GET'
 
                 },
@@ -130,7 +143,7 @@
 
 
 
-                "dom": "<'row'<'col-sm-6'l><'col-sm-6'f>>" +
+                "dom": "<'row'<'col-sm-6'l><'col-sm-4'f>>" +
                 "<'row'<'col-sm-12'tr>>" +
                 "<'row text-center'<'col-md-8 text-center'p>>",
 
@@ -243,7 +256,7 @@
                     $('[name="reputation"]').val(data.Reputation);
                     $('[name="miners"]').val(data.Miners);
                     $('[name="clan"]').val(data.Clan);
-                    $('[name="description"]').val(data.Description);
+
                     $('#IPModal').modal('show'); // show bootstrap modal when complete loaded
                     $('.modal-title').text('Edit IP'); // Set title to Bootstrap modal title
 
@@ -372,9 +385,14 @@
                                     <span id="clanMessage" class="help-block"></span>
                                 </div>
                                 <div class="form-group" id="descriptionDiv">
-                                    <label for="inputDescription">Description</label>
-                                    <textarea type="text" name="description" class="form-control" rows="5" id="inputDescription" placeholder="i = inaktiv"></textarea>
-                                    <span id="descriptionMessage" class="help-block"></span>
+                                    <label for="sel1">Status</label>
+                                    <select class="form-control" id="sel1" name="role">
+
+
+                                        <option><div data-value="User">Aktiv</div></option>
+                                        <option><div data-value="Moderator">Inaktiv</div></option>
+                                        <option><div data-value="Admin">???</div></option>
+                                    </select>
                                 </div>
                             </form>
                         </div> <!-- Modal Body -->
@@ -389,22 +407,22 @@
                 </div> <!-- Modal-Dialog -->
             </div> <!-- Modal -->
             <div class="page">
-            <div class="table-responsive">
-                <center><b><caption class="btn btn-danger">IP Table</caption></b></center>
-                <table class="table dt-responsive nowrap table-bordered table-condensed " id="myTable" style="margin-top: 25px;">
+            <div class="table-responsive text-center">
+                <center><b><caption class="btn btn-danger"><?php echo $title; ?></caption></b></center>
+                <table class="table dt-responsive nowrap table-bordered table-condensed " id="myTable" style="margin-top: 25px; margin: 0px auto;" width="100%">
 
                 <thead>
                     <tr>
                         <th class="col-md-1" style="padding-right: 20px;">IP</th>
                         <th class="col-md-1" style="padding-right: 20px;">Name</th>
-                        <th class="col-md-1" style="padding-right: 20px;">Rep</th>
+                        <th class="col-sm-1" style="padding-right: 20px;">Rep</th>
                      
-                        <th class="col-md-1" style="padding-right: 20px;">Beschreibung</th>
-                        <th class="col-md-1" style="padding-right: 20px;">Miners</th>
+                        <th class="col-md-1" style="padding-right: 20px;">Status</th>
+                        <th class="col-sm-1" style="padding-right: 20px;">Miners</th>
                         <th class="col-md-1" style="padding-right: 20px;">Gilde</th>
                         <th class="col-md-2" style="padding-right: 20px;">Updated</th>
                     <!--    <th class="col-md-2" style="padding-right: 20px;">Added By</th> -->
-                        <th class='nosort' width="40%" valign="top" border="0px">
+                        <th class='nosort text-center' width="40%" valign="top" border="0px">
 
 
 

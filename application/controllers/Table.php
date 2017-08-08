@@ -19,20 +19,50 @@ class Table extends MY_Controller {
 
 
 
-	public function index()
+	public function iptable()
 	{
 
         $this->output->enable_profiler(TRUE);
-
-
-
-		$this->load->view('templates/header.php');
+        $data = array(
+          'title' => 'IPs',
+          'switch' => 'ip'
+        );
+        $this->load->view('templates/header.php');
         $this->load->view('templates/navbar.php');
-        $this->load->view('table_view');
+        $this->load->view('table_view', $data);
         $this->load->view('templates/footer.php');
 
 	}
 
+    public function favtable()
+    {
+
+        $this->output->enable_profiler(TRUE);
+        $data = array(
+            'title' => 'Favourites',
+            'switch' => 'fav'
+        );
+        $this->load->view('templates/header.php');
+        $this->load->view('templates/navbar.php');
+        $this->load->view('table_view', $data);
+        $this->load->view('templates/footer.php');
+
+    }
+
+    public function repotable()
+    {
+
+        $this->output->enable_profiler(TRUE);
+        $data = array(
+            'title' => 'Reported IPs',
+            'switch' => 'repo'
+        );
+        $this->load->view('templates/header.php');
+        $this->load->view('templates/navbar.php');
+        $this->load->view('table_view', $data);
+        $this->load->view('templates/footer.php');
+
+    }
 
     public function ip_edit($id)
     {
@@ -152,7 +182,7 @@ class Table extends MY_Controller {
             exit();
         }
     }
-    public function ips_page()
+    public function ips_page($tableswitch)
     {
 
         // Datatables Variables
@@ -194,7 +224,7 @@ class Table extends MY_Controller {
         }
 
 
-        $ips = $this->table_ajax->get_ips($this->sql, 'ip');
+        $ips = $this->table_ajax->get_ips($tableswitch);
 
         $data = array();
 
@@ -221,7 +251,7 @@ class Table extends MY_Controller {
         $output = array(
             "draw" => $draw,
             "recordsTotal" => $total_ips,
-            "recordsFiltered" => $this->table_ajax->count_filtered($this->sql, 'ip'),
+            "recordsFiltered" => $this->table_ajax->count_filtered($tableswitch),
             "data" => $data
         );
 
