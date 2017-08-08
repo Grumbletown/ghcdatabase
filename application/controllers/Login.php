@@ -104,7 +104,7 @@ class Login extends CI_Controller
         {
             // validation fail
             
-            $this->load->view('logintut', $this->data);
+            $this->load->view('login_view', $this->data);
 
 
             

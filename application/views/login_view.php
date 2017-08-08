@@ -10,10 +10,20 @@
 <noscript>JavaScript ist nicht aktiviert!</noscript>
 <noscript><div id="body"></noscript>
 <script type="text/javascript">
+
 	$(document).ready(function() {
 		var sperren = <?php echo $time ?> *
 		1000;
 		var Seconds = new Date().getTime() + sperren;
+		$('#loginbtn').click(function( event ) {
+			var $target  = $(event.target);
+			// check to see if the submit was clicked
+			//    and if it is disabled, and if so,
+			//    return false
+			if( $target.is(':submit:disabled') ) {
+				return false;
+			}
+		});
 		$('#loginbtn').countdown(Seconds, {elapse: true})
 			.on('update.countdown', function (event) {
 				var $this = $(this);
@@ -22,11 +32,12 @@
 
 					$('#loginbtn').text('Login');
 					$("#loginbtn").removeClass('disabled');
-
+					$("#loginbtn").removeAttr('disabled');
 				} else {
 
 					$('#loginbtn').text(event.strftime('%H:%M:%S'));
 					$("#loginbtn").addClass('disabled');
+					$("#loginbtn").attr('disabled', 'disabled');
 					<?php
 					if(!$errormsg == ''){
 					$erromsg = "Zu viele fehlgeschlagene versuche!";
@@ -77,7 +88,7 @@ if($error){
 				<button name="cancel" type="reset" class="btn btn-danger">Cancel</button>
 			</div>
 		<?php echo form_close(); ?>
-			
+
 		<?php echo $this->session->flashdata('msg'); ?>
 		</div>
 	</div>
