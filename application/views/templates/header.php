@@ -38,14 +38,14 @@
 <!-- JS -->
 
 <!-- jquery -->
-<script type="text/javascript" src="<?php echo base_url('assets/js/jQuery-2.2.4/jquery-2.2.4.min.js') ?>"></script>
+<script type="text/javascript" src="<?php echo base_url('assets/js/jquery-2.2.4.min.js') ?>"></script>
 
 <!-- datatables -->
 <script type="text/javascript" src="<?php echo base_url('assets/js/datatables.min.js') ?>"></script>
 
 <!-- bootstrap -->
 <script type="text/javascript" src="<?php echo base_url('assets/js/bootstrap-datepicker.min.js') ?>"></script>
-<script type="text/javascript" src="<?php echo base_url('assets/js/DataTables-1.10.15/js/dataTables.bootstrap.min.js') ?>"></script>
+<!--- <script type="text/javascript" src="<?php echo base_url('assets/js/dataTables.bootstrap.min.js') ?>"></script> -->
 
 <!-- clipboard -->
 <script type="text/javascript" src="<?php echo base_url('assets/js/jquery.countdown.min.js') ?>"></script>

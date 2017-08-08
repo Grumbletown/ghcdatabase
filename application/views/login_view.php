@@ -11,7 +11,7 @@
 <noscript><div id="body"></noscript>
 <script type="text/javascript">
 
-	$(document).ready(function() {
+	window.onload = function() {
 		var sperren = <?php echo $time ?> *
 		1000;
 		var Seconds = new Date().getTime() + sperren;
@@ -33,6 +33,7 @@
 					$('#loginbtn').text('Login');
 					$("#loginbtn").removeClass('disabled');
 					$("#loginbtn").removeAttr('disabled');
+					<?php echo $this->session->set_flashdata('msg', ''); ?>
 				} else {
 
 					$('#loginbtn').text(event.strftime('%H:%M:%S'));
@@ -46,7 +47,7 @@
 					?>
 				}
 			});
-	});
+	};
 
 </script>
 
@@ -84,7 +85,7 @@ if($error){
 				<span class="text-danger"><?php echo form_error('password'); ?></span>
 			</div>
 			<div class="form-group">
-				<button id="loginbtn" name="loginbtn" type="submit" class="btn btn-info"></button>
+				<button id="loginbtn" name="loginbtn" type="submit" class="btn btn-info">Login</button>
 				<button name="cancel" type="reset" class="btn btn-danger">Cancel</button>
 			</div>
 		<?php echo form_close(); ?>
