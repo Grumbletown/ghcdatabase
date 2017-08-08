@@ -2,8 +2,8 @@
     //set active class
 </script>
 <!-- files -->
-<link href="css/botCI.css" type="text/css" rel="stylesheet" />
-<script src="js/botCI.js" type="text/javascript"></script>
+<link href="../../assets/css/botCI.css" type="text/css" rel="stylesheet" />
+<script src="../../assets/js/botCI.js" type="text/javascript"></script>
 
     <!-- body html -->
     <div class="container">
