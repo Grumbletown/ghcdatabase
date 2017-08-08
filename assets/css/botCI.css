@@ -1,0 +1,138 @@
+#mirFaelltGeradeKeinNameEin {
+    margin-top: 50px;
+}
+
+#commitChanges {
+    float: right;
+}
+
+.glyphicon {
+    margin-right: 10px;
+}
+
+#dropdownCaret {
+    margin-left: 5px;
+}
+
+.jumbotronHeaderElement {
+    display: inline-block;
+}
+
+.jumbotron p {
+    font-size: 15px;
+}
+
+.inputFeedbackDanger,
+.dangerInput,
+.varIdentifierFeedback,
+.container .commandAnswer:not([disabled]).dangerInput {
+    color: #d9534f;
+}
+
+.varIdentifierFeedback {
+    margin-top: .25rem;
+}
+
+.input-group[class*="col-"] {
+    float: left;
+}
+
+textarea {
+    resize: none;
+}
+
+.transparentText {
+    background-color: transparent;
+}
+
+.availableVariable:hover,
+.availableVariable:focus {
+    color: #0ce3ac;
+    text-decoration: none;
+    background-color: transparent;
+}
+
+button.expand.open,
+button.expand.open:active {
+    background-image: url('../images/desc.gif');
+    background-repeat: no-repeat;
+    background-position: center right;
+}
+
+button.expand.closed,
+button.expand.closed:active {
+    background-image: url('../images/asc.gif');
+    background-repeat: no-repeat;
+    background-position: center right;
+}
+
+button.expand.open.unchanged,
+button.expand.open.unchanged:active {
+    background-image: url('../images/desc.gif');
+    background-repeat: no-repeat;
+    background-position: center right;
+}
+
+button.expand.closed.unchanged,
+button.expand.closed.unchanged:active {
+    background-image: url('../images/asc.gif');
+    background-repeat: no-repeat;
+    background-position: center right;
+}
+
+button.expand.open.changed,
+button.expand.open.changed:active {
+    background-image: url('../images/desc_green.gif');
+    background-repeat: no-repeat;
+    background-position: center right;
+}
+
+button.expand.closed.changed,
+button.expand.closed.changed:active {
+    background-image: url('../images/asc_green.gif');
+    background-repeat: no-repeat;
+    background-position: center right;
+}
+
+label {
+    margin-right: 15px;
+}
+
+.commandAnswer.unchanged {
+    color: white;
+}
+
+.commandAnswer:not([disabled]) {
+    border: 1px solid black;
+    color: black;
+    background-color: #f2f2f2;
+}
+
+.commandAnswer:disabled {
+    cursor: default;
+    color: white;
+    background-color: #464545;
+    border: 1px solid black;
+}
+
+.commandAnswer.changed {
+    color: #0ce3ac;
+}
+
+.select2-container--default .select2-results__group {
+    color: #404040;
+}
+
+.select2-container--default .select2-results__option .select2-results__option {
+    color: #404040;
+}
+
+.select2-container--default .select2-results__option--highlighted[aria-selected] {
+    background-color: #28415b;
+    color: snow;
+}
+
+.select2-container--default .select2-results__option[aria-selected=true] {
+    background-color: #404040;
+    color: snow;
+}
