@@ -198,4 +198,15 @@ if (json_decode($json) != null)
     fclose($file);
 }
 }
+
+if (isset($_POST['botCommandJSONBackup'])) {
+$json = $_POST['botCommandJSONBackup'];
+
+if (json_decode($json) != null)
+{
+    $file = fopen('../../assets/json/botCommandsBackup.json','w+');
+    fwrite($file, $json);
+    fclose($file);
+}
+}
 ?>

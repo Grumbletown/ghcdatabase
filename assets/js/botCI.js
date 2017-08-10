@@ -422,27 +422,40 @@ function commitNewCommandButton() {
 function commitNewCommand() {
     var commandName = $('#newCommandName').val();
 
+    var botCommandObjectBackup;
+
+    $.getJSON("../json/botCommandsBackup.json", function(data) {
+        botCommandObjectBackup = data;
+    });
+
     try {
         botCommandObject[commandName] = new Object();
+        botCommandObjectBackup[commandName] = new Object();
 
         var now = new Date();
 
         $(".newAnswerName").each(function(i, e) {
             var answerName = $(e).val();
             var answerDefaultOutput = $(e).closest(".row").next("div").children("div").eq(0).children("textarea").val();
-            var lastChangedText = "Last Changed at " + getCurUTCTime(now) + " on " + getCurUTCDate(now) + " (UTC) by " + username;
+
             botCommandObject[commandName][answerName] = new Object();
             botCommandObject[commandName][answerName]["answer"] = answerDefaultOutput;
             botCommandObject[commandName][answerName]["variables"] = new Object();
-            botCommandObject[commandName][answerName]["lastChangedAnswer"] = lastChangedText;
+            botCommandObject[commandName][answerName]["lastChangedAnswer"] = "Default Output";
+
+            botCommandObjectBackup[commandName][answerName] = new Object();
+            botCommandObjectBackup[commandName][answerName]["answer"] = answerDefaultOutput;
+            botCommandObjectBackup[commandName][answerName]["variables"] = new Object();
+            botCommandObjectBackup[commandName][answerName]["lastChangedAnswer"] = "Default Output";
 
             $(".availableVariable", $(e).closest(".row").next("div").children("div").eq(1)).each(function(i, e) {
                 var variableName = e.innerHTML;
                 var variableIdentifier = $(e).attr("data-original-title");
-                botCommandObject[commandName][answerName]["variables"][variableName] = variableIdentifier;
 
-            })
-        })
+                botCommandObject[commandName][answerName]["variables"][variableName] = variableIdentifier;
+                botCommandObjectBackup[commandName][answerName]["variables"][variableName] = variableIdentifier;
+            });
+        });
 
         document.getElementById("messageContainer").innerHTML =
             '<div class="alert alert-success alert-dismissable fade in">' +
@@ -462,6 +475,7 @@ function commitNewCommand() {
     $('#newCommandNameModal').modal('hide');
 
     $.post("botCI.php", { botCommandJSON: JSON.stringify(botCommandObject) });
+    $.post("botCI.php", { botCommandJSONBackup: JSON.stringify(botCommandObjectBackup) });
 
     document.getElementById("jumbotronContainer").innerHTML = "";
     jumbotronIsOpen = false;
@@ -1178,263 +1192,9 @@ function checkVariableIdentifier(element) {
  * Resets all bot commands and resorts the botCI's content
  */
 function resetBotCommands() {
-    botCommandObject = {
-        addIP: {
-            field_inputIp: {
-                answer: "Bitte nenne die IP: ",
-                lastChangedAnswer: "",
-                variables: {}
-            },
-            field_inputName: {
-                answer: "Bitte nenne den Namen: ",
-                lastChangedAnswer: "",
-                variables: {}
-            },
-            field_inputMinerCount: {
-                answer: "Bitte nenne die Anzahl der Miner: ",
-                lastChangedAnswer: "",
-                variables: {}
-            },
-            field_inputReputation: {
-                answer: "Bitte nenne jetzt die Rep: ",
-                lastChangedAnswer: "",
-                variables: {}
-            },
-            field_inputGuildTag: {
-                answer: "Schreibe nun den Guild-Tag. Wenn er in keiner Gilde ist, schreibe n.",
-                lastChangedAnswer: "",
-                variables: {}
-            },
-            success_addedIp: {
-                answer: "$[user] hat eine IP zur Datenbank hinzugefügt.",
-                lastChangedAnswer: "",
-                variables: {
-                    user: "user"
-                }
-            },
-            error_noParameter: {
-                answer: "Der Parameter $[param] hat kein Argument erhalten!",
-                lastChangedAnswer: "",
-                variables: {
-                    param: "parameter"
-                }
-            },
-            error_ipAlreadyExsists: {
-                answer: "Diese IP existiert bereits in der Datenbank. Updates können momentan noch nicht mit dem Bot durchgeführt werden. Bitte schreibe einem Kontributor, er wird sich dann darum kümmern.",
-                lastChangedAnswer: "",
-                variables: {}
-            },
-            error_exception: {
-                answer: "Es ist ein Fehler aufgetreten:\n $[err]",
-                lastChangedAnswer: "",
-                variables: {
-                    err: "exception"
-                }
-            },
-            confirm_correctDataQuestions: {
-                answer: "Stimmen diese Daten? IP: $[IP]\nName: $[name]\nMiner: $[miner]\nReputation: $[rep]\nGilde: $[guild]\nSchreibe 'Ja' zum bestätigen.",
-                lastChangedAnswer: "",
-                variables: {
-                    IP: "ip",
-                    name: "name",
-                    miner: "miner",
-                    rep: "reputation",
-                    guild: "gilde"
-                }
-            },
-            confirm_correctDataParamsAnswer: {
-                answer: "Stimmen diese Daten? IP: $[IP]\nName: $[name]\nMiner: $[miner]\nReputation: $[rep]\nGilde: $[guild]\nBeschreibung: $[desc]\nSchreibe 'Ja' zum bestätigen.",
-                lastChangedAnswer: "",
-                variables: {
-                    IP: "ip",
-                    name: "name",
-                    miner: "miner",
-                    rep: "reputation",
-                    guild: "gilde",
-                    desc: "beschreibung"
-                }
-            }
-        },
-        register: {
-            success_addedAccount: {
-                answer: "Dein Account wurde erfolgreich erstellt.\nNutzername: $[name]\nPasswort: $[password]\nDein Account ist nun 30 Tage gültig. Danach musst du mit `!refresh` deinen Account reaktivieren.\nViel Spaß mit der IP-Datenbank unter $[url]",
-                lastChangedAnswer: "",
-                variables: {
-                    name: "username",
-                    password: "password",
-                    url: "url"
-                }
-            },
-            error_multipleWords: {
-                answer: "Bei Nutzernamen in der Datenbank ist nur ein Wort erlaubt (keine Leerzeichen).\nDein Account wird nun mit dem ersten Wort deines Nutzernamens erstellt",
-                lastChangedAnswer: "",
-                variables: {}
-            },
-            error_unexpectedChars: {
-                answer: "Im Nutzernamen sind nur A-Z, a-z, 0-9 und _ erlaubt!",
-                lastChangedAnswer: "",
-                variables: {}
-            },
-            error_noUsername: {
-                answer: "Bitte gebe einen Nutzernamen f\u00FCr die Datenbank an!",
-                lastChangedAnswer: "",
-                variables: {}
-            },
-            error_accountAlreadyExists: {
-                answer: "Du hast bereits einen Account in der Datenbank. Reaktivieren kannst du diesen mit `!refresh`",
-                lastChangedAnswer: "",
-                variables: {}
-            },
-            error_usernameIsAlreadyTaken: {
-                answer: "Der Nutzername $[name] ist bereits vergeben! Bitte wähle einen anderen Nutzernamen!",
-                lastChangedAnswer: "",
-                variables: {
-                    name: "username"
-                }
-            }
-        },
-        stats_land: {
-            field_averageHC: {
-                answer: "Durchschnittliche HC",
-                lastChangedAnswer: "",
-                variables: {}
-            },
-            field_totalHC: {
-                answer: "HC Insgesamt",
-                lastChangedAnswer: "",
-                variables: {}
-            },
-            field_stolenMinersCount: {
-                answer: "Gestohlene Miner",
-                lastChangedAnswer: "",
-                variables: {}
-            },
-            field_hackedPasswordsCount: {
-                answer: "Erfolgreich geknackte Passwörter",
-                lastChangedAnswer: "",
-                variables: {}
-            },
-            field_blacklistEntriesCount: {
-                answer: "Blacklist-Einträge",
-                lastChangedAnswer: "",
-                variables: {}
-            },
-            field_completedMissions: {
-                answer: "Abgeschlossene Missionen",
-                lastChangedAnswer: "",
-                variables: {}
-            },
-            error_unexpectedCountry: {
-                answer: "Land wurde nicht gefunden!",
-                lastChangedAnswer: "",
-                variables: {}
-            }
-        },
-        regeln: {
-            success: {
-                answer: "$[user] lies dir bitte die §[regeln] genau durch!",
-                lastChangedAnswer: "",
-                variables: {
-                    user: "user",
-                    regeln: "rules"
-                }
-            }
-        },
-        help: {
-            header_ghcBot: {
-                answer: "**GHC Bot**\nDies ist der offizielle Bot der German Hackers Community (GHC). Er verfügt über diese Befehle:",
-                lastChangedAnswer: "",
-                variables: {}
-            },
-            userCommands: {
-                answer: "**!stats**: Zeigt live-Statistiken des Spiels an. Sie werden täglich zurückgesetzt.\n**!stats *Land***: Zeit live-Statistiken eines bestimmten Landes an\nMöglich ist entweder der Landescode (z.B. 'DE' für Deutschland, 'ES' für Spanien)\noder der Englische Name des Landes (z.B. Germany, Espain)\n**!topguilds**: Zeigt die besten 10 Gilden an\n**!topcountry**: Zeigt die besten 10 Länder an\n**!stats DB** Zeigt aktuelle Statistiken der IP-Datenbank an",
-                lastChangedAnswer: "",
-                variables: {}
-            },
-            verifiedCommands: {
-                answer: "**Nachfolgende Befehle funktionieren ausschließlich im Channel #hackers-ip:**\n**!addIP**: Fügt eine IP zur IP-Datenbank hinzu. Für weitere Informationen schreibe **!help addIP**\n**!register *[Nutzername im Spiel]***: Erstellt einen neuen, für 30 Tage gültigen Account in der GHC-IP-Datenbank\n**!refresh**: Reaktiviert deinen Account in der GHC-IP-Datenbank wieder, wenn er abgelaufen ist.",
-                lastChangedAnswer: "",
-                variables: {}
-            },
-            modCommands: {
-                answer: "*Nachfolgende Befehle stehen nur Teammitgliedern zur Verfügung**\n**!tut *[@User]*** oder **!guide *[@User]***: Zeigt einem Nutzer den Link zum Tutorial\n**!regeln *[@User]*** oder **!rules *[@User]***: Sagt einem Nutzer, er solle sich die Regeln durchlesen\n**!gilde *[@User]*** oder **!guild *[@User]***: Zeit einem Nutzer den Link zum Giden-Tutorial im Forum\n**!taktik *[@User]***: Zeigt einem Nutzer den Link zum Taktik-Tutorial von Doc\n**!en *[@User]*** oder **!de *[@User]***: Sagt englischsprachigen Nutzern, sie sollen den englischen Discord verwenden\n**!help + *[@User]***:: Sendet einem Nutzer diesen Text",
-                lastChangedAnswer: "",
-                variables: {}
-            },
-            verifiedMessage: {
-                answer: "Der Bot kümmert sich auch um die Vergabe des Rangs Verified.\nSolltest du noch nicht den Verified-Rang erreicht haben, lese dir bitte die Regeln nochmal genau durch.\nNach Erhalt dieses Ranges hast du unter andern Zugriff auf unsere IP-Datenbank\n**Dieser Rang wird nicht vom GHC-Team vergeben! Nachrichten an die Mods sind wirkungslos!**",
-                lastChangedAnswer: "",
-                variables: {}
-            },
-            addIPParams: {
-                answer: "**!addIP IP** Als erstes muss eine *gültige* IP angegeben werden.\nDarauf können einige dieser Parameter folgen:\n**-n** Name des Hackers (nur ein Wort)\n**-m** Anzahl der Miner\n**-r** Reputation des Hackers\n**-g** K\u00FCrzel der Gilde des Hackers. (immer drei oder vier Zeichen)\nAlle darauf folgenden Wörter werden automatisch der Beschreibung hinzugefügt\nWenn keine Parameter angegeben werden, werden die nötigen Informationen abgefragt.",
-                lastChangedAnswer: "",
-                variables: {}
-            }
-        },
-        refresh: {
-            success: {
-                answer: "Account wurde erfolgreich reaktiviert! Viel Spaß mit der IP-Datenbank der GCH unter $[url]",
-                lastChangedAnswer: "",
-                variables: {
-                    url: "url"
-                }
-            },
-            error_userNotFound: {
-                answer: "Es wurde kein Account gefunden, der mit deinem Discord-Account verbunden ist. Bitte registiere dich zuerst mit `!register` und deinem gewünschten Namen in der Datenbank!",
-                lastChangedAnswer: "",
-                variables: {}
-            }
-        },
-        stats_DB: {
-            title: {
-                answer: "IP-Updates",
-                lastChangedAnswer: "",
-                variables: {}
-            },
-            field_date: {
-                answer: "Datum",
-                lastChangedAnswer: "",
-                variables: {}
-            },
-            field_updated: {
-                answer: "Updated",
-                lastChangedAnswer: "",
-                variables: {}
-            }
-        },
-        topCountry: {
-            title: {
-                answer: "Top 10 Länder nach HC pro Spieler",
-                lastChangedAnswer: "",
-                variables: {}
-            }
-        },
-        topGuilds: {
-            title: {
-                answer: "Top 10 Gilden:",
-                lastChangedAnswer: "",
-                variables: {}
-            }
-        },
-        verify: {
-            success: {
-                answer: "$[user] ist nun verifiziert!",
-                lastChangedAnswer: "",
-                variables: {
-                    user: "user"
-                }
-            },
-            error: {
-                answer: "$[user] ist bereits verifiziert",
-                lastChangedAnswer: "",
-                variables: {
-                    user: "user"
-                }
-            }
-        }
-    }
-
+    $.getJSON("../json/botCommandsBackup.json", function(data) {
+        botCommandObject = data;
+    });
 
     $.post("botCI.php", { botCommandJSON: JSON.stringify(botCommandObject) });
 

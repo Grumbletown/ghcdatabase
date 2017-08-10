@@ -1,0 +1,242 @@
+{
+    "addIP": {
+        "field_inputIp": {
+            "answer": "Bitte nenne die IP: ",
+            "lastChangedAnswer": "Default Output",
+            "variables": {}
+        },
+        "field_inputName": {
+            "answer": "Bitte nenne den Namen: ",
+            "lastChangedAnswer": "Default Output",
+            "variables": {}
+        },
+        "field_inputMinerCount": {
+            "answer": "Bitte nenne die Anzahl der Miner: ",
+            "lastChangedAnswer": "Default Output",
+            "variables": {}
+        },
+        "field_inputReputation": {
+            "answer": "Bitte nenne jetzt die Rep: ",
+            "lastChangedAnswer": "Default Output",
+            "variables": {}
+        },
+        "field_inputGuildTag": {
+            "answer": "Schreibe nun den Guild-Tag. Wenn er in keiner Gilde ist, schreibe n.",
+            "lastChangedAnswer": "Default Output",
+            "variables": {}
+        },
+        "success_addedIp": {
+            "answer": "$[user] hat eine IP zur Datenbank hinzugefügt.",
+            "lastChangedAnswer": "Default Output",
+            "variables": { "user": "user" }
+        },
+        "error_noParameter": {
+            "answer": "Der Parameter $[param] hat kein Argument erhalten!",
+            "lastChangedAnswer": "Default Output",
+            "variables": { "param": "parameter" }
+        },
+        "error_ipAlreadyExsists": {
+            "answer": "Diese IP existiert bereits in der Datenbank. Updates können momentan noch nicht mit dem Bot durchgeführt werden. Bitte schreibe einem Kontributor, er wird sich dann darum kümmern.",
+            "lastChangedAnswer": "Default Output",
+            "variables": {}
+        },
+        "error_exception": {
+            "answer": "Es ist ein Fehler aufgetreten:\n $[err]",
+            "lastChangedAnswer": "Default Output",
+            "variables": { "err": "exception" }
+        },
+        "confirm_correctDataQuestions": {
+            "answer": "Stimmen diese Daten? IP: $[IP]\nName: $[name]\nMiner: $[miner]\nReputation: $[rep]\nGilde: $[guild]\nSchreibe 'Ja' zum bestätigen.",
+            "lastChangedAnswer": "Default Output",
+            "variables": {
+                "IP": "ip",
+                "name": "name",
+                "miner": "miner",
+                "rep": "reputation",
+                "guild": "gilde"
+            }
+        },
+        "confirm_correctDataParamsAnswer": {
+            "answer": "Stimmen diese Daten? IP: $[IP]\nName: $[name]\nMiner: $[miner]\nReputation: $[rep]\nGilde: $[guild]\nBeschreibung: $[desc]\nSchreibe 'Ja' zum bestätigen.",
+            "lastChangedAnswer": "Default Output",
+            "variables": {
+                "IP": "ip",
+                "name": "name",
+                "miner": "miner",
+                "rep": "reputation",
+                "guild": "gilde",
+                "desc": "beschreibung"
+            }
+        }
+    },
+    "register": {
+        "success_addedAccount": {
+            "answer": "Dein Account wurde erfolgreich erstellt.\nNutzername: $[name]\nPasswort: $[password]\nDein Account ist nun 30 Tage gültig. Danach musst du mit `!refresh` deinen Account reaktivieren.\nViel Spaß mit der IP-Datenbank unter $[url]",
+            "lastChangedAnswer": "Default Output",
+            "variables": {
+                "name": "username",
+                "password": "password",
+                "url": "url"
+            }
+        },
+        "error_multipleWords": {
+            "answer": "Bei Nutzernamen in der Datenbank ist nur ein Wort erlaubt (keine Leerzeichen).\nDein Account wird nun mit dem ersten Wort deines Nutzernamens erstellt",
+            "lastChangedAnswer": "Default Output",
+            "variables": {}
+        },
+        "error_unexpectedChars": {
+            "answer": "Im Nutzernamen sind nur A-Z, a-z, 0-9 und _ erlaubt!",
+            "lastChangedAnswer": "Default Output",
+            "variables": {}
+        },
+        "error_noUsername": {
+            "answer": "Bitte gebe einen Nutzernamen für die Datenbank an!",
+            "lastChangedAnswer": "Default Output",
+            "variables": {}
+        },
+        "error_accountAlreadyExists": {
+            "answer": "Du hast bereits einen Account in der Datenbank. Reaktivieren kannst du diesen mit `!refresh`",
+            "lastChangedAnswer": "Default Output",
+            "variables": {}
+        },
+        "error_usernameIsAlreadyTaken": {
+            "answer": "Der Nutzername $[name] ist bereits vergeben! Bitte wähle einen anderen Nutzernamen!",
+            "lastChangedAnswer": "Default Output",
+            "variables": { "name": "username" }
+        }
+    },
+    "stats_land": {
+        "field_averageHC": {
+            "answer": "Durchschnittliche HC",
+            "lastChangedAnswer": "Default Output",
+            "variables": {}
+        },
+        "field_totalHC": {
+            "answer": "HC Insgesamt",
+            "lastChangedAnswer": "Default Output",
+            "variables": {}
+        },
+        "field_stolenMinersCount": {
+            "answer": "Gestohlene Miner",
+            "lastChangedAnswer": "Default Output",
+            "variables": {}
+        },
+        "field_hackedPasswordsCount": {
+            "answer": "Erfolgreich geknackte Passwörter",
+            "lastChangedAnswer": "Default Output",
+            "variables": {}
+        },
+        "field_blacklistEntriesCount": {
+            "answer": "Blacklist-Einträge",
+            "lastChangedAnswer": "Default Output",
+            "variables": {}
+        },
+        "field_completedMissions": {
+            "answer": "Abgeschlossene Missionen",
+            "lastChangedAnswer": "Default Output",
+            "variables": {}
+        },
+        "error_unexpectedCountry": {
+            "answer": "Land wurde nicht gefunden!",
+            "lastChangedAnswer": "Default Output",
+            "variables": {}
+        }
+    },
+    "regeln": {
+        "success": {
+            "answer": "$[user] lies dir bitte die §[regeln] genau durch!",
+            "lastChangedAnswer": "Default Output",
+            "variables": {
+                "user": "user",
+                "regeln": "rules"
+            }
+        }
+    },
+    "help": {
+        "header_ghcBot": {
+            "answer": "**GHC Bot**\nDies ist der offizielle Bot der German Hackers Community (GHC). Er verfügt über diese Befehle:",
+            "lastChangedAnswer": "Default Output",
+            "variables": {}
+        },
+        "userCommands": {
+            "answer": "**!stats**: Zeigt live-Statistiken des Spiels an. Sie werden täglich zurückgesetzt.\n**!stats *Land***: Zeit live-Statistiken eines bestimmten Landes an\nMöglich ist entweder der Landescode (z.B. 'DE' für Deutschland, 'ES' für Spanien)\noder der Englische Name des Landes (z.B. Germany, Espain)\n**!topguilds**: Zeigt die besten 10 Gilden an\n**!topcountry**: Zeigt die besten 10 Länder an\n**!stats DB** Zeigt aktuelle Statistiken der IP-Datenbank an",
+            "lastChangedAnswer": "Default Output",
+            "variables": {}
+        },
+        "verifiedCommands": {
+            "answer": "**Nachfolgende Befehle funktionieren ausschließlich im Channel #hackers-ip:**\n**!addIP**: Fügt eine IP zur IP-Datenbank hinzu. Für weitere Informationen schreibe **!help addIP**\n**!register *[Nutzername im Spiel]***: Erstellt einen neuen, für 30 Tage gültigen Account in der GHC-IP-Datenbank\n**!refresh**: Reaktiviert deinen Account in der GHC-IP-Datenbank wieder, wenn er abgelaufen ist.",
+            "lastChangedAnswer": "Default Output",
+            "variables": {}
+        },
+        "modCommands": {
+            "answer": "*Nachfolgende Befehle stehen nur Teammitgliedern zur Verfügung**\n**!tut *[@User]*** oder **!guide *[@User]***: Zeigt einem Nutzer den Link zum Tutorial\n**!regeln *[@User]*** oder **!rules *[@User]***: Sagt einem Nutzer, er solle sich die Regeln durchlesen\n**!gilde *[@User]*** oder **!guild *[@User]***: Zeit einem Nutzer den Link zum Giden-Tutorial im Forum\n**!taktik *[@User]***: Zeigt einem Nutzer den Link zum Taktik-Tutorial von Doc\n**!en *[@User]*** oder **!de *[@User]***: Sagt englischsprachigen Nutzern, sie sollen den englischen Discord verwenden\n**!help + *[@User]***:: Sendet einem Nutzer diesen Text",
+            "lastChangedAnswer": "Default Output",
+            "variables": {}
+        },
+        "verifiedMessage": {
+            "answer": "Der Bot kümmert sich auch um die Vergabe des Rangs Verified.\nSolltest du noch nicht den Verified-Rang erreicht haben, lese dir bitte die Regeln nochmal genau durch.\nNach Erhalt dieses Ranges hast du unter andern Zugriff auf unsere IP-Datenbank\n**Dieser Rang wird nicht vom GHC-Team vergeben! Nachrichten an die Mods sind wirkungslos!**",
+            "lastChangedAnswer": "Default Output",
+            "variables": {}
+        },
+        "addIPParams": {
+            "answer": "**!addIP IP** Als erstes muss eine *gültige* IP angegeben werden.\nDarauf können einige dieser Parameter folgen:\n**-n** Name des Hackers (nur ein Wort)\n**-m** Anzahl der Miner\n**-r** Reputation des Hackers\n**-g** Kürzel der Gilde des Hackers. (immer drei oder vier Zeichen)\nAlle darauf folgenden Wörter werden automatisch der Beschreibung hinzugefügt\nWenn keine Parameter angegeben werden, werden die nötigen Informationen abgefragt.",
+            "lastChangedAnswer": "Default Output",
+            "variables": {}
+        }
+    },
+    "refresh": {
+        "success": {
+            "answer": "Account wurde erfolgreich reaktiviert! Viel Spaß mit der IP-Datenbank der GCH unter $[url]",
+            "lastChangedAnswer": "Default Output",
+            "variables": { "url": "url" }
+        },
+        "error_userNotFound": {
+            "answer": "Es wurde kein Account gefunden, der mit deinem Discord-Account verbunden ist. Bitte registiere dich zuerst mit `!register` und deinem gewünschten Namen in der Datenbank!",
+            "lastChangedAnswer": "Default Output",
+            "variables": {}
+        }
+    },
+    "stats_DB": {
+        "title": {
+            "answer": "IP-Updates",
+            "lastChangedAnswer": "Default Output",
+            "variables": {}
+        },
+        "field_date": {
+            "answer": "Datum",
+            "lastChangedAnswer": "Default Output",
+            "variables": {}
+        },
+        "field_updated": {
+            "answer": "Updated",
+            "lastChangedAnswer": "Default Output",
+            "variables": {}
+        }
+    },
+    "topCountry": {
+        "title": {
+            "answer": "Top 10 Länder nach HC pro Spieler",
+            "lastChangedAnswer": "Default Output",
+            "variables": {}
+        }
+    },
+    "topGuilds": {
+        "title": {
+            "answer": "Top 10 Gilden:",
+            "lastChangedAnswer": "Default Output",
+            "variables": {}
+        }
+    },
+    "verify": {
+        "success": {
+            "answer": "$[user] ist nun verifiziert!",
+            "lastChangedAnswer": "Default Output",
+            "variables": { "user": "user" }
+        },
+        "error": {
+            "answer": "$[user] ist bereits verifiziert",
+            "lastChangedAnswer": "Default Output",
+            "variables": { "user": "user" }
+        }
+    }
+}
