@@ -1,9 +1,33 @@
-<script>
-    //set active class
+<script type="text/javascript">
+
+$("nav .active").each(function(i, e) {
+    e.removeClass("active");
+})
+
+var userDropdown = $("#userDropdown");
+var botCINav = $("#navBotCI");
+
+userDropdown.addClass("active");
+botCINav.addClass("active");
+
+// string
+// contains the path to the botCommands folder (NOT TO ANY JSON FILES!)
+var botCommandsFolderURL = "<?php echo base_url('assets/json/botCommands/') ?>";
+// string
+// contains the path to the views folder
+var botCIPHPURL = "<?php echo base_url('application/views/botCI.php') ?>";
+// string
+// contains the current language of the website
+var language = "de";
+// string
+// stores the username of the client (get's it in document.ready through php from the current session)
+var username = "<?php echo $_SESSION['uname'];?>";
+
 </script>
+
 <!-- files -->
-<link href="../../assets/css/botCI.css" type="text/css" rel="stylesheet" />
-<script src="../../assets/js/botCI.js" type="text/javascript"></script>
+<link href="<?php echo base_url('assets/css/botCI.css') ?>" type="text/css" rel="stylesheet" />
+<script src="<?php echo base_url('assets/js/botCI.js') ?>" type="text/javascript"></script>
 
     <!-- body html -->
     <div class="container">
@@ -189,24 +213,24 @@
 
 <?php 
 if (isset($_POST['botCommandJSON'])) {
-$json = $_POST['botCommandJSON'];
+    $json = $_POST['botCommandJSON'];
 
-if (json_decode($json) != null)
-{
-    $file = fopen('../../assets/json/botCommands.json','w+');
-    fwrite($file, $json);
-    fclose($file);
-}
+    if (json_decode($json) != null)
+    {
+        $file = fopen(base_url('assets/json/botCommands/de/botCommands.json'),'w+');
+        fwrite($file, $json);
+        fclose($file);
+    }
 }
 
 if (isset($_POST['botCommandJSONBackup'])) {
-$json = $_POST['botCommandJSONBackup'];
+    $json = $_POST['botCommandJSONBackup'];
 
-if (json_decode($json) != null)
-{
-    $file = fopen('../../assets/json/botCommandsBackup.json','w+');
-    fwrite($file, $json);
-    fclose($file);
-}
+    if (json_decode($json) != null)
+    {
+        $file = fopen(base_url('assets/json/botCommands/de/botCommandsBackup.json'),'w+');
+        fwrite($file, $json);
+        fclose($file);
+    }
 }
 ?>

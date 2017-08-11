@@ -8,6 +8,8 @@ class BotCI extends MY_Controller {
     {
         parent::__construct();
 
+        $this->load->helper('url');
+
         if(!$_SESSION['Role'] === "Admin"){
             redirect('Home');
         }

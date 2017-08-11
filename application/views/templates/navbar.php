@@ -206,7 +206,7 @@ else
     
     
       
-      <li class='dropdown'>
+      <li class='dropdown' id="userDropdown">
       <a href='#' class='dropdown-toggle navUser' data-toggle='dropdown' role='button' aria-haspopup='true' aria-expanded='false'><i class='fa fa-user-circle-o fa-lg' aria-hidden='true'></i>&nbsp;<?php  echo $this->session->userdata('uname'); ?>&nbsp;<span class='caret'></span></a>
       <ul class='dropdown-menu' role='menu'>
           <!--<li><a href='usersettings.php'><i class='fa fa-bar-chart fa-fw' aria-hidden='true'></i>&nbsp; Stats</a></li>

@@ -12,6 +12,9 @@
 // Object 
 // the object that stores the commands
 var botCommandObject;
+// Object
+// the object that stores the backup commands
+var botCommandObjectBackup;
 // string 
 // the currently open command name (formatted to use it in botCommandObject like addIP)
 var openCommand;
@@ -30,9 +33,6 @@ var jumbotronIsOpen = false;
 // bool
 // is the new command modal open
 var newCommandIsOpen = false;
-// string
-// stores the username of the client (get's it in document.ready through php from the current session)
-var username = "unknown";
 // bool
 // does the open command that is in edit mode have any errors
 var editModeCommandErrors = false;
@@ -48,19 +48,6 @@ var editModeCommandNew = false;
  * 2. Fill the botCommandObject with the data from the botCommands.json file and fills the <select> element 
  */
 $(document).ready(function() {
-    try {
-        var username = "<?php echo $_SESSION['uname'];?>";
-    } catch (e) {
-        document.getElementById("messageContainer").innerHTML =
-            '<div class="alert alert-danger alert-dismissable fade in">' +
-            '<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>' +
-            '<strong>Error! Please contact the coding stuff on the GHC Discord server and send him this:</strong>' +
-            '<p class="mb-0">Exception:' +
-            e +
-            "Gettings username: " + username + '</p>' +
-            '</div>';
-    }
-
     var select = $("#searchForCommandSelect").select2({
         placeholder: 'Select a command',
     }).on("change", function(event, change = true) { //'onChange' Event Listener of the <select> element.
@@ -99,10 +86,14 @@ $(document).ready(function() {
         $('.modal:visible').length && $(document.body).addClass('modal-open');
     });
 
-    $.getJSON("../json/botCommands.json", function(data) {
+    $.getJSON(botCommandsFolderURL + language + "/botCommands.json").then(function(data) {
         botCommandObject = data;
-
         fillSelect();
+    });
+
+    $.getJSON(botCommandsFolderURL + language + "/botCommandsBackup.json").then(function(data) {
+        botCommandObjectBackup = data;
+        console.log(botCommandObjectBackup);
     });
 });
 
@@ -422,12 +413,6 @@ function commitNewCommandButton() {
 function commitNewCommand() {
     var commandName = $('#newCommandName').val();
 
-    var botCommandObjectBackup;
-
-    $.getJSON("../json/botCommandsBackup.json", function(data) {
-        botCommandObjectBackup = data;
-    });
-
     try {
         botCommandObject[commandName] = new Object();
         botCommandObjectBackup[commandName] = new Object();
@@ -467,15 +452,16 @@ function commitNewCommand() {
             '<div class="alert alert-danger alert-dismissable fade in">' +
             '<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>' +
             '<strong>Error! Please contact the coding stuff on the GHC Discord server and send him this:</strong>' +
-            '<p class="mb-0">Exception:' +
-            e +
-            "Adding bot command: " + commandName + '</p>' +
+            '<p class="mb-0">Exception: ' + e + " | Adding bot command: " + commandName + '</p>' +
             '</div>';
     }
     $('#newCommandNameModal').modal('hide');
 
-    $.post("botCI.php", { botCommandJSON: JSON.stringify(botCommandObject) });
-    $.post("botCI.php", { botCommandJSONBackup: JSON.stringify(botCommandObjectBackup) });
+    console.log("Backup:");
+    console.log(botCommandObjectBackup);
+
+    $.post(botCIPHPURL, { botCommandJSON: JSON.stringify(botCommandObject) });
+    $.post(botCIPHPURL, { botCommandJSONBackup: JSON.stringify(botCommandObjectBackup) });
 
     document.getElementById("jumbotronContainer").innerHTML = "";
     jumbotronIsOpen = false;
@@ -700,7 +686,7 @@ function changeBotCommand() {
             }
 
             // convert data structure to JSON and post
-            $.post("botCI.php", { botCommandJSON: JSON.stringify(botCommandObject) });
+            $.post(botCIPHPURL, { botCommandJSON: JSON.stringify(botCommandObject) });
 
             document.getElementById("jumbotronContainer").innerHTML = "";
             jumbotronIsOpen = false;
@@ -788,7 +774,7 @@ function changeBotCommand() {
                 '</div>';
         }
 
-        $.post("botCI.php", { botCommandJSON: JSON.stringify(botCommandObject) });
+        $.post(botCIPHPURL, { botCommandJSON: JSON.stringify(botCommandObject) });
 
         document.getElementById("jumbotronContainer").innerHTML = "";
         jumbotronIsOpen = false;
@@ -873,7 +859,7 @@ function deleteCommand() {
 
     delete botCommandObject[openCommand];
 
-    $.post("botCI.php", { botCommandJSON: JSON.stringify(botCommandObject) });
+    $.post(botCIPHPURL, { botCommandJSON: JSON.stringify(botCommandObject) });
 
     document.getElementById("jumbotronContainer").innerHTML = "";
     jumbotronIsOpen = false;
@@ -1192,24 +1178,28 @@ function checkVariableIdentifier(element) {
  * Resets all bot commands and resorts the botCI's content
  */
 function resetBotCommands() {
-    $.getJSON("../json/botCommandsBackup.json", function(data) {
+    $.getJSON(botCommandsFolderURL + language + "/botCommandsBackup.json").then(function(data) {
+        console.log("Backup in json file:");
+        console.log(data);
         botCommandObject = data;
+
+        $.post(botCIPHPURL, { botCommandJSON: JSON.stringify(botCommandObject) });
+        console.log("Postet botCommands.json");
+        console.log(botCommandObject);
+
+        document.getElementById("searchForCommandSelect").innerHTML = "";
+        document.getElementById("jumbotronContainer").innerHTML = "";
+
+        jumbotronIsOpen = false;
+
+        fillSelect();
+
+        $('#confirmResetModal').modal('hide');
+
+        document.getElementById("messageContainer").innerHTML =
+            '<div class="alert alert-danger alert-dismissable fade in">' +
+            '<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>' +
+            '<strong>Reset bot commands!</strong>' +
+            '</div>';
     });
-
-    $.post("botCI.php", { botCommandJSON: JSON.stringify(botCommandObject) });
-
-    document.getElementById("searchForCommandSelect").innerHTML = "";
-    document.getElementById("jumbotronContainer").innerHTML = "";
-
-    jumbotronIsOpen = false;
-
-    fillSelect();
-
-    $('#confirmResetModal').modal('hide');
-
-    document.getElementById("messageContainer").innerHTML =
-        '<div class="alert alert-danger alert-dismissable fade in">' +
-        '<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>' +
-        '<strong>Reset bot commands!</strong>' +
-        '</div>';
 }
