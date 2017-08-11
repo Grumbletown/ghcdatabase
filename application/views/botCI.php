@@ -212,25 +212,38 @@ var username = "<?php echo $_SESSION['uname'];?>";
     </div>
 
 <?php 
-if (isset($_POST['botCommandJSON'])) {
-    $json = $_POST['botCommandJSON'];
 
-    if (json_decode($json) != null)
+    $botCommands = $this->input->post("botCommandJSON");
+
+    if (json_decode($botCommands) != null)
     {
-        $file = fopen(base_url('assets/json/botCommands/de/botCommands.json'),'w+');
-        fwrite($file, $json);
+        $file = fopen("../../assets/json/botCommands/de/botCommands.json",'w+');
+
+        if (!$file) {
+            echo "<p>Datei konnte nicht zum schreiben geöffnet werden.\n";
+            exit;
+        } else {
+            echo "<p>Alles super mit der Datei!\n";
+        }
+
+        fwrite($file, $botCommands);
         fclose($file);
     }
-}
 
-if (isset($_POST['botCommandJSONBackup'])) {
-    $json = $_POST['botCommandJSONBackup'];
+    $botCommandsBackup = $this->input->post("botCommandJSONBackup");
 
-    if (json_decode($json) != null)
+    if (json_decode($botCommandsBackup) != null)
     {
-        $file = fopen(base_url('assets/json/botCommands/de/botCommandsBackup.json'),'w+');
-        fwrite($file, $json);
+        $file = fopen("../../assets/json/botCommands/de/botCommandsBackup.json",'w+');
+
+        if (!$file) {
+            echo "<p>Datei konnte nicht zum schreiben geöffnet werden.\n";
+            exit;
+        } else {
+            echo "<p>Alles super mit der Datei!\n";
+        }
+
+        fwrite($file, $botCommandsBackup);
         fclose($file);
     }
-}
 ?>

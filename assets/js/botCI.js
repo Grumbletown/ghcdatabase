@@ -86,13 +86,18 @@ $(document).ready(function() {
         $('.modal:visible').length && $(document.body).addClass('modal-open');
     });
 
+    console.log(botCommandsFolderURL + language + "/botCommands.json");
+
     $.getJSON(botCommandsFolderURL + language + "/botCommands.json").then(function(data) {
         botCommandObject = data;
         fillSelect();
+        console.log("Default:")
+        console.log(data);
     });
 
     $.getJSON(botCommandsFolderURL + language + "/botCommandsBackup.json").then(function(data) {
         botCommandObjectBackup = data;
+        console.log("Backup:");
         console.log(botCommandObjectBackup);
     });
 });
