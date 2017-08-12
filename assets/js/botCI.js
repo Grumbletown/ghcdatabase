@@ -86,19 +86,13 @@ $(document).ready(function() {
         $('.modal:visible').length && $(document.body).addClass('modal-open');
     });
 
-    console.log(botCommandsFolderURL + language + "/botCommands.json");
-
     $.getJSON(botCommandsFolderURL + language + "/botCommands.json").then(function(data) {
         botCommandObject = data;
         fillSelect();
-        console.log("Default:")
-        console.log(data);
     });
 
     $.getJSON(botCommandsFolderURL + language + "/botCommandsBackup.json").then(function(data) {
         botCommandObjectBackup = data;
-        console.log("Backup:");
-        console.log(botCommandObjectBackup);
     });
 });
 
@@ -1184,13 +1178,34 @@ function checkVariableIdentifier(element) {
  */
 function resetBotCommands() {
     $.getJSON(botCommandsFolderURL + language + "/botCommandsBackup.json").then(function(data) {
-        console.log("Backup in json file:");
+        console.log("Received Backup object from json file:");
         console.log(data);
         botCommandObject = data;
+        /*
+                $.post(botCIPHPURL, function(data) {
+                    botCommandJSON: JSON.stringify(botCommandObject);
+                    console.log("POSTED!");
+                    console.log(data);
+                });
+        */
 
-        $.post(botCIPHPURL, { botCommandJSON: JSON.stringify(botCommandObject) });
-        console.log("Postet botCommands.json");
-        console.log(botCommandObject);
+        var jqxhr = $.post(botCIPHPURL, function() {
+                botCommandJSON: JSON.stringify(botCommandObject);
+                alert("success (Look inside the console for more information)");
+                console.log("Postet json string (Here in object form)");
+                console.log(botCommandObject);
+                console.log("to url:")
+                console.log(botCIPHPURL);
+            })
+            .done(function() {
+                alert("second success");
+            })
+            .fail(function() {
+                alert("error");
+            })
+            .always(function() {
+                alert("finished");
+            });
 
         document.getElementById("searchForCommandSelect").innerHTML = "";
         document.getElementById("jumbotronContainer").innerHTML = "";

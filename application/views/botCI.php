@@ -15,7 +15,7 @@ botCINav.addClass("active");
 var botCommandsFolderURL = "<?php echo base_url('assets/json/botCommands/') ?>";
 // string
 // contains the path to the views folder
-var botCIPHPURL = "<?php echo base_url('application/views/botCI.php') ?>";
+var botCIPHPURL = "<?php echo base_url('index.php/botCI'); ?>";
 // string
 // contains the current language of the website
 var language = "de";
@@ -212,6 +212,7 @@ var username = "<?php echo $_SESSION['uname'];?>";
     </div>
 
 <?php 
+    var_dump($_POST);
 
     $botCommands = $this->input->post("botCommandJSON");
 
