@@ -25,7 +25,12 @@ class BotCI extends MY_Controller {
 
     public function writeBotCommands() 
     {
-        $botCommands = $this->input->post("botCommandJSON");
+        $botCommands = $this->input->input_stream("botCommandJSON");
+
+        if ($botCommands == null) 
+        {
+            echo "<p>Null value!\n";
+        }
 
         if (json_decode($botCommands) != null)
         {
@@ -45,7 +50,12 @@ class BotCI extends MY_Controller {
 
     public function writeBotCommandsBackup() 
     {
-        $botCommandsBackup = $this->input->post("botCommandJSONBackup");
+        $botCommandsBackup = $this->input->input_stream("botCommandJSONBackup");
+
+        if ($botCommandsBackup == null) 
+        {
+            echo "<p>Null value!\n";
+        }
 
         if (json_decode($botCommandsBackup) != null)
         {
