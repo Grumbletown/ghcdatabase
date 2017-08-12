@@ -22,4 +22,44 @@ class BotCI extends MY_Controller {
         $this->load->view('botCI.php');
         $this->load->view('templates/footer.php');
 	}
+
+    public function writeBotCommands() 
+    {
+        $botCommands = $this->input->post("botCommandJSON");
+
+        if (json_decode($botCommands) != null)
+        {
+            $file = fopen("../../assets/json/botCommands/de/botCommands.json",'w+');
+
+            if (!$file) {
+                echo "<p>Datei konnte nicht zum schreiben geöffnet werden.\n";
+                exit;
+            } else {
+                echo "<p>Alles super mit der Datei!\n";
+            }
+
+            fwrite($file, $botCommands);
+            fclose($file);
+        }
+    }
+
+    public function writeBotCommandsBackup() 
+    {
+        $botCommandsBackup = $this->input->post("botCommandJSONBackup");
+
+        if (json_decode($botCommandsBackup) != null)
+        {
+            $file = fopen("../../assets/json/botCommands/de/botCommandsBackup.json",'w+');
+
+            if (!$file) {
+                echo "<p>Datei konnte nicht zum schreiben geöffnet werden.\n";
+                exit;
+            } else {
+                echo "<p>Alles super mit der Datei!\n";
+            }
+
+            fwrite($file, $botCommandsBackup);
+            fclose($file);
+        }
+    }
 }

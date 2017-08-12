@@ -14,8 +14,8 @@ botCINav.addClass("active");
 // contains the path to the botCommands folder (NOT TO ANY JSON FILES!)
 var botCommandsFolderURL = "<?php echo base_url('assets/json/botCommands/') ?>";
 // string
-// contains the path to the views folder
-var botCIPHPURL = "<?php echo base_url('index.php/botCI'); ?>";
+// contains the path to the current website
+var botCIPHPURL = "<?php echo site_url('botCI/'); ?>";
 // string
 // contains the current language of the website
 var language = "de";
@@ -196,13 +196,13 @@ var username = "<?php echo $_SESSION['uname'];?>";
             </div>
     <!-- End of delete variable modal -->
 
-    <form class="form-inline">
+    <div class="form-inline">
             <div style="margin-right: 15px;" class="form-group col-md-2">
                 <select id="searchForCommandSelect" style="width: 100%;"></select>
             </div>
             <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#newCommandNameModal" style="margin-right: 5px; margin-bottom: 10px; vertical-align: top;">Add new command</button>
             <button class="pull-right btn btn-danger" type="button" data-toggle="modal" data-target="#confirmResetModal" style="margin-bottom: 10px; vertical-align: top;">Reset commands</button>
-    </form>
+    </div>
 
         <div id="mirFaelltGeradeKeinNameEin">
             <div id="messageContainer"></div>
@@ -210,41 +210,3 @@ var username = "<?php echo $_SESSION['uname'];?>";
         </div>
 
     </div>
-
-<?php 
-    var_dump($_POST);
-
-    $botCommands = $this->input->post("botCommandJSON");
-
-    if (json_decode($botCommands) != null)
-    {
-        $file = fopen("../../assets/json/botCommands/de/botCommands.json",'w+');
-
-        if (!$file) {
-            echo "<p>Datei konnte nicht zum schreiben geöffnet werden.\n";
-            exit;
-        } else {
-            echo "<p>Alles super mit der Datei!\n";
-        }
-
-        fwrite($file, $botCommands);
-        fclose($file);
-    }
-
-    $botCommandsBackup = $this->input->post("botCommandJSONBackup");
-
-    if (json_decode($botCommandsBackup) != null)
-    {
-        $file = fopen("../../assets/json/botCommands/de/botCommandsBackup.json",'w+');
-
-        if (!$file) {
-            echo "<p>Datei konnte nicht zum schreiben geöffnet werden.\n";
-            exit;
-        } else {
-            echo "<p>Alles super mit der Datei!\n";
-        }
-
-        fwrite($file, $botCommandsBackup);
-        fclose($file);
-    }
-?>

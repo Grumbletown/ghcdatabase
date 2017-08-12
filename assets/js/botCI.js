@@ -1189,13 +1189,13 @@ function resetBotCommands() {
                 });
         */
 
-        var jqxhr = $.post(botCIPHPURL, function() {
+        var jqxhr = $.post(botCIPHPURL + "writeBotCommands", function() {
                 botCommandJSON: JSON.stringify(botCommandObject);
                 alert("success (Look inside the console for more information)");
                 console.log("Postet json string (Here in object form)");
                 console.log(botCommandObject);
                 console.log("to url:")
-                console.log(botCIPHPURL);
+                console.log(botCIPHPURL + "writeBotCommands");
             })
             .done(function() {
                 alert("second success");
