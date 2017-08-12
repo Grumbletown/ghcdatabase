@@ -206,7 +206,7 @@ else
     
     
       
-      <li class='dropdown'>
+      <li class='dropdown' id="userDropdown">
       <a href='#' class='dropdown-toggle navUser' data-toggle='dropdown' role='button' aria-haspopup='true' aria-expanded='false'><i class='fa fa-user-circle-o fa-lg' aria-hidden='true'></i>&nbsp;<?php  echo $this->session->userdata('uname'); ?>&nbsp;<span class='caret'></span></a>
       <ul class='dropdown-menu' role='menu'>
           <!--<li><a href='usersettings.php'><i class='fa fa-bar-chart fa-fw' aria-hidden='true'></i>&nbsp; Stats</a></li>
@@ -225,7 +225,7 @@ else
             ?>
         
         <li id='navAdmin' class='liNavElement'><a href='<?php echo base_url('index.php/admintab/'); ?>'><i class='fa fa-pencil-square-o fa-lg' aria-hidden='true'></i>&nbsp; Admin</a></li>
-          <!--<li id='navBotCI' class='liNavElement'><a href='botCI.php'><i class='fa fa-commenting-o fa-lg' aria-hidden='true'></i>&nbsp; BotCI</a></li>-->
+        <li id='navBotCI' class='liNavElement'><a href='<?php echo base_url('index.php/botCI/'); ?>'><i class='fa fa-commenting-o fa-lg' aria-hidden='true'></i>&nbsp; BotCI</a></li>
         <?php
          } ?>
           <li role='separator' class='divider'></li>

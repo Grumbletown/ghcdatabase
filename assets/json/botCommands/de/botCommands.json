@@ -1,0 +1,72 @@
+{
+    "addIP": {
+        "field_inputIp": {
+            "answer": "Bitte nenne die IP: ",
+            "lastChangedAnswer": "Default Output",
+            "variables": {}
+        },
+        "field_inputName": {
+            "answer": "Bitte nenne den Namen: ",
+            "lastChangedAnswer": "Default Output",
+            "variables": {}
+        },
+        "field_inputMinerCount": {
+            "answer": "Bitte nenne die Anzahl der Miner: ",
+            "lastChangedAnswer": "Default Output",
+            "variables": {}
+        },
+        "field_inputReputation": {
+            "answer": "Bitte nenne jetzt die Rep: ",
+            "lastChangedAnswer": "Default Output",
+            "variables": {}
+        },
+        "field_inputGuildTag": {
+            "answer": "Schreibe nun den Guild-Tag. Wenn er in keiner Gilde ist, schreibe n.",
+            "lastChangedAnswer": "Default Output",
+            "variables": {}
+        },
+        "success_addedIp": {
+            "answer": "$[user] hat eine IP zur Datenbank hinzugefügt.",
+            "lastChangedAnswer": "Default Output",
+            "variables": { "user": "user" }
+        },
+        "error_noParameter": {
+            "answer": "Der Parameter $[param] hat kein Argument erhalten!",
+            "lastChangedAnswer": "Default Output",
+            "variables": { "param": "parameter" }
+        },
+        "error_ipAlreadyExsists": {
+            "answer": "Diese IP existiert bereits in der Datenbank. Updates können momentan noch nicht mit dem Bot durchgeführt werden. Bitte schreibe einem Kontributor, er wird sich dann darum kümmern.",
+            "lastChangedAnswer": "Default Output",
+            "variables": {}
+        },
+        "error_exception": {
+            "answer": "Es ist ein Fehler aufgetreten:\n $[err]",
+            "lastChangedAnswer": "Default Output",
+            "variables": { "err": "exception" }
+        },
+        "confirm_correctDataQuestions": {
+            "answer": "Stimmen diese Daten? IP: $[IP]\nName: $[name]\nMiner: $[miner]\nReputation: $[rep]\nGilde: $[guild]\nSchreibe 'Ja' zum bestätigen.",
+            "lastChangedAnswer": "Default Output",
+            "variables": {
+                "IP": "ip",
+                "name": "name",
+                "miner": "miner",
+                "rep": "reputation",
+                "guild": "gilde"
+            }
+        },
+        "confirm_correctDataParamsAnswer": {
+            "answer": "Stimmen diese Daten? IP: $[IP]\nName: $[name]\nMiner: $[miner]\nReputation: $[rep]\nGilde: $[guild]\nBeschreibung: $[desc]\nSchreibe 'Ja' zum bestätigen.",
+            "lastChangedAnswer": "Default Output",
+            "variables": {
+                "IP": "ip",
+                "name": "name",
+                "miner": "miner",
+                "rep": "reputation",
+                "guild": "gilde",
+                "desc": "beschreibung"
+            }
+        }
+    }
+}

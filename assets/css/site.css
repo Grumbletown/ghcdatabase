@@ -1,3 +1,4 @@
+/* eckiges Design
 div,
 span,
 input,
@@ -5,7 +6,7 @@ button,
 a,
 select {
     border-radius: 0 !important;
-}
+}*/
 
 .footer-p {
     display: inline-block;
