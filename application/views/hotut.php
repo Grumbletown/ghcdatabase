@@ -11,7 +11,7 @@
                         Kurzbeschreibung
                     </div>
                     <div class="guideImage">
-                        <img src="<?php echo base_url('assets/images/Hackerz_logo.png') ?>" alt="Bild/Symbol" width="50%" >
+                        <img src="<?php echo base_url('assets/images/icon.png') ?>" alt="Bild/Symbol" width="50%" >
                     </div>
                 </div>
             </div>
