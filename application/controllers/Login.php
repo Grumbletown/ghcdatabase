@@ -28,16 +28,16 @@ class Login extends CI_Controller
     	$sperrzeit = array(
            0 => 0,
            1 => 0,
-           2 => 0,
+           2 => 30,
            3 => 30,
            4 => 30,
-           5 => 30,
+           5 => 180,
            6 => 180,
            7 => 180,
-           8 => 180,
+           8 => 1800,
            9 => 1800,
            10 => 1800,
-           11 => 1800,
+           11 => 18000,
            12 => 18000
     
         );
@@ -160,7 +160,7 @@ function check_database($password)
   }
   else
   {
-      if($this->now > $this->sperre)
+      if($this->now >= $this->sperre)
       {
           $this->data['error'] = FALSE;
           $this->data['errormsg'] = '';
