@@ -1,0 +1,28 @@
+.guideBorder {
+    margin-bottom: 25px;
+    border: 2px solid white;
+    border-radius: 4px;
+    padding: 5px 10px;
+}
+
+.guideDescription {
+    border: 1px solid white;
+    border-radius: 2px;
+    padding: 2.5px 5px;
+    margin-top: 25px;
+}
+
+.guideImage {
+    margin-top: 7.5px;
+}
+
+.guideImage img {
+    margin: auto;
+    display: block;
+}
+
+#tutHeader {
+    letter-spacing: 2px;
+    text-align: center;
+    margin-bottom: 40px;
+}
