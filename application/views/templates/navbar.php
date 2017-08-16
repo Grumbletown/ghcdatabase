@@ -189,11 +189,7 @@ else
     
     <li id='navHOInfo' class='navElement'><a href="<?php echo base_url('index.php/home/hotut/'); ?>"><i class='fa fa-book fa-fw' aria-hidden='true'></i>&nbsp; Hackers Online Tuts</a></li>
       <!--<li id='HOInfo' class='navElement'><a href="<?php echo base_url('index.php/home/hostats/'); ?>"><i class='fa fa-bar-chart fa-fw' aria-hidden='true'></i>&nbsp; Hackers Online Stats</a></li>-->
-   <?php if(!$userid){ ?>
-    <li id='navLogin' class='navbar-right navElement'><a href="<?php echo $pfad; ?>"><i class='fa fa-battery-full fa-lg' aria-hidden='true'></i>&nbsp; <?php echo $link; ?></a></li>
-    
     <?php
-    }
     if($userid)
     {
     ?>
@@ -229,7 +225,7 @@ else
         <?php
          } ?>
           <li role='separator' class='divider'></li>
-          <li id='navLogin' class='liNavElement'><a href="<?php echo $pfad; ?>"><i class='fa fa-battery-empty fa-lg' aria-hidden='true'></i>&nbsp; <?php echo $link; ?></a></li>
+          <li id='navLogin' class='liNavElement'><a href="<?php echo $pfad; ?>"><i class='fa fa-sign-out fa-lg' aria-hidden='true'></i>&nbsp; <?php echo $link; ?></a></li>
          <?php
          }
          ?>
@@ -242,6 +238,11 @@ else
    
 
   </ul>
+  <?php if(!$userid){ ?>
+    <ul class="nav navbar-nav navbar-right">
+    <li id='navLogin' class='navElement'><a href="<?php echo $pfad; ?>"><i class='fa fa-sign-in fa-lg' aria-hidden='true'></i>&nbsp; <?php echo $link; ?></a></li>
+    </ul>
+  <?php } ?>
 </div><!-- /.navbar-collapse -->
 </div><!-- /.container-fluid -->
 </nav>

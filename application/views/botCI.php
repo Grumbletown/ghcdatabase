@@ -1,14 +1,6 @@
 <script type="text/javascript">
 
-$("nav .active").each(function(i, e) {
-    e.removeClass("active");
-})
-
-var userDropdown = $("#userDropdown");
-var botCINav = $("#navBotCI");
-
-userDropdown.addClass("active");
-botCINav.addClass("active");
+setNavElemActive(["userDropdown", "navBotCI"]);
 
 // string
 // contains the path to the botCommands folder (NOT TO ANY JSON FILES!)

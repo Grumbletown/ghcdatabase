@@ -1,11 +1,11 @@
-//add active class to open navbar elements
-$(document).ready(function() {
-    var url = window.location.pathname;
-    var filename = url.substring(url.lastIndexOf('/') + 1);
-
-    try {
-        document.getElementById(filename).classList.add("active");
-    } catch (e) {
-
-    }
-});
+//add active class to navbar elements
+function setNavElemActive(elementIDs) {
+    //removes active class of every nav element
+    $("nav .active").each(function(i, e) {
+        e.removeClass("active");
+    });
+    //ads active class to selected elements
+    $.each(elementIDs, function(i, e) {
+        $("#" + e).addClass("active");
+    });
+};

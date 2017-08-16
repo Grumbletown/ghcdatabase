@@ -1,4 +1,7 @@
 <link href="<?php echo base_url('assets/css/hotut.css') ?>" type="text/css" rel="stylesheet" />
+<script>
+    setNavElemActive(["navHOInfo"]);
+</script>
 <div class="container">
     <h3 id="tutHeader">Tutorials und Guides für Hackerz Online</h2>
         <div class="row">
