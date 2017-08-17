@@ -51,25 +51,25 @@ function save_nav(weiter)
     if(weiter == 1)
     {
         console.log("Save Rep");
-        url = "<?php echo site_url('admintab/ajax_updaterep/')?>";
+        url = "<?php echo site_url('user/ajax_updaterep/')?>";
 
     }
     if(weiter == 2)
     {
         console.log("Save Mail");
-        url = "<?php echo site_url('admintab/ajax_updatemail/')?>";
+        url = "<?php echo site_url('user/ajax_updatemail/')?>";
 
     }
     if(weiter == 3)
     {
         console.log("Save PW");
-        url = "<?php echo site_url('admintab/ajax_updatepw/')?>";
+        url = "<?php echo site_url('user/ajax_updatepw/')?>";
 
     }
     if(weiter == 4)
     {
         console.log("Save Token");
-        url = "<?php echo site_url('admintab/generate_token/')?>";
+        url = "<?php echo site_url('user/generate_token/')?>";
 
     }
 
@@ -268,14 +268,8 @@ else
 
                 </div>
                 <div class="form-group "><button type="button" onclick="save_nav(1)" class="btn btn-success" form="SettingsForm">Speichern</button></div>
-                <div class="form-group ">
-                    <label class="control-label requiredField" for="email">
-                        Email
 
-                    </label>
-                    <input class="form-control" id="email" name="email" type="text"/>
-                </div>
-                <div class="form-group "><button type="button" onclick="save_nav(2)" class="btn btn-success" form="SettingsForm">Speichern</button></div>
+                
                 <div class="form-group ">
                     <label class="control-label " for="oldpw">
                         Altes Passwort
@@ -295,6 +289,7 @@ else
                     <input class="form-control" id="newpwrepeat" name="newpwrepeat" type="password"/>
                 </div>
                 <div class="form-group "><button type="button" onclick="save_nav(3)" class="btn btn-success" form="SettingsForm">Ändern</button></div>
+
                 <div class="form-group ">
                     <label class="control-label " for="token">
                         Token
