@@ -51,25 +51,25 @@ function save_nav(weiter)
     if(weiter == 1)
     {
         console.log("Save Rep");
-        url = "<?php echo site_url('admintab/ajax_updaterep/')?>";
+        url = "<?php echo site_url('user/ajax_updaterep/')?>";
 
     }
     if(weiter == 2)
     {
         console.log("Save Mail");
-        url = "<?php echo site_url('admintab/ajax_updatemail/')?>";
+        url = "<?php echo site_url('user/ajax_updatemail/')?>";
 
     }
     if(weiter == 3)
     {
         console.log("Save PW");
-        url = "<?php echo site_url('admintab/ajax_updatepw/')?>";
+        url = "<?php echo site_url('user/ajax_updatepw/')?>";
 
     }
     if(weiter == 4)
     {
         console.log("Save Token");
-        url = "<?php echo site_url('admintab/generate_token/')?>";
+        url = "<?php echo site_url('user/generate_token/')?>";
 
     }
 
@@ -189,11 +189,7 @@ else
     
     <li id='navHOInfo' class='navElement'><a href="<?php echo base_url('index.php/home/hotut/'); ?>"><i class='fa fa-book fa-fw' aria-hidden='true'></i>&nbsp; Hackers Online Tuts</a></li>
       <!--<li id='HOInfo' class='navElement'><a href="<?php echo base_url('index.php/home/hostats/'); ?>"><i class='fa fa-bar-chart fa-fw' aria-hidden='true'></i>&nbsp; Hackers Online Stats</a></li>-->
-   <?php if(!$userid){ ?>
-    <li id='navLogin' class='navbar-right navElement'><a href="<?php echo $pfad; ?>"><i class='fa fa-battery-full fa-lg' aria-hidden='true'></i>&nbsp; <?php echo $link; ?></a></li>
-    
     <?php
-    }
     if($userid)
     {
     ?>
@@ -229,7 +225,7 @@ else
         <?php
          } ?>
           <li role='separator' class='divider'></li>
-          <li id='navLogin' class='liNavElement'><a href="<?php echo $pfad; ?>"><i class='fa fa-battery-empty fa-lg' aria-hidden='true'></i>&nbsp; <?php echo $link; ?></a></li>
+          <li id='navLogin' class='liNavElement'><a href="<?php echo $pfad; ?>"><i class='fa fa-sign-out fa-lg' aria-hidden='true'></i>&nbsp; <?php echo $link; ?></a></li>
          <?php
          }
          ?>
@@ -242,6 +238,11 @@ else
    
 
   </ul>
+  <?php if(!$userid){ ?>
+    <ul class="nav navbar-nav navbar-right">
+    <li id='navLogin' class='navElement'><a href="<?php echo $pfad; ?>"><i class='fa fa-sign-in fa-lg' aria-hidden='true'></i>&nbsp; <?php echo $link; ?></a></li>
+    </ul>
+  <?php } ?>
 </div><!-- /.navbar-collapse -->
 </div><!-- /.container-fluid -->
 </nav>
@@ -267,14 +268,8 @@ else
 
                 </div>
                 <div class="form-group "><button type="button" onclick="save_nav(1)" class="btn btn-success" form="SettingsForm">Speichern</button></div>
-                <div class="form-group ">
-                    <label class="control-label requiredField" for="email">
-                        Email
 
-                    </label>
-                    <input class="form-control" id="email" name="email" type="text"/>
-                </div>
-                <div class="form-group "><button type="button" onclick="save_nav(2)" class="btn btn-success" form="SettingsForm">Speichern</button></div>
+                
                 <div class="form-group ">
                     <label class="control-label " for="oldpw">
                         Altes Passwort
@@ -294,6 +289,7 @@ else
                     <input class="form-control" id="newpwrepeat" name="newpwrepeat" type="password"/>
                 </div>
                 <div class="form-group "><button type="button" onclick="save_nav(3)" class="btn btn-success" form="SettingsForm">Ändern</button></div>
+
                 <div class="form-group ">
                     <label class="control-label " for="token">
                         Token

@@ -70,7 +70,7 @@
                         $(row).addClass('warning');
 
                     }
-                    if ( data[10] > 4 ) {
+                    if ( data[10] > 1 ) {
                         $(row).addClass('alert');
 
                     }

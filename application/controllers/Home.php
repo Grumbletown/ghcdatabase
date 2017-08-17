@@ -17,9 +17,9 @@ class Home extends CI_Controller {
 	
 	public function hotut()
 	{
-		$this->load->view('templates/header.php');
+	$this->load->view('templates/header.php');
         $this->load->view('templates/navbar.php');
-       // $this->load->view('welcome_message');
+        $this->load->view('hotut');
         $this->load->view('templates/footer.php');
 	}
 }
