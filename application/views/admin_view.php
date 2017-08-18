@@ -21,7 +21,8 @@
     ?>
     <script type="text/javascript">
         $(document).ready(function(){
-
+            var tableswitch = "<?php echo $switch; ?>";
+            console.log(tableswitch);
             $('.datepicker').datepicker({
                 autoclose: true,
                 format: "yyyy-mm-dd",
@@ -58,6 +59,7 @@
 
                 },
                 "createdRow": function( row, data, dataIndex ) {
+                    if(tableswitch == 'user'){
                     if ( data[5] == "Abgelaufen" ) {
                         $(row).addClass('danger');
 
@@ -69,7 +71,13 @@
                     if (data[5] == "Admin" || data[5] == "Moderator"){
                         $(row).addClass('success');
                     }
-                    
+                    }
+                    if(tableswitch == 'user') {
+                        if (data[2] >= 3) {
+                            $(row).addClass('danger');
+
+                        }
+                    }
                 },
                 "columnDefs": [
                     {
@@ -81,13 +89,19 @@
                     {
 
                         "width": "6%",
-                        targets: 7,
+                        targets: 'editcolumn',
                         render: function (data, type, row, meta) {
                             if (type === 'display') {
 
-                                if (role === 'Admin'){
+                                if (role === 'Admin' && tableswitch == 'user'){
                                     data = '<a id="edituserlink"  onclick="edit_user('+row[0]+')" data-placement="top" data-toggle="tooltip" title="Edit" ><button id="edituser'+row[0]+'" class="btn btn-primary btn-xs" ><span class="glyphicon glyphicon-pencil" id="editipclass"></span></button></a>';
                                     data += '<a id="pwrlink"  onclick="pwr_link('+row[0]+')" data-placement="top" data-toggle="tooltip" title="PW Reset" ><button id="pwrlink'+row[0]+'" class="btn btn-danger btn-xs" ><span class="glyphicon glyphicon-thumbs-down" id="pwrclass"></span></button></a>';
+
+
+                                }
+                                if (role === 'Admin' && tableswitch == 'attempts'){
+                                    data = '<a id="edituserlink"  onclick="delete_attempt('+row[0]+')" data-placement="top" data-toggle="tooltip" title="Edit" ><button id="edituser'+row[0]+'" class="btn btn-danger btn-xs" ><span class="glyphicon glyphicon-trash" id="editipclass"></span></button></a>';
+
 
 
                                 }
@@ -104,7 +118,7 @@
                 ],
 
                 "ajax": {
-                    url : "<?php echo site_url("admintab/user_page") ?>",
+                    url : "<?php echo site_url("admintab/user_page") ?>/"+ tableswitch + "/",
                     type : 'GET'
 
                 },
@@ -191,6 +205,38 @@
                 }
             });
         }
+
+        function delete_attempt(id)
+        {
+
+            if(confirm('Are you sure delete this data?'))
+            {
+                // ajax delete data to database
+                $.ajax({
+                    url : "<?php echo site_url('admintab/attempt_delete/')?>" + id + "/",
+                    type: "POST",
+                    dataType: "JSON",
+                    success: function(data)
+                    {
+                        if(data.status){
+                            //if success reload ajax table
+
+                            $('#myTable').DataTable().ajax.reload(null, false);
+                            $('#successmsg').parent().addClass('text-success');
+                            $('#successmsg').text('User erfolgreich gelöscht!');
+                        }
+                    },
+                    error: function (jqXHR, textStatus, errorThrown)
+                    {
+                        alert('Error deleting data');
+                    }
+                });
+
+            }
+        }
+        
+        
+        
         function delete_user()
         {
 
@@ -353,18 +399,19 @@
             <table class="table dt-responsive nowrap table-bordered table-condensed " id="myTable" style="margin-top: 25px;">
                 <thead>
                 <tr>
-                    <th class='col-md-1' style="padding-right: 20px;">ID</th>
-                    <th class="col-md-1" style="padding-right: 20px;">Name</th>
+                    <?php
+                    $anzahl = count($theads);
+                    $c = 1;
+                    for($c; $c <= $anzahl; $c++){
+                        echo '<th class="'.$theads[$c]["class"].'" style="padding-right: 20px;">'.$theads[$c]["Name"].'</th>';
 
-                    <th class="col-md-1" style="padding-right: 20px;">Rolle</th>
-                    <th class="col-md-1" style="padding-right: 20px;">Reputation</th>
-                    <th class="col-md-1" style="padding-right: 20px;">Last Login (Y-M-D H:M:S)</th>
 
-                    <th class="nosort" style="padding-right: 20px;">Gültigkeit</th>
+                    }
 
-                    <th class="nosort" style="padding-right: 20px;">Discord</th>
 
-                    <th class='nosort' width="40%" valign="top" border="0px">Edit</th>
+
+                    ?>
+
                 </tr>
                 </thead>
                 <tbody id="tbody">

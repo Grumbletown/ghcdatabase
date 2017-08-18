@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Login extends CI_Controller
 {
-    public $userid;
+    
     var $data;
     public $now;
     public $sperre;
@@ -145,7 +145,12 @@ function check_database($password)
      {
      	$expired = TRUE;
      }
-     $sess_array = array(
+        $data = array(
+            'Last_Login' => strtotime(date("Y-m-d H:i:s"))
+
+
+        );
+        $sess_array = array(
         'uid' => $row->ID,
         'uname' => $row->Username,
         'Role' => $row->Role,
@@ -154,8 +159,11 @@ function check_database($password)
         'Rep' => $row->Reputation
       );
       $this->session->set_userdata($sess_array);
+        $this->user_model->update(array('ID' => $row->ID), $data, 'Users');
     }
       $this->user_model->delete_ip_attmepts($this->input->ip_address());
+
+
     return TRUE;
   }
   else
@@ -200,7 +208,7 @@ function check_database($password)
 
                 'Password' => $new_password,
             );
-            $this->user_model->update($this->userid, $data, 'Users');
+            $this->user_model->update(array('ID' => $this->input->post('id')), $data, 'Users');
             echo json_encode(array("status" => TRUE));
             
         }

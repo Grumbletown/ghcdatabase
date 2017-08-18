@@ -100,6 +100,7 @@ class Table extends MY_Controller {
 
     public function ajax_update()
     {
+
         $datestring = '%Y-%m-%d';
         $time = time();
         $date = mdate($datestring, $time);
@@ -114,8 +115,8 @@ class Table extends MY_Controller {
             'Added_By' => $_SESSION['uid'],
             'Last_Updated' => $date,
         );
-        $this->table_ajax->update(array('id' => $this->input->post('id')), $data, $this->table);
-        echo json_encode(array("status" => TRUE));
+        $update = $this->table_ajax->update(array('id' => $this->input->post('id')), $data, $this->table);
+        echo json_encode(array("status" => TRUE, "message" => $this->input->post('id')));
     }
 
     public function ajax_delete()
