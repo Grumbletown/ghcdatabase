@@ -30,7 +30,7 @@
 					$("#loginbtn").attr('disabled', 'disabled');
 					<?php
 					if(!$errormsg == ''){
-					$erromsg = "Zu viele fehlgeschlagene versuche!";
+					$erromsg = "Zu viele fehlgeschlagene Versuche!";
 
 					}
 					?>

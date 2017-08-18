@@ -16,34 +16,21 @@
         </div>
     <?php }
     ?>
-    <div id="welcome" style="display: flex; margin-top: 5%;"></div>
-    <script>
-        if ($(window).width() < 600) {
-            try {
-                document.getElementById("welcome").innerHTML =
-                    '<div id="welcomeText">' +
-                    '<h1>Willkommen bei der offiziellen Website der <br /> German Hackerz Community - GHC</h1>' +
-                    '<h4 style="margin-top: 25px;">Wir sind eine Discord Community zum Spiel "Hackers - Hacking simulator" von Okitoo Networks.</h4>' +
-                    '<h4>Wenn du noch nicht unserem Discord Server beigetreten bist, kannst du das <a href="https://discord.gg/BW9fuPw">jetzt</a> tun.</h4>' +
-                    '<p style="margin-top: 50px;">Das GHC-Team freut sich auf dich.</p>' +
-                    '</div>';
-            } catch (e) {
-                console.log(e);
-            }
-        } else {
-            try {
-                document.getElementById("welcome").innerHTML =
-                    '<img src="<?php echo base_url('assets/images/icon.png') ?>" width="25%" height="25%" style="margin-right: 20px; margin-top: 21px;" />' +
-                    '<div id="welcomeText">' +
-                    '<h1>Willkommen bei der offiziellen Website der <br /> German Hackerz Community - GHC</h1>' +
-                    '<h4 style="margin-top: 25px;">Wir sind eine Discord Community zum Spiel "Hackers - Hacking simulator" von Okitoo Networks.</h4>' +
-                    '<h4>Wenn du noch nicht unserem Discord Server beigetreten bist, kannst du das <a href="https://discord.gg/BW9fuPw">jetzt</a> tun.</h4>' +
-                    '<p style="margin-top: 50px;">Das GHC-Team freut sich auf dich.</p>' +
-                    '</div>';
-            } catch (e) {
-                console.log(e);
-            }
-        }
-    </script>
-
+    <div id="welcome" style="margin-top: 5%;">
+        <div class="row">
+            <div class="col-md-3 col-lg-3 hidden-sm hidden-xs">
+                <img src="<?php echo base_url('assets/images/icon.png') ?>" width="100%" alt="GHC Logo">
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-9 col-lg-9">
+                <h1>Willkommen bei der offiziellen Website der<br/>German Hackerz Community - GHC</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-offset-3 col-xs-12 col-sm-12 col-md-9 col-lg-9">
+                <p style="margin-top: 25px;">Wir sind eine Discord Community zum Spiel "Hackers - Hacking simulator" von Okitoo Networks.</p>
+                <p>Wenn du noch nicht unserem Discord Server beigetreten bist, kannst du das <a href="https://discord.gg/BW9fuPw">jetzt</a> tun.</p>
+                <p style="margin-top: 50px;">Das GHC-Team freut sich auf dich.</p>
+            </div>
+        </div>
+    </div>
 </div>
