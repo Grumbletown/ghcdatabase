@@ -221,6 +221,7 @@ else
             ?>
         
         <li id='navAdmin' class='liNavElement'><a href='<?php echo base_url('index.php/admintab/'); ?>'><i class='fa fa-pencil-square-o fa-lg' aria-hidden='true'></i>&nbsp; Admin</a></li>
+            <li id='navAdmin' class='liNavElement'><a href='<?php echo base_url('index.php/admintab/loginattamepts/'); ?>'><i class='fa fa-pencil-square-o fa-lg' aria-hidden='true'></i>&nbsp; Login Attempts</a></li>
         <li id='navBotCI' class='liNavElement'><a href='<?php echo base_url('index.php/botCI/'); ?>'><i class='fa fa-commenting-o fa-lg' aria-hidden='true'></i>&nbsp; BotCI</a></li>
         <?php
          } ?>
@@ -269,7 +270,7 @@ else
                 </div>
                 <div class="form-group "><button type="button" onclick="save_nav(1)" class="btn btn-success" form="SettingsForm">Speichern</button></div>
 
-                
+
                 <div class="form-group ">
                     <label class="control-label " for="oldpw">
                         Altes Passwort

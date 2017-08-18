@@ -2,6 +2,7 @@
     <div class="row" id="PWReset">
         <div class="col-md-4 col-md-offset-4 well">
             <form method="post" id="PWResetForm">
+                <input type="hidden" value="<?php echo $id; ?>" name="id">
                 <div class="form-group ">
                     <label class="control-label " for="newpw">
                         Neues Passwort
