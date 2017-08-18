@@ -1178,8 +1178,6 @@ function checkVariableIdentifier(element) {
  */
 function resetBotCommands() {
     $.getJSON(botCommandsFolderURL + language + "/botCommandsBackup.json").then(function(data) {
-        console.log("Received Backup object from json file:");
-        console.log(data);
         botCommandObject = data;
         /*
                 $.post(botCIPHPURL, function(data) {
@@ -1188,24 +1186,55 @@ function resetBotCommands() {
                     console.log(data);
                 });
         */
-
-        var jqxhr = $.post(botCIPHPURL + "writeBotCommands", function() {
+        console.log("///////////////////////////////////////////");
+        console.log("JQuery post method");
+        console.log("///////////////////////////////////////////");
+        var jqxhr = $.post(botCIPHPURL + "writeBotCommands/", function() {
                 botCommandJSON: JSON.stringify(botCommandObject);
-                alert("success (Look inside the console for more information)");
+                alert("post method | success (Look inside the console for more information)");
                 console.log("Postet json string (Here in object form)");
                 console.log(botCommandObject);
                 console.log("to url:")
-                console.log(botCIPHPURL + "writeBotCommands");
+                console.log(botCIPHPURL + "writeBotCommands/");
             })
             .done(function() {
-                alert("second success");
+                alert("post method | second success");
             })
             .fail(function() {
-                alert("error");
+                alert("post method | error");
             })
             .always(function() {
-                alert("finished");
+                alert("post method | finished");
             });
+
+        $.ajax({
+            url: botCIPHPURL + "writeBotCommands/",
+            type: "POST",
+            data: { "botCommandJSON": JSON.stringify(botCommandObject) },
+            dataType: "JSON",
+            success: function(data) {
+                alert("ajax method | Success ajax call")
+                console.log("///////////////////////////////////////////");
+                console.log("JQuery ajax method");
+                console.log("///////////////////////////////////////////");
+                console.log("ajax:");
+                console.log(data);
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                alert('ajax method | Error posting Data (Look inside the console!)');
+                console.log("///////////////////////////////////////////");
+                console.log("JQuery ajax method");
+                console.log("///////////////////////////////////////////");
+                console.log("jqXHR:");
+                console.log(jqXHR);
+                console.log("textStatus:");
+                console.log(textStatus);
+                console.log("errorThrown:");
+                console.log(errorThrown);
+                console.log("json string:");
+                console.log(JSON.stringify(botCommandObject));
+            }
+        });
 
         document.getElementById("searchForCommandSelect").innerHTML = "";
         document.getElementById("jumbotronContainer").innerHTML = "";
