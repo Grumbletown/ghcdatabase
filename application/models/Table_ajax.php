@@ -24,6 +24,7 @@ class Table_ajax extends CI_Model
 
 
     var $column_order = array(
+        'ip' =>array(
         "`T`.`IP`",
         "`T`.`Name`",
         "`T`.`Reputation`",
@@ -31,20 +32,31 @@ class Table_ajax extends CI_Model
         "`T`.`Miners`",
         "`T`.`Clan`",
         "`T`.`Last_Updated`"
+    ),
+        'user' => array(
+            "ID",
+            "Username",
+            "Role",
+            "Reputation",
+            "Last_Login",
+
+
+
+        ),
+        'attempts' => array(
+            "UIP",
+        ),
     );
-    var $column_order_user = array(
-        "ID",
-        "Username",
-        "Role",
-        "Reputation",
-        "Last_Login",
 
-
-
+    
+    var $column_search = array(
+        'ip' => array('`T`.`IP`','`T`.`Name`','`T`.`Description`','`T`.`Clan`'),
+        'user' => array('Username', 'Role', 'DiscorName'),
+        'attempts' => array('UIP'),
     );
-    var $column_search = array('`T`.`IP`','`T`.`Name`','`T`.`Description`','`T`.`Clan`'); //set column field database for datatable searchable
-    var $column_search_user = array('Username', 'Role'); //set column field database for datatable searchable
+     //set column field database for datatable searchable
     var $order = array('id' => 'asc'); // default order
+
 
     function __construct()
     {
@@ -73,61 +85,44 @@ WHERE `Users`.`Last_Login` < DATE_SUB( now(), INTERVAL 30 DAY) OR `Users`.`Last_
 
     public function _get_ips($page)
     {
+        $i = 0;
+        if($page == 'fav' || $page == 'repo'){
+           $page = 'ip';
+        }
 
-
-
-
-            $i = 0;
-            if($page == 'user'){
-            $searchwhat = $this->column_search_user;
-
-            }
-            else
-            {
-                $searchwhat = $this->column_search;
-            }
-            foreach ($searchwhat as $item) // loop column
-            {
-                if($_GET['search']['value']){
+        $searchwhat = $this->column_search[$page];
+        foreach ($searchwhat as $item) // loop column
+        {
+            if($_GET['search']['value']){
                 if($i === 0){
-                //$sql .= " WHERE `T`.`$item` LIKE = '" . $_GET['search']['value']."'";
+                    //$sql .= " WHERE `T`.`$item` LIKE = '" . $_GET['search']['value']."'";
                     $this->db->group_start(); // open bracket. query Where with OR clause better with bracket. because maybe can combine with other WHERE with AND.
                     $this->db->like($item, $_GET['search']['value']);
                 }
                 else{
                     //$sql .= " OR `T`.`$item` LIKE = '" . $_GET['search']['value']."'";
                     $this->db->or_like($item, $_GET['search']['value']);
-
                 }
-
-                    if(count($searchwhat) - 1 == $i) //last loop
+                if(count($searchwhat) - 1 == $i) //last loop
                     $this->db->group_end(); //close bracket
             }
-                $i++;
+            $i++;
         }
-
         if(isset($_GET['order'])) // here order processing
         {
-
             if($page == 'user'){
-                $this->db->order_by($this->column_order_user[$_GET['order']['0']['column']], $_GET['order']['0']['dir']);
-
+                $this->db->order_by($this->column_order_user[$page][$_GET['order']['0']['column']], $_GET['order']['0']['dir']);
             }
             else
             {
-                $this->db->order_by($this->column_order[$_GET['order']['0']['column']], $_GET['order']['0']['dir']);
+                $this->db->order_by($this->column_order[$page][$_GET['order']['0']['column']], $_GET['order']['0']['dir']);
             }
-
         }
         else if(isset($this->order))
         {
             $order = $this->order;
             $this->db->order_by(key($order), $order[key($order)]);
         }
-
-
-
-
     }
 
     public function debug_ips($sql){
@@ -143,18 +138,16 @@ WHERE `Users`.`Last_Login` < DATE_SUB( now(), INTERVAL 30 DAY) OR `Users`.`Last_
         $this->_get_ips($page);
         if($_GET['length'] != -1)
             $this->db->limit($_GET['length'], $_GET['start']);
-
         switch ($page){
             case 'ip':
-                        $query = $this->db->get($this->ipsql);
-                        break;
+                $query = $this->db->get($this->ipsql);
+                break;
             case 'user':
-                        $query = $this->db->get($this->adminsql);
-                        break;
-
+                $query = $this->db->get($this->adminsql);
+                break;
             case 'fav':
-                        $query = $this->db->where('UserIPFav', 1)->get($this->favsql);
-                        break;
+                $query = $this->db->where('UserIPFav', 1)->get($this->favsql);
+                break;
             case 'repo':
                 $query = $this->db->where('UserIPRepo', 1)->get($this->reposql);
                 break;
@@ -164,7 +157,6 @@ WHERE `Users`.`Last_Login` < DATE_SUB( now(), INTERVAL 30 DAY) OR `Users`.`Last_
     public function count_filtered($page)
     {
 
-        
         $this->_get_ips($page);
         switch ($page){
             case 'ip':
@@ -173,7 +165,6 @@ WHERE `Users`.`Last_Login` < DATE_SUB( now(), INTERVAL 30 DAY) OR `Users`.`Last_
             case 'user':
                 $query = $this->db->get($this->adminsql);
                 break;
-
             case 'fav':
                 $query = $this->db->where('UserIPFav', 1)->get($this->favsql);
                 break;
