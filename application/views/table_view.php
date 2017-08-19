@@ -386,12 +386,12 @@
                                 </div>
                                 <div class="form-group" id="descriptionDiv">
                                     <label for="sel1">Status</label>
-                                    <select class="form-control" id="sel1" name="role">
+                                    <select class="form-control" id="sel1" name="description">
 
 
-                                        <option><div data-value="User">Aktiv</div></option>
-                                        <option><div data-value="Moderator">Inaktiv</div></option>
-                                        <option><div data-value="Admin">???</div></option>
+                                        <option><div data-value="Aktiv">Aktiv</div></option>
+                                        <option><div data-value="Inaktiv">Inaktiv</div></option>
+                                        <option><div data-value="Ka">???</div></option>
                                     </select>
                                 </div>
                             </form>
@@ -415,12 +415,12 @@
                     <tr>
                         <th class="col-md-1" style="padding-right: 20px;">IP</th>
                         <th class="col-md-1" style="padding-right: 20px;">Name</th>
-                        <th class="col-sm-1" style="padding-right: 20px;">Rep</th>
+                        <th class="col-md-1" style="padding-right: 20px;">Rep</th>
                      
                         <th class="col-md-1" style="padding-right: 20px;">Status</th>
-                        <th class="col-sm-1" style="padding-right: 20px;">Miners</th>
+                        <th class="col-md-1" style="padding-right: 20px;">Miners</th>
                         <th class="col-md-1" style="padding-right: 20px;">Gilde</th>
-                        <th class="col-md-2" style="padding-right: 20px;">Updated</th>
+                        <th class="col-md-1" style="padding-right: 20px;">Updated</th>
                     <!--    <th class="col-md-2" style="padding-right: 20px;">Added By</th> -->
                         <th class='nosort text-center' width="40%" valign="top" border="0px">
 

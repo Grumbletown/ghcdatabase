@@ -25,12 +25,87 @@ class Admintab extends MY_Controller {
     public function index()
     {
 
-
+        $data = array(
+            'title' => 'User',
+            'switch' => 'user',
+            'theads' => array(
+                '1' => array(
+                    'Name' => 'ID',
+                    'class' => 'col-md-1'
+                ),
+                '2' => array(
+                    'Name' => 'Name',
+                    'class' => 'col-md-1'
+                ),
+                '3' => array(
+                    'Name' => 'Rolle',
+                    'class' => 'col-md-1'
+                ),
+                '4' => array(
+                    'Name' => 'Rep',
+                    'class' => 'col-md-1'
+                ),
+                '5' => array(
+                    'Name' => 'Anmeldedatum',
+                    'class' => 'col-md-1'
+                ),
+                '6' => array(
+                    'Name' => 'Gültigkeit',
+                    'class' => 'col-md-1'
+                ),
+                '7' => array(
+                    'Name' => 'Discord',
+                    'class' => 'col-md-1'
+                ),
+                '8' => array(
+                    'Name' => 'Edit',
+                    'class' => 'nosort editcolumn'
+                ),
+            ),
+        );
 
         $this->load->view('templates/header.php');
         $this->load->view('templates/navbar.php');
-        $this->load->view('admin_view');
+        $this->load->view('admin_view', $data);
         $this->load->view('templates/footer.php');
+
+    }
+
+    public function loginattamepts()
+    {
+        $data = array(
+            'title' => 'Attempts',
+            'switch' => 'attempts',
+            'theads' => array(
+                        '1' => array(
+                            'Name' => 'LID',
+                            'class' => 'nosort'
+                        ),
+                        '2' => array(
+                            'Name' => 'IP',
+                            'class' => 'col-md-1'
+                        ),
+                        '3' => array(
+                            'Name' => 'Attempts',
+                            'class' => 'col-md-1'
+                        ),
+                        '4' => array(
+                            'Name' => 'Last Attempt',
+                            'class' => 'col-md-1'
+                        ),
+                        '5' => array(
+                            'Name' => 'Edit',
+                            'class' => 'nosort editcolumn'
+                        ),
+                    ),
+        );
+
+        $this->load->view('templates/header.php');
+        $this->load->view('templates/navbar.php');
+        $this->load->view('admin_view', $data);
+        $this->load->view('templates/footer.php');
+
+
 
     }
 
@@ -89,6 +164,12 @@ class Admintab extends MY_Controller {
         echo json_encode(array("status" => TRUE));
     }
 
+    public function attempt_delete($id)
+    {
+        $this->table_ajax->delete_attempt($id, 'loginattempt');
+        echo json_encode(array("status" => TRUE));
+    }
+
     public function user_edit($id)
     {
         $data = $this->table_ajax->get_by_id($id, $this->table);
@@ -102,7 +183,7 @@ class Admintab extends MY_Controller {
         echo json_encode($data);
     }
 
-    public function user_page()
+    public function user_page($page)
     {
 
         // Datatables Variables
@@ -142,12 +223,13 @@ class Admintab extends MY_Controller {
         }
 
 
-        $ips = $this->table_ajax->get_ips('user');
+        $ips = $this->table_ajax->get_ips($page);
         $x = 0;
         $data = array();
         $expired = "";
         $today = date("Y-m-d");
         foreach($ips->result() as $row) {
+            if($page == 'user'){
             if ($row->ExpireDate < $today ){
                 $expired = "Abgelaufen";
              
@@ -174,6 +256,19 @@ class Admintab extends MY_Controller {
                 $row->DiscordName,
                 $x,
             );
+            }
+            if($page == 'attempts')
+            {
+                $data[] = array(
+                    $row->LID,
+                    $row->UIP,
+                    $row->Attempts,
+                    $row->LastAttempt,
+                    $x,
+
+                );
+
+            }
 
         }
 
@@ -181,7 +276,7 @@ class Admintab extends MY_Controller {
         $output = array(
             "draw" => $draw,
             "recordsTotal" => $total_users,
-            "recordsFiltered" => $this->table_ajax->count_filtered('user'),
+            "recordsFiltered" => $this->table_ajax->count_filtered($page),
             "data" => $data
         );
 
