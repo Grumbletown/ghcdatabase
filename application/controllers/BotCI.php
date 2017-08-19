@@ -27,21 +27,9 @@ class BotCI extends MY_Controller {
     {
         $botCommands = $this->input->input_stream("botCommandJSON");
 
-        if ($botCommands == null) 
-        {
-            echo "<p>Null value!\n";
-        }
-
         if (json_decode($botCommands) != null)
         {
-            $file = fopen("../../assets/json/botCommands/de/botCommands.json",'w+');
-
-            if (!$file) {
-                echo "<p>Datei konnte nicht zum schreiben geöffnet werden.\n";
-                exit;
-            } else {
-                echo "<p>Alles super mit der Datei!\n";
-            }
+            $file = fopen(FCPATH."assets/json/botCommands/de/botCommands.json",'w+');
 
             fwrite($file, $botCommands);
             fclose($file);
@@ -52,21 +40,9 @@ class BotCI extends MY_Controller {
     {
         $botCommandsBackup = $this->input->input_stream("botCommandJSONBackup");
 
-        if ($botCommandsBackup == null) 
-        {
-            echo "<p>Null value!\n";
-        }
-
         if (json_decode($botCommandsBackup) != null)
         {
-            $file = fopen("../../assets/json/botCommands/de/botCommandsBackup.json",'w+');
-
-            if (!$file) {
-                echo "<p>Datei konnte nicht zum schreiben geöffnet werden.\n";
-                exit;
-            } else {
-                echo "<p>Alles super mit der Datei!\n";
-            }
+            $file = fopen(FCPATH."assets/json/botCommands/de/botCommandsBackup.json",'w+');
 
             fwrite($file, $botCommandsBackup);
             fclose($file);
