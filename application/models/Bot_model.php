@@ -40,7 +40,7 @@ class Bot_model extends CI_Model
         $this->db->insert('Users', $data);
         return $this->db->insert_id();
     }
-    
+
     function get_user_by_discord($discord)
     {
         $this->db->where('DiscordName', $discord);
@@ -52,7 +52,7 @@ class Bot_model extends CI_Model
     {
         return $this->db->insert('HackersIP', $data);
     }
-    
+
     function find_ip($data)
     {
         $this->db->from('HackersIP');
@@ -65,14 +65,14 @@ class Bot_model extends CI_Model
     {
         return $this->db->insert('HackersIP', $data);
     }
-    
+
     function refresh_user($id, $date)
     {
 
-            $this->db->set('ExpireDate', $date, FALSE);
-            $this->db->where('ID', $id);
-            $this->db->update('Users');
-            return $this->db->affected_rows();
+        $this->db->set('ExpireDate', $date, FALSE);
+        $this->db->where('ID', $id);
+        $this->db->update('Users');
+        return $this->db->affected_rows();
 
     }
 
@@ -82,4 +82,9 @@ class Bot_model extends CI_Model
         return $this->db->affected_rows();
     }
 
+    public function ban_user($where, $data)
+    {
+        $this->db->update('HackersIP', $data, $where);
+        return $this->db->affected_rows();
+    }
 }

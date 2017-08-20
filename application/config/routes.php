@@ -55,5 +55,6 @@ $route['apibot/addip/(:any)'] = 'apibot/addip/$1';
 $route['apibot/refreshuser/(:any)'] = 'apibot/refreshuser/$1';
 $route['apibot/registeruser/(:any)'] = 'apibot/registeruser/$1';
 $route['apibot/getip/(:any)'] = 'apibot/getip/$1';
+$route['apibot/banuser/(:any)'] = 'apibot/banuser/$1';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;

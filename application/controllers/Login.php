@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Login extends CI_Controller
 {
-    
+
     var $data;
     public $now;
     public $sperre;
@@ -22,29 +22,29 @@ class Login extends CI_Controller
 
         );
     }
-    
+
     function index()
     {
-    	$sperrzeit = array(
-           0 => 0,
-           1 => 0,
-           2 => 30,
-           3 => 30,
-           4 => 30,
-           5 => 180,
-           6 => 180,
-           7 => 180,
-           8 => 1800,
-           9 => 1800,
-           10 => 1800,
-           11 => 18000,
-           12 => 18000
-    
+        $sperrzeit = array(
+            0 => 0,
+            1 => 0,
+            2 => 30,
+            3 => 30,
+            4 => 30,
+            5 => 180,
+            6 => 180,
+            7 => 180,
+            8 => 1800,
+            9 => 1800,
+            10 => 1800,
+            11 => 18000,
+            12 => 18000
+
         );
         $this->data['error'] = FALSE;
-                    $this->data['errormsg'] = '';
+        $this->data['errormsg'] = '';
         $this->session->set_flashdata('msg', '');
-    	$this->load->view('templates/header.php');
+        $this->load->view('templates/header.php');
         $this->load->view('templates/navbar.php');
         $email = $this->input->post("email");
         $password = $this->input->post("password");
@@ -78,13 +78,13 @@ class Login extends CI_Controller
         else
         {
             $this->data['error'] = TRUE;
-            $this->data['errormsg'] = "UngÃ¼ltige IP!";
+            $this->data['errormsg'] = "Ungültige IP!";
         }
 
 
 
-            $this->sperre = strtotime($lastattempt) + $sperrzeit[$attempt] * 60;
-            $this->data['time'] = floor(($this->sperre - $this->now));
+        $this->sperre = strtotime($lastattempt) + $sperrzeit[$attempt] * 60;
+        $this->data['time'] = floor(($this->sperre - $this->now));
 
 
         if($this->now < $this->sperre)
@@ -98,17 +98,17 @@ class Login extends CI_Controller
 
 
         // form validation
-       $this->form_validation->set_rules("email", "Username", "trim|required");
-       $this->form_validation->set_rules("password", "Password", "trim|required|callback_check_database");
+        $this->form_validation->set_rules("email", "Username", "trim|required");
+        $this->form_validation->set_rules("password", "Password", "trim|required|callback_check_database");
         if ($this->form_validation->run() == FALSE)
         {
             // validation fail
-            
+
             $this->load->view('login_view', $this->data);
 
 
-            
-            
+
+
         }
         else
         {
@@ -116,87 +116,93 @@ class Login extends CI_Controller
             redirect('home');
 
         } //end von form validation
-       
-          $this->load->view('templates/footer.php');
-    } 
-    
 
-function check_database($password)
-{
-  //Field validation succeeded.  Validate against database
-  $username = $this->input->post('email');
-
-  //query the database
-  $result = $this->user_model->login($username, $password);
-
-  if($result)
-  {
-    $sess_array = array();
-    foreach($result as $row)
-    {
-     $expireDate =$row->ExpireDate;
-        $expireDate = strtotime(str_replace("-","/", $expireDate));
-        $today = strtotime(date("Y/m/d"));
-     if($today > $expireDate)
-     {
-     	$expired = FALSE;
-     }
-     else
-     {
-     	$expired = TRUE;
-     }
-        $data = array(
-            'Last_Login' => strtotime(date("Y-m-d H:i:s"))
-
-
-        );
-        $sess_array = array(
-        'uid' => $row->ID,
-        'uname' => $row->Username,
-        'Role' => $row->Role,
-        'Expired' => $expired,
-        'login' => TRUE,
-        'Rep' => $row->Reputation
-      );
-      $this->session->set_userdata($sess_array);
-        $this->user_model->update(array('ID' => $row->ID), $data, 'Users');
+        $this->load->view('templates/footer.php');
     }
-      $this->user_model->delete_ip_attmepts($this->input->ip_address());
 
 
-    return TRUE;
-  }
-  else
-  {
-      if($this->now >= $this->sperre)
-      {
-          $this->data['error'] = FALSE;
-          $this->data['errormsg'] = '';
-          $this->user_model->ip_update($this->input->ip_address());
-      }
-      else
-      {
-          $this->data['error'] = TRUE;
-          $this->data['errormsg'] = 'Zu viele fehlgeschlagene versuche!';
+    function check_database($password)
+    {
+        //Field validation succeeded.  Validate against database
+        $username = $this->input->post('email');
 
-      }
+        //query the database
+        $result = $this->user_model->login($username, $password);
 
-     if(!$this->data['error'] === TRUE){
-         
-      $this->session->set_flashdata('msg', '<div class="alert alert-danger text-center">Benutzername oder Passwort falsch!</div>');
-     }
+        if($result)
+        {
+            if(!$result[0]->Banned) {
+                $sess_array = array();
+                foreach ($result as $row) {
 
-    $this->form_validation->set_message('check_database', '');
-    return false;
-  }
-}
-    
+
+                    $expireDate = $row->ExpireDate;
+                    $expireDate = strtotime(str_replace("-", "/", $expireDate));
+                    $today = strtotime(date("Y/m/d"));
+                    if ($today > $expireDate) {
+                        $expired = FALSE;
+                    } else {
+                        $expired = TRUE;
+                    }
+
+
+                    $data = array(
+                        'Last_Login' => strtotime(date("Y-m-d H:i:s"))
+
+
+                    );
+                    $sess_array = array(
+                        'uid' => $row->ID,
+                        'uname' => $row->Username,
+                        'Role' => $row->Role,
+                        'Expired' => $expired,
+                        'login' => TRUE,
+                        'Rep' => $row->Reputation
+                    );
+                    $this->session->set_userdata($sess_array);
+                    $this->user_model->update(array('ID' => $row->ID), $data, 'Users');
+                }
+                $this->user_model->delete_ip_attmepts($this->input->ip_address());
+
+
+                return TRUE;
+            }else
+            {
+                redirect('home');
+            }
+
+        }
+        else
+        {
+            if($this->now >= $this->sperre)
+            {
+                $this->data['error'] = FALSE;
+                $this->data['errormsg'] = '';
+                $this->user_model->ip_update($this->input->ip_address());
+            }
+            else
+            {
+                $this->data['error'] = TRUE;
+                $this->data['errormsg'] = 'Zu viele fehlgeschlagene versuche!';
+
+            }
+
+            if(!$this->data['error'] === TRUE){
+
+                $this->session->set_flashdata('msg', '<div class="alert alert-danger text-center">Benutzername oder Passwort falsch!</div>');
+            }
+
+            $this->form_validation->set_message('check_database', '');
+            return false;
+        }
+    }
+
     function logout()
     {
-    	session_unset();
+        session_unset();
         session_destroy();
         redirect('home');
-     }
+    }
 
     public function set_pw()
     {
@@ -210,15 +216,15 @@ function check_database($password)
             );
             $this->user_model->update(array('ID' => $this->input->post('id')), $data, 'Users');
             echo json_encode(array("status" => TRUE));
-            
+
         }
         else
         {
             $data['inputerror'][] = 'pass';
-            $data['error_string'][] = 'Passwörter stimmen nicht überein!';
+            $data['error_string'][] = 'Passw?rter stimmen nicht ?berein!';
             $data['status'] = FALSE;
         }
 
     }
-        
+
 }

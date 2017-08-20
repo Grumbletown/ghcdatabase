@@ -16,41 +16,41 @@ class Apibot extends CI_Controller {
         );
     }
 
-    public function index()
-    {
-        $this->load->view('templates/header.php');
-        $this->load->view('templates/navbar.php');
-        // $this->load->view('welcome_message');
-        $this->load->view('templates/footer.php');
-        $data = array(
-            'ip' => '1.51.1.12',
-            'name' => 'tada',
-            'rep' => 12,
-            'desc' => '???',
-            'clan' => 'clan',
-            'miners' => 3,
-            'discorduser' => '123456',
-            'token' => '9QAi(POGA3Gexu9jThSVLK1rtT0Q6MT9a_1SXEJRpkumTDgOL.',
-            'update' => FALSE,
-        
-        );
-        $datafind = array(
-            'name' => 'Dad',
-            'token' => '9QAi(POGA3Gexu9jThSVLK1rtT0Q6MT9a_1SXEJRpkumTDgOL.',
+    /* public function index()
+     {
+         $this->load->view('templates/header.php');
+         $this->load->view('templates/navbar.php');
+         // $this->load->view('welcome_message');
+         $this->load->view('templates/footer.php');
+         $data = array(
+             'ip' => '1.51.1.12',
+             'name' => 'tada',
+             'rep' => 12,
+             'desc' => '???',
+             'clan' => 'clan',
+             'miners' => 3,
+             'discorduser' => '123456',
+             'token' => '9QAi(POGA3Gexu9jThSVLK1rtT0Q6MT9a_1SXEJRpkumTDgOL.',
+             'update' => FALSE,
 
-        );
+         );
+         $datafind = array(
+             'name' => 'Dad',
+             'token' => '9QAi(POGA3Gexu9jThSVLK1rtT0Q6MT9a_1SXEJRpkumTDgOL.',
 
-        $datauser = array(
-            'name' => 'Dad',
-            'token' => '9QAi(POGA3Gexu9jThSVLK1rtT0Q6MT9a_1SXEJRpkumTDgOL.',
-            'discorduser' => '123456',
-            'password' => 'adsadsadas',
-        );
-        $test = json_encode($data);
-        $url = base_url('index.php/apibot/getip/');
-        $urlencoded = rawurlencode($test);
-        echo $url . $urlencoded;
-    }
+         );
+
+         $datauser = array(
+             'name' => 'Dad',
+             'token' => '9QAi(POGA3Gexu9jThSVLK1rtT0Q6MT9a_1SXEJRpkumTDgOL.',
+             'discorduser' => '123456',
+             'password' => 'adsadsadas',
+         );
+         $test = json_encode($data);
+         $url = base_url('index.php/apibot/getip/');
+         $urlencoded = rawurlencode($test);
+         echo $url . $urlencoded;
+     } */
 
 
     public function addip($json)
@@ -59,13 +59,22 @@ class Apibot extends CI_Controller {
 
         $decode = urldecode($json);
         $decode = json_decode($decode);
-
-        if($this->bot_model->get_token($decode->token) < 1)
+        if(empty($decode->token))
         {
             $this->data['msgToken'] = 'Token ungültig!';
             $this->data['error'] = TRUE;
-
         }
+        else
+        {
+            $counttoken = $this->bot_model->get_token($decode->token);
+            if($counttoken < 1)
+            {
+                $this->data['msgToken'] = 'Token ungültig!';
+                $this->data['error'] = TRUE;
+
+            }
+        }
+
         if(empty($decode->discorduser))
         {
             $this->data['msgDiscord'] = 'Discord User nicht angegeben!';
@@ -93,32 +102,36 @@ class Apibot extends CI_Controller {
             $this->data['error'] = TRUE;
 
         }
-        $ipcount = $this->bot_model->get_ip('IP',$decode->ip);
-
-        if($ipcount < 1 )
+        else
         {
-            $this->data['msgIP'] = 'IP bereits vorhanden!';
-            $this->data['IPID'] = $ipcount[0]->ID;
-            $this->data['error'] = TRUE;
+            $ipcount = $this->bot_model->get_ip('IP',$decode->ip);
 
+            if($ipcount < 1 )
+            {
+                $this->data['msgIP'] = 'IP bereits vorhanden!';
+                $this->data['IPID'] = $ipcount[0]->ID;
+                $this->data['error'] = TRUE;
+
+            }
         }
-        
         if(empty($decode->name))
         {
             $this->data['msgName'] = 'Spielername nicht angegeben!';
             $this->data['error'] = TRUE;
-            
-            
+
+
         }
-        $namecount = $this->bot_model->get_ip('IP',$decode->ip);
-        if($namecount < 1 )
+        else
         {
-            $this->data['msgName'] = 'Spielername bereits vorhanden!';
-            $this->data['IPID'] = $namecount[0]->ID;
-            $this->data['error'] = TRUE;
+            $namecount = $this->bot_model->get_ip('IP',$decode->ip);
+            if($namecount < 1 )
+            {
+                $this->data['msgName'] = 'Spielername bereits vorhanden!';
+                $this->data['IPID'] = $namecount[0]->ID;
+                $this->data['error'] = TRUE;
 
+            }
         }
-
         if(!$this->data['error'])
         {
             $today = strtotime(date("Y/m/d"));
@@ -181,10 +194,20 @@ class Apibot extends CI_Controller {
     {
         $decode = urldecode($json);
         $decode = json_decode($decode);
-        if($this->bot_model->get_token($decode->token) < 1)
+        if(empty($decode->token))
         {
             $this->data['msgToken'] = 'Token ungültig!';
             $this->data['error'] = TRUE;
+        }
+        else
+        {
+            $counttoken = $this->bot_model->get_token($decode->token);
+            if($counttoken < 1)
+            {
+                $this->data['msgToken'] = 'Token ungültig!';
+                $this->data['error'] = TRUE;
+
+            }
         }
 
         if(empty($decode->name))
@@ -195,48 +218,48 @@ class Apibot extends CI_Controller {
 
         if(!$this->data['error'])
         {
-        $result = $this->bot_model->find_ip($decode->name);
-        $count = count($result);
+            $result = $this->bot_model->find_ip($decode->name);
+            $count = count($result);
 
-        if($count < 1)
-        {
-            $this->data['msgName'] = 'Keine Übereinstimmung gefunden!';
-            $this->data['error'] = TRUE;
-        }
-
-        if($count == 1)
-        {
-            $funde = array(
-                'IP' => $result[0]->IP,
-                'Name' => $result[0]->Name,
-                'Rep' => $result[0]->Reputation,
-
-            );
-
-            $this->data['IPFunde'] = $funde;
-            $this->data['msgName'] = 'Ein Eintrag gefunden!';
-            $this->data['error'] = FALSE;
-        }
-
-        if($count > 1 && $count <= 10)
-        {
-            $i = 0;
-            for($i; $i<$count; $i++)
+            if($count < 1)
             {
-                $funde[$i] = array(
-                    'Name' => $result[$i]->Name,
-                );
+                $this->data['msgName'] = 'Keine Übereinstimmung gefunden!';
+                $this->data['error'] = TRUE;
             }
-            $this->data['IPFunde'] = $funde;
-            $this->data['msgName'] = 'Mehrere Einträge gefunden! Bitte Suche einschränken!';
-            $this->data['error'] = FALSE;
-        }
 
-        if($count > 10)
-        {
-            $this->data['msgName'] = 'Zuviele Einträge gefunden! Bitte Suche einschränken!';
-            $this->data['error'] = FALSE;
-        }
+            if($count == 1)
+            {
+                $funde = array(
+                    'IP' => $result[0]->IP,
+                    'Name' => $result[0]->Name,
+                    'Rep' => $result[0]->Reputation,
+
+                );
+
+                $this->data['IPFunde'] = $funde;
+                $this->data['msgName'] = 'Ein Eintrag gefunden!';
+                $this->data['error'] = FALSE;
+            }
+
+            if($count > 1 && $count <= 10)
+            {
+                $i = 0;
+                for($i; $i<$count; $i++)
+                {
+                    $funde[$i] = array(
+                        'Name' => $result[$i]->Name,
+                    );
+                }
+                $this->data['IPFunde'] = $funde;
+                $this->data['msgName'] = 'Mehrere Einträge gefunden! Bitte Suche einschränken!';
+                $this->data['error'] = FALSE;
+            }
+
+            if($count > 10)
+            {
+                $this->data['msgName'] = 'Zuviele Einträge gefunden! Bitte Suche einschränken!';
+                $this->data['error'] = FALSE;
+            }
 
         }
         echo json_encode($this->data);
@@ -246,11 +269,20 @@ class Apibot extends CI_Controller {
     {
         $decode = urldecode($json);
         $decode = json_decode($decode);
-        if($this->bot_model->get_token($decode->token) < 1)
+        if(empty($decode->token))
         {
             $this->data['msgToken'] = 'Token ungültig!';
             $this->data['error'] = TRUE;
+        }
+        else
+        {
+            $counttoken = $this->bot_model->get_token($decode->token);
+            if($counttoken < 1)
+            {
+                $this->data['msgToken'] = 'Token ungültig!';
+                $this->data['error'] = TRUE;
 
+            }
         }
 
         if(empty($decode->discorduser))
@@ -322,44 +354,93 @@ class Apibot extends CI_Controller {
     {
         $decode = urldecode($json);
         $decode = json_decode($decode);
-        if($this->bot_model->get_token($decode->token) < 1)
+
+        if(empty($decode->token))
         {
             $this->data['msgToken'] = 'Token ungültig!';
             $this->data['error'] = TRUE;
-
-        }
-
-        if(empty($decode->discorduser) && !$this->data['error'])
-        {
-            $this->data['msgDiscord'] = 'Discord User nicht angegeben!';
-            $this->data['error'] = TRUE;
         }
         else
         {
+            $counttoken = $this->bot_model->get_token($decode->token);
+            if($counttoken < 1)
+            {
+                $this->data['msgToken'] = 'Token ungültig!';
+                $this->data['error'] = TRUE;
+
+            }
+        }
+
+        if (empty($decode->discorduser)) {
+            $this->data['msgDiscord'] = 'Discord User nicht angegeben!';
+            $this->data['error'] = TRUE;
+        } else {
             $result = $this->bot_model->get_user_by_discord($decode->discorduser);
         }
 
-        if(!$result && !$this->data['error'])
-        {
+        if (!$result && !$this->data['error']) {
             $this->data['msgDiscord'] = 'Discord User nicht gefunden!';
             $this->data['error'] = TRUE;
-        }
-        else
-        {
+        } else {
             $expires = date('Y-m-d', strtotime("+30 days"));
-            $result = $this->bot_model_refresh_user($result[0]->ID, $expires);
-            if($result < 1 )
-            {
+            $result = $this->bot_model->refresh_user($result[0]->ID, $expires);
+            if ($result < 1) {
                 $this->data['msgDiscord'] = 'Account konnte nicht erneuert werden!';
                 $this->data['error'] = TRUE;
-            }
-            else
-            {
+            } else {
                 $this->data['msgDiscord'] = 'Account erfolgreich erneuert!';
                 $this->data['error'] = FALSE;
             }
 
         }
         echo json_encode($this->data);
+    }
+
+    /**
+     * @return array
+     */
+    public function banuser($json)
+    {
+        $decode = urldecode($json);
+        $decode = json_decode($decode);
+        if(empty($decode->token))
+        {
+            $this->data['msgToken'] = 'Token ungültig!';
+            $this->data['error'] = TRUE;
+        }
+        else
+        {
+            $counttoken = $this->bot_model->get_token($decode->token);
+            if($counttoken < 1)
+            {
+                $this->data['msgToken'] = 'Token ungültig!';
+                $this->data['error'] = TRUE;
+
+            }
+        }
+        if (empty($decode->discorduser)) {
+            $this->data['msgDiscord'] = 'Discord User nicht angegeben!';
+            $this->data['error'] = TRUE;
+        } else {
+            $result = $this->bot_model->get_user_by_discord($decode->discorduser);
+        }
+
+        if (!$result && !$this->data['error']) {
+            $this->data['msgDiscord'] = 'Discord User nicht gefunden!';
+            $this->data['error'] = TRUE;
+        } else {
+            $data = array(
+                'Banned' => TRUE,
+
+            );
+            $result = $this->bot_model->ban_user($result[0]->ID, $data);
+            if ($result < 1) {
+                $this->data['msgDiscord'] = 'Account konnte nicht gesperrt werden!';
+                $this->data['error'] = TRUE;
+            } else {
+                $this->data['msgDiscord'] = 'Account erfolgreich gesperrt!';
+                $this->data['error'] = FALSE;
+            }
+        }
     }
 }
