@@ -52,5 +52,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $route['default_controller'] = 'home';
 $route['reset/(:any)'] = 'reset/index/$1';
 $route['apibot/addip/(:any)'] = 'apibot/addip/$1';
+$route['apibot/refreshuser/(:any)'] = 'apibot/refreshuser/$1';
+$route['apibot/registeruser/(:any)'] = 'apibot/registeruser/$1';
+$route['apibot/getip/(:any)'] = 'apibot/getip/$1';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;

@@ -8,10 +8,11 @@ class Bot_model extends CI_Model
 
     }
 
-    public function get_ip($ip){
+    public function get_ip($column, $ip){
         $this->db->from('HackersIP');
-        $this->db->where('IP', $ip);
-        return $this->db->count_all_results();
+        $this->db->where($column, $ip);
+        $query = $this->db->get();
+        return $query->result();
     }
 
     function get_token($token){
@@ -34,6 +35,12 @@ class Bot_model extends CI_Model
         return $this->db->insert_id();
     }
 
+    public function register_user($data)
+    {
+        $this->db->insert('Users', $data);
+        return $this->db->insert_id();
+    }
+    
     function get_user_by_discord($discord)
     {
         $this->db->where('DiscordName', $discord);
@@ -46,15 +53,33 @@ class Bot_model extends CI_Model
         return $this->db->insert('HackersIP', $data);
     }
     
+    function find_ip($data)
+    {
+        $this->db->from('HackersIP');
+        $this->db->like('Name', $data, 'both');
+        $query = $this->db->get();
+        return $query->result();
+    }
+
+    function add_user($data)
+    {
+        return $this->db->insert('HackersIP', $data);
+    }
+    
     function refresh_user($id, $date)
     {
 
             $this->db->set('ExpireDate', $date, FALSE);
             $this->db->where('ID', $id);
             $this->db->update('Users');
+            return $this->db->affected_rows();
 
-        
-        
+    }
+
+    public function update($where, $data)
+    {
+        $this->db->update('HackersIP', $data, $where);
+        return $this->db->affected_rows();
     }
 
 }
