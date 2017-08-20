@@ -10,7 +10,7 @@ class Table extends MY_Controller {
     public function __construct()
     {
         parent::__construct();
-
+        $this->load->model('webhook_model');
         $this->load->model('table_ajax');
 		$this->load->helper('url');
         $this->load->helper('date');
@@ -94,6 +94,13 @@ class Table extends MY_Controller {
             'Last_Updated' => $date,
         );
         $insert = $this->table_ajax->save($data, $this->table);
+        $added = array(
+            'event' => 'addip',
+            'addedby' => $_SESSION['Discord'],
+
+        );
+
+        $this->webhook_model->send(json_encode($added));
         //echo json_encode($insert);
         echo json_encode(array("status" => TRUE));
     }

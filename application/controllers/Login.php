@@ -157,7 +157,8 @@ class Login extends CI_Controller
                         'Role' => $row->Role,
                         'Expired' => $expired,
                         'login' => TRUE,
-                        'Rep' => $row->Reputation
+                        'Rep' => $row->Reputation,
+                        'Discord' => $row->DiscordName
                     );
                     $this->session->set_userdata($sess_array);
                     $this->user_model->update(array('ID' => $row->ID), $data, 'Users');
