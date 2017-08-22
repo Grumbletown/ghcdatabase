@@ -74,7 +74,7 @@ var username = "<?php echo $_SESSION['uname'];?>";
     <!-- End of confirm delete command modal -->
 
     <!-- uncommited changes modal -->
-            <div class="modal fade" id="uncommitedChangesModal" tabindex="-1" role="dialog" aria-labelledby="uncommitedChangesModalLabel">
+            <div class="modal fade" id="uncommittedChangesModal" tabindex="-1" role="dialog" aria-labelledby="uncommittedChangesModalLabel">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -189,7 +189,7 @@ var username = "<?php echo $_SESSION['uname'];?>";
     <!-- End of delete variable modal -->
 
     <div class="form-inline">
-            <div style="margin-right: 15px;" class="form-group col-md-2">
+            <div style="margin-right: 15px;" class="form-group col-md-3">
                 <select id="searchForCommandSelect" style="width: 100%;"></select>
             </div>
             <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#newCommandNameModal" style="margin-right: 5px; margin-bottom: 10px; vertical-align: top;">Add new command</button>

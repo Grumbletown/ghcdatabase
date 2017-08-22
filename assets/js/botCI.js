@@ -1,35 +1,37 @@
 /**
  * @author Jonas Fritsch
- * @file Stores almost all the functionality for the bot controll interface (botCI) to work.
- * @copyright
- * @version 1.0.0.0
+ * @file Stores almost all the functionality for the bot control interface (botCI) to work.
+ * @version 1.1.1.0
+ * ----------------------------------------------------------------------------------------
+ * LAST CHANGES on 22.08.2017:
+ *  -   changed 'dataType: "html"' in ajax calls
  */
 
 
+"use strict";
 
 
-
-// Object 
+// Object
 // the object that stores the commands
 var botCommandObject;
 // Object
 // the object that stores the backup commands
 var botCommandObjectBackup;
-// string 
+// string
 // the currently open command name (formatted to use it in botCommandObject like addIP)
 var openCommand;
 // bool
 // is the open command in edit mode or not
 var inEditMode = false;
-// DOM-Element 
+// DOM-Element
 // stores the add Variable button that was last clicked
 var lastClickedAddVariableBtn;
 // DOM-Element
 // stores the variables container that was last opened
-var lastOpendVarContainer;
+var lastOpenedVarContainer;
 // bool
 // is a command open
-var jumbotronIsOpen = false;
+var commandIsOpen = false;
 // bool
 // is the new command modal open
 var newCommandIsOpen = false;
@@ -44,33 +46,34 @@ var editModeCommandNew = false;
 
 
 
-/** * This function gets called immediatly when the page has finished loading * 1. Activate 'select2' for <select> element and adds 'onChange' Event Listener
- * 2. Fill the botCommandObject with the data from the botCommands.json file and fills the <select> element 
+/**
+ * This function gets called immediately when the page has finished loading
+ * 1. Activate 'select2' for <select> element and adds 'onChange' Event Listener
+ * 2. Fill the botCommandObject with the data from the botCommands.json file and fills the <select> element
  */
 $(document).ready(function() {
-    var select = $("#searchForCommandSelect").select2({
-        placeholder: 'Select a command',
+    var searchForCommandSelect = $("#searchForCommandSelect");
+    searchForCommandSelect.select2({
+        placeholder: 'Select a command'
     }).on("change", function(event, change = true) { //'onChange' Event Listener of the <select> element.
         if (change) {
             //checks if the openBotCommand has any changes
             if (commandHasChanges()) {
-                //changes --> öffne modal
-                $('#uncommitedChangesModal').modal('show');
-                $('#discardChangesButton').attr("onclick", "updateJumbotron()");
-                $('#resetButtonChanges').attr("onclick", "changeSelect2Back()");
+                //changes --> open modal
+                $('#uncommittedChangesModal').modal('show');
+                $('#discardChangesButton').attr("onclick", "showJumbotron(searchForCommandSelect.val())");
+                $('#resetButtonChanges').attr("onclick", 'searchForCommandSelect.val(openCommand).trigger("change")');
             } else {
-                //keine changes, einfach das neue öffnen
-                showJumbotron($("#searchForCommandSelect").val());
+                //no changes --> open new command
+                showJumbotron(searchForCommandSelect.val());
             }
-        } else {
-            return;
         }
     });
 
-    $("#newCommandNameModal").on("shown.bs.modal", function(e) {
+    $("#newCommandNameModal").on("shown.bs.modal", function() {
         newCommandIsOpen = true;
         checkNewCommandName(document.getElementById("newCommandName"));
-    }).on("hidden.bs.modal", function(e) {
+    }).on("hidden.bs.modal", function() {
         newCommandIsOpen = false;
     });
     //modal z-order
@@ -98,18 +101,12 @@ $(document).ready(function() {
 
 /**
  * Checks if any answer inside the bot command has changed
- * @returns true if it has changed Answers
- * @returns false no answers of this botCommand were changed
+ * @returns {boolean} true if it has changed Answers
+ * @returns {boolean} false if no answers of this botCommand were changed
  */
 function commandHasChanges() {
-    if (jumbotronIsOpen) {
-        if (document.getElementById("commitChanges").disabled) {
-            //no changes
-            return false;
-        } else {
-            //changes
-            return true;
-        }
+    if (commandIsOpen) {
+        return !document.getElementById("commitChanges").disabled;
     } else {
         return false;
     }
@@ -126,7 +123,7 @@ function answerHasChanges(name) {
     var newOutput = $("#newOutput" + name);
     var oldOutput = $("#oldOutput" + name);
 
-    if (newOutput.val().localeCompare(oldOutput.val()) != 0) {
+    if (newOutput.val().localeCompare(oldOutput.val()) !== 0) {
         //Yes --> replace class 'unchanged' with 'changed'
         toggleAnswerButton.addClass('changed').removeClass('unchanged');
         answer.addClass('changed').removeClass('unchanged');
@@ -136,15 +133,11 @@ function answerHasChanges(name) {
         answer.addClass('unchanged').removeClass('changed');
     }
 
-    if (!$(".changed")[0]) {
-        document.getElementById("commitChanges").disabled = true;
-    } else {
-        document.getElementById("commitChanges").disabled = false;
-    }
+    document.getElementById("commitChanges").disabled = !$(".changed")[0];
 }
 
 /**
- * Adds an 'onKeyUp' Event Listener to every newOutput <textarea> element 
+ * Adds an 'onKeyUp' Event Listener to every newOutput <textarea> element
  * If the Listener gets triggered it executes the answerHasChanges function
  */
 function addNewOutputListener(name) {
@@ -154,45 +147,21 @@ function addNewOutputListener(name) {
 }
 
 /**
- * Changes the selected command in the <select> element to the last open command
- */
-function changeSelect2Back() {
-    $("#searchForCommandSelect").val(openCommand).trigger("change");
-}
-
-/**
- * Shows jumbotron of the current selected option of the <select> element
- */
-function updateJumbotron() {
-    showJumbotron($("#searchForCommandSelect").val());
-}
-
-/**
  * Checks if there are any errors
  * If not the button with @param id property disabled = false
  * Else button property disabled = true
  */
 function setCommitButton(newCommandCommit) {
     if (newCommandCommit) {
-        var errors = $(".newCommandError");
-        if (errors.length == 0) {
-            $("#commitNewCommandButton").prop("disabled", false);
-        } else {
-            $("#commitNewCommandButton").prop("disabled", true);
-        }
+        $("#commitNewCommandButton").prop("disabled", !($(".newCommandError").length === 0));
     } else {
-        var errors = $(".openCommandError");
-        if (errors.length == 0) {
-            editModeCommandErrors = false;
-        } else {
-            editModeCommandErrors = true;
-        }
+        editModeCommandErrors = !($(".openCommandError").length === 0);
         setCommitChangesBtnEditMode();
     }
 }
 
 /**
- * Checks the current name of the new command 
+ * Checks the current name of the new command
  */
 function checkNewCommandName(element) {
     var unique = true;
@@ -248,7 +217,7 @@ function checkNewCommandName(element) {
 }
 
 /**
- * Checks the current answer name of @param answer 
+ * Checks the current answer name of @param answer
  */
 function checkNewAnswerNameJumbotron(answer) {
     var unique = true;
@@ -280,9 +249,9 @@ function checkNewAnswerNameJumbotron(answer) {
     }
 
     if (!newCommandIsOpen) {
-        var answerNames = $(".commandAnswer");
-        for (var i = 0; i < answerNames.length; i++) {
-            if (answerNames[i].value === name && answer !== answerNames[i]) {
+        var commandAnswer = $(".commandAnswer");
+        for (var b = 0; b < commandAnswer.length; b++) {
+            if (commandAnswer[b].value === name && answer !== commandAnswer[b]) {
                 unique = false;
             }
         }
@@ -342,13 +311,14 @@ function checkNewAnswerNameJumbotron(answer) {
  * Shows the jumbotron of the @param command and fills it with the data of the botCommandObject
  */
 function showJumbotron(command) {
-    jumbotronIsOpen = true;
+    commandIsOpen = true;
     openCommand = command;
 
     createJumbotron(command);
 
-    //build inputs for command
-    //für jedes objekt im command objekt ein div in answersContainer hinzufügen mit aufklappbaren Inhalt (Neue Antwort, Alte Antwort, Verfügbare Variablen)
+    //build UI based on selected command
+    //adds for each object inside the command object an answer div in the answerContainer
+    //with other toggleable content (new answer textarea, old answer textarea, available variables)
     var container = $("#answersContainer");
     for (var i = 0; i < Object.keys(botCommandObject[command]).length; i++) {
         var commandName = Object.keys(botCommandObject[command])[i];
@@ -377,14 +347,16 @@ function showJumbotron(command) {
     $('[data-toggle="tooltip"]').tooltip();
 }
 
+// noinspection JSUnusedGlobalSymbols
 /**
  * Closes the uncommited changes and the new command modal
  */
 function closeUCAndNCModals() {
-    $('#uncommitedChangesModal').modal('hide');
+    $('#uncommittedChangesModal').modal('hide');
     $("#newCommandNameModal").modal("hide");
 }
 
+// noinspection JSUnusedGlobalSymbols
 /**
  * OnClick method for commit new command button
  */
@@ -400,7 +372,7 @@ function commitNewCommandButton() {
         //changes -> öffne modal
         $('#resetButtonChanges').attr("onclick", "closeUCAndNCModals()");
         $('#discardChangesButton').attr("onclick", "commitNewCommand()");
-        $('#uncommitedChangesModal').modal('show');
+        $('#uncommittedChangesModal').modal('show');
     } else {
         commitNewCommand();
     }
@@ -413,23 +385,21 @@ function commitNewCommand() {
     var commandName = $('#newCommandName').val();
 
     try {
-        botCommandObject[commandName] = new Object();
-        botCommandObjectBackup[commandName] = new Object();
-
-        var now = new Date();
+        botCommandObject[commandName] = {};
+        botCommandObjectBackup[commandName] = {};
 
         $(".newAnswerName").each(function(i, e) {
             var answerName = $(e).val();
             var answerDefaultOutput = $(e).closest(".row").next("div").children("div").eq(0).children("textarea").val();
 
-            botCommandObject[commandName][answerName] = new Object();
+            botCommandObject[commandName][answerName] = {};
             botCommandObject[commandName][answerName]["answer"] = answerDefaultOutput;
-            botCommandObject[commandName][answerName]["variables"] = new Object();
+            botCommandObject[commandName][answerName]["variables"] = {};
             botCommandObject[commandName][answerName]["lastChangedAnswer"] = "Default Output";
 
-            botCommandObjectBackup[commandName][answerName] = new Object();
+            botCommandObjectBackup[commandName][answerName] = {};
             botCommandObjectBackup[commandName][answerName]["answer"] = answerDefaultOutput;
-            botCommandObjectBackup[commandName][answerName]["variables"] = new Object();
+            botCommandObjectBackup[commandName][answerName]["variables"] = {};
             botCommandObjectBackup[commandName][answerName]["lastChangedAnswer"] = "Default Output";
 
             $(".availableVariable", $(e).closest(".row").next("div").children("div").eq(1)).each(function(i, e) {
@@ -456,71 +426,18 @@ function commitNewCommand() {
     }
     $('#newCommandNameModal').modal('hide');
 
-    $.ajax({
-        url: botCIPHPURL + "writeBotCommands/",
-        type: "POST",
-        data: { "botCommandJSON": JSON.stringify(botCommandObject) },
-        dataType: "JSON",
-        success: function(data) {
-            alert("ajax method | Success ajax call")
-            console.log("///////////////////////////////////////////");
-            console.log("JQuery ajax method");
-            console.log("///////////////////////////////////////////");
-            console.log("ajax:");
-            console.log(data);
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-            alert('ajax method | Error posting Data (Look inside the console!)');
-            console.log("///////////////////////////////////////////");
-            console.log("JQuery ajax method");
-            console.log("///////////////////////////////////////////");
-            console.log("jqXHR:");
-            console.log(jqXHR);
-            console.log("textStatus:");
-            console.log(textStatus);
-            console.log("errorThrown:");
-            console.log(errorThrown);
-            console.log("json string:");
-            console.log(JSON.stringify(botCommandObject));
-        }
-    });
-    $.ajax({
-        url: botCIPHPURL + "writeBotCommandsBackup/",
-        type: "POST",
-        data: { "botCommandJSONBackup": JSON.stringify(botCommandObjectBackup) },
-        dataType: "JSON",
-        success: function(data) {
-            alert("ajax method | Success ajax call")
-            console.log("///////////////////////////////////////////");
-            console.log("JQuery ajax method");
-            console.log("///////////////////////////////////////////");
-            console.log("ajax:");
-            console.log(data);
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-            alert('ajax method | Error posting Data (Look inside the console!)');
-            console.log("///////////////////////////////////////////");
-            console.log("JQuery ajax method");
-            console.log("///////////////////////////////////////////");
-            console.log("jqXHR:");
-            console.log(jqXHR);
-            console.log("textStatus:");
-            console.log(textStatus);
-            console.log("errorThrown:");
-            console.log(errorThrown);
-            console.log("json string:");
-            console.log(JSON.stringify(botCommandObject));
-        }
-    });
+    postBotCommandsObject();
+    postBotCommandsObjectBackup();
 
     document.getElementById("jumbotronContainer").innerHTML = "";
-    jumbotronIsOpen = false;
+    commandIsOpen = false;
 
     document.getElementById("searchForCommandSelect").innerHTML = "";
 
     fillSelect();
 }
 
+// noinspection JSUnusedGlobalSymbols
 /**
  * Adds another answer field to the new command modal
  */
@@ -563,20 +480,20 @@ function addAnswer() {
         '</div>' +
         '</div>' +
         '</span>'
-    )
+    );
 
     setCommitButton(true);
 }
 
 /**
- * @return the UTC Time in format hours:minutes
+ * @return {string} the UTC Time in format hours:minutes
  */
 function getCurUTCTime(curDate) {
     return curDate.getUTCHours() + ":" + ((curDate.getUTCMinutes() < 10) ? "0" : "") + curDate.getUTCMinutes();
 }
 
 /**
- * @return the UTC Date in format dd.mm.yyyy
+ * @return {string} the UTC Date in format dd.mm.yyyy
  */
 function getCurUTCDate(curDate) {
     return curDate.getUTCDate() + "." + (curDate.getUTCMonth() + 1) + "." + curDate.getUTCFullYear();
@@ -609,10 +526,10 @@ function toggleDivNewAnswer(element) {
  */
 function editCommandButton() {
     if (commandHasChanges()) {
-        //changes -> öffne modal
-        $('#resetButtonChanges').attr("onclick", "$('#uncommitedChangesModal').modal('hide');");
+        //changes -> open modal
+        $('#resetButtonChanges').attr("onclick", "$('#uncommittedChangesModal').modal('hide');");
         $('#discardChangesButton').attr("onclick", "editCommand()");
-        $('#uncommitedChangesModal').modal('show');
+        $('#uncommittedChangesModal').modal('show');
     } else {
         editCommand();
     }
@@ -623,23 +540,24 @@ function editCommandButton() {
  */
 function editCommand() {
     inEditMode = true;
+    var commandAnswer = $(".commandAnswer");
 
     $("#commitChanges").prop('disabled', true);
 
     $(".deleteAnswerContainer").each(function(index) {
         $(this).css("display", "table-cell");
-    })
+    });
 
-    $(".commandAnswer").each(function(index) {
+    commandAnswer.each(function() {
         $(this).prop('disabled', false);
         $(this).addClass("oldAnswerEdit");
-    })
+    });
 
-    $(".commitChanges").each(function(index) {
+    $(".commitChanges").each(function() {
         $(this).prop('disabled', false);
-    })
+    });
 
-    $(".variablesLabel").each(function(index) {
+    $(".variablesLabel").each(function() {
         $(this).html(
             '<span style="margin-right: 10px;">Available variables</span>' +
             '<button style="margin-right: 10px;" class="btn btn-success btn-xs" onclick="openAddVariableJumbotron(this)">' +
@@ -649,23 +567,23 @@ function editCommand() {
             '<span class="fa fa-minus" aria-hidden="true"></span>' +
             '</button>'
         )
-    })
+    });
 
-    $(".commandAnswer").each(function() {
+    commandAnswer.each(function() {
         if ($(this).hasClass("changed")) {
             $(this).toggleClass("changed unchanged");
         }
-    })
+    });
 
     $(".toggleAnswer").each(function() {
         if ($(this).hasClass("changed")) {
             $(this).toggleClass("changed unchanged");
         }
-    })
+    });
 
-    $(".answerInputFields").each(function(index) {
+    $(".answerInputFields").each(function() {
         $(this).css("display", "none");
-    })
+    });
 
     $("#addAnswerToJumbotronBtn").css("display", "inline-block");
 
@@ -729,43 +647,15 @@ function changeBotCommand() {
             for (var i = 0; i < Object.keys(botCommandObject[command]).length; i++) {
                 var answerName = Object.keys(botCommandObject[command])[i];
                 if ($("#toggle" + answerName + "button").hasClass("changed")) {
-                    var newOutput = $("#newOutput" + answerName).val();
-                    botCommandObject[command][answerName].answer = newOutput;
+                    botCommandObject[command][answerName].answer = $("#newOutput" + answerName).val();
                     botCommandObject[command][answerName].lastChangedAnswer = "Last Changed at " + getCurUTCTime(now) + " on " + getCurUTCDate(now) + " (UTC) by " + username;
                 }
             }
 
-            $.ajax({
-                url: botCIPHPURL + "writeBotCommands/",
-                type: "POST",
-                data: { "botCommandJSON": JSON.stringify(botCommandObject) },
-                dataType: "JSON",
-                success: function(data) {
-                    alert("ajax method | Success ajax call")
-                    console.log("///////////////////////////////////////////");
-                    console.log("JQuery ajax method");
-                    console.log("///////////////////////////////////////////");
-                    console.log("ajax:");
-                    console.log(data);
-                },
-                error: function(jqXHR, textStatus, errorThrown) {
-                    alert('ajax method | Error posting Data (Look inside the console!)');
-                    console.log("///////////////////////////////////////////");
-                    console.log("JQuery ajax method");
-                    console.log("///////////////////////////////////////////");
-                    console.log("jqXHR:");
-                    console.log(jqXHR);
-                    console.log("textStatus:");
-                    console.log(textStatus);
-                    console.log("errorThrown:");
-                    console.log(errorThrown);
-                    console.log("json string:");
-                    console.log(JSON.stringify(botCommandObject));
-                }
-            });
+            postBotCommandsObject();
 
             document.getElementById("jumbotronContainer").innerHTML = "";
-            jumbotronIsOpen = false;
+            commandIsOpen = false;
 
             $('#searchForCommandSelect').val('').trigger('change', [false]);
 
@@ -788,7 +678,7 @@ function changeBotCommand() {
         //delete command object in botCommandJSON
         try {
             delete botCommandObject[openCommand];
-            botCommandObject[openCommand] = new Object();
+            botCommandObject[openCommand] = {};
 
 
             //add each default answer
@@ -797,17 +687,16 @@ function changeBotCommand() {
                 var answerOutput = $(e).closest(".row").next("div").children("div").eq(0).children("div").eq(0).children("textarea").val();
                 var lastChangedText = $(e).closest(".row").next("div").children("div").eq(0).children("div").eq(1).children("small").text();
 
-                botCommandObject[openCommand][answerName] = new Object();
+                botCommandObject[openCommand][answerName] = {};
                 //add answer key and value to answer object
                 botCommandObject[openCommand][answerName]["answer"] = answerOutput;
                 //add variables object
-                botCommandObject[openCommand][answerName]["variables"] = new Object();
+                botCommandObject[openCommand][answerName]["variables"] = {};
                 botCommandObject[openCommand][answerName]["lastChangedAnswer"] = lastChangedText;
                 //add each variable object
                 $(".availableVariable", $(e).closest(".row").next("div").children("div").eq(1).children("div")).each(function(i, e) {
                     var variableName = e.innerHTML;
-                    var variableIdentifier = $(e).attr("data-original-title");
-                    botCommandObject[openCommand][answerName]["variables"][variableName] = variableIdentifier;
+                    botCommandObject[openCommand][answerName]["variables"][variableName] = $(e).attr("data-original-title");
 
                 })
             });
@@ -818,18 +707,17 @@ function changeBotCommand() {
                 var answerOutput = $(e).closest(".row").next("div").children("div").eq(0).children("textarea").val();
                 var lastChangedText = $(e).closest(".row").next("div").children("div").eq(0).children("div").eq(1).children("small").text();
 
-                botCommandObject[openCommand][answerName] = new Object();
+                botCommandObject[openCommand][answerName] = {};
                 //add answer key and value to answer object
                 botCommandObject[openCommand][answerName]["answer"] = answerOutput;
                 //add variables object
-                botCommandObject[openCommand][answerName]["variables"] = new Object();
+                botCommandObject[openCommand][answerName]["variables"] = {};
                 botCommandObject[openCommand][answerName]["lastChangedAnswer"] = "";
                 botCommandObject[openCommand][answerName]["lastChangedAnswer"] = lastChangedText;
                 //add each variable object
                 $(".availableVariable", $(e).closest(".row").next("div").children("div").eq(1)).each(function(i, e) {
                     var variableName = e.innerHTML;
-                    var variableIdentifier = $(e).attr("data-original-title");
-                    botCommandObject[openCommand][answerName]["variables"][variableName] = variableIdentifier;
+                    botCommandObject[openCommand][answerName]["variables"][variableName] = $(e).attr("data-original-title");
 
                 })
             });
@@ -850,37 +738,10 @@ function changeBotCommand() {
                 '</div>';
         }
 
-        $.ajax({
-            url: botCIPHPURL + "writeBotCommands/",
-            type: "POST",
-            data: { "botCommandJSON": JSON.stringify(botCommandObject) },
-            dataType: "JSON",
-            success: function(data) {
-                alert("ajax method | Success ajax call")
-                console.log("///////////////////////////////////////////");
-                console.log("JQuery ajax method");
-                console.log("///////////////////////////////////////////");
-                console.log("ajax:");
-                console.log(data);
-            },
-            error: function(jqXHR, textStatus, errorThrown) {
-                alert('ajax method | Error posting Data (Look inside the console!)');
-                console.log("///////////////////////////////////////////");
-                console.log("JQuery ajax method");
-                console.log("///////////////////////////////////////////");
-                console.log("jqXHR:");
-                console.log(jqXHR);
-                console.log("textStatus:");
-                console.log(textStatus);
-                console.log("errorThrown:");
-                console.log(errorThrown);
-                console.log("json string:");
-                console.log(JSON.stringify(botCommandObject));
-            }
-        });
+        postBotCommandsObject();
 
         document.getElementById("jumbotronContainer").innerHTML = "";
-        jumbotronIsOpen = false;
+        commandIsOpen = false;
         inEditMode = false;
         editModeCommandErrors = false;
         editModeCommandNew = false;
@@ -954,6 +815,7 @@ function openDeleteCommandModal() {
     $('#commandToDeleteName').html(openCommand);
 }
 
+// noinspection JSUnusedGlobalSymbols
 /**
  * Deletes the open command
  */
@@ -962,37 +824,10 @@ function deleteCommand() {
 
     delete botCommandObject[openCommand];
 
-    $.ajax({
-        url: botCIPHPURL + "writeBotCommands/",
-        type: "POST",
-        data: { "botCommandJSON": JSON.stringify(botCommandObject) },
-        dataType: "JSON",
-        success: function(data) {
-            alert("ajax method | Success ajax call")
-            console.log("///////////////////////////////////////////");
-            console.log("JQuery ajax method");
-            console.log("///////////////////////////////////////////");
-            console.log("ajax:");
-            console.log(data);
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-            alert('ajax method | Error posting Data (Look inside the console!)');
-            console.log("///////////////////////////////////////////");
-            console.log("JQuery ajax method");
-            console.log("///////////////////////////////////////////");
-            console.log("jqXHR:");
-            console.log(jqXHR);
-            console.log("textStatus:");
-            console.log(textStatus);
-            console.log("errorThrown:");
-            console.log(errorThrown);
-            console.log("json string:");
-            console.log(JSON.stringify(botCommandObject));
-        }
-    });
+    postBotCommandsObject();
 
     document.getElementById("jumbotronContainer").innerHTML = "";
-    jumbotronIsOpen = false;
+    commandIsOpen = false;
 
     document.getElementById("searchForCommandSelect").innerHTML = "";
 
@@ -1006,12 +841,15 @@ function deleteCommand() {
 }
 
 /**
- * Creates a new answer form inside the @param container with the 
- * @param commandName and the @param oldCommandAnswer
- * !!! commandName ist hier eigentlich answerName
  * Only for the createJumbotron method
+ *
+ * Creates a new answer form inside the
+ * @param container with the
+ * @param answerName and the
+ * @param oldCommandAnswer with the
+ * @param lastChangedAnswer attribut
  */
-function createAnswer(container, commandName, oldCommandAnswer, lastChangedAnswer) {
+function createAnswer(container, answerName, oldCommandAnswer, lastChangedAnswer) {
     container.append(
         '<span>' +
         '<div class="row">' +
@@ -1019,30 +857,30 @@ function createAnswer(container, commandName, oldCommandAnswer, lastChangedAnswe
         '<span class="deleteAnswerContainer input-group-btn" style="display: none; border: 1px solid black; background-color: #e74c3c; padding-right: 5px; padding-left: 5px;">' +
         '<button class="btn btn-danger btn-xs" onclick="deleteAnswer(this)"><span class="fa fa-trash-o fa-2x" aria-hidden="true"></span></button>' +
         '</span>' +
-        '<input disabled onkeyup="checkNewAnswerNameJumbotron(this)" value="' + commandName + '" type="text" class="form-control form-control-sm commandAnswer unchanged" id="' + commandName + 'Answer" placeholder="Enter answer`s name">' +
+        '<input disabled onkeyup="checkNewAnswerNameJumbotron(this)" value="' + answerName + '" type="text" class="form-control form-control-sm commandAnswer unchanged" id="' + answerName + 'Answer" placeholder="Enter answer`s name">' +
         '<span class="input-group-btn" style="border: 1px solid black; margin-right: 15px;">' +
-        '<button onclick="toggleAnswerJumbotron(this)" class="btn btn-default toggleAnswer expand closed unchanged" id="toggle' + commandName + 'button" type="button" style="padding-right: 10px; border: 0px; background-position: center; padding-left: 50px;">&nbsp; </button>' +
+        '<button onclick="toggleAnswerJumbotron(this)" class="btn btn-default toggleAnswer expand closed unchanged" id="toggle' + answerName + 'button" type="button" style="padding-right: 10px; border: 0px; background-position: center; padding-left: 50px;">&nbsp; </button>' +
         '</span>' +
         '</div>' +
         '<div class="col-xs-10 col-sm-10 col-md-5 col-lg-5" style="margin-top: 25px; margin-bottom: 15px;">' +
         '<div class="inputFeedbackDanger" id="answerNameFeedback"></div>' +
         '</div>' +
         '</div>' +
-        '<div class="answer ' + commandName + '" style="display: none; margin-left: 25px;">' +
+        '<div class="answer ' + answerName + '" style="display: none; margin-left: 25px;">' +
         '<div class="answerInputFields">' +
         '<div class="form-group">' +
-        '<label for="newOutput' + commandName + '">New output</label>' +
-        '<textarea class="form-control" placeholder="Insert Text" id="newOutput' + commandName + '" rows="3" required>' + oldCommandAnswer + '</textarea>' +
+        '<label for="newOutput' + answerName + '">New output</label>' +
+        '<textarea class="form-control" placeholder="Insert Text" id="newOutput' + answerName + '" rows="3" required>' + oldCommandAnswer + '</textarea>' +
         '</div>' +
         '<div class="form-group">' +
-        '<label for="oldOutput' + commandName + '">Old output</label>' +
+        '<label for="oldOutput' + answerName + '">Old output</label>' +
         '<small>' + lastChangedAnswer + '</small>' +
-        '<textarea class="form-control" readonly id="oldOutput' + commandName + '" rows="3" required>' + oldCommandAnswer + '</textarea>' +
+        '<textarea class="form-control" readonly id="oldOutput' + answerName + '" rows="3" required>' + oldCommandAnswer + '</textarea>' +
         '</div>' +
         '</div>' +
-        '<div class="form-group" id="varsFormGroup' + commandName + '">' +
-        '<label for="variablesContainer' + commandName + '" class="variablesLabel">Available variables</label>' +
-        '<div id="variablesContainer' + commandName + '" class="varContainer">' +
+        '<div class="form-group" id="varsFormGroup' + answerName + '">' +
+        '<label for="variablesContainer' + answerName + '" class="variablesLabel">Available variables</label>' +
+        '<div id="variablesContainer' + answerName + '" class="varContainer">' +
         '</div>' +
         '</div>' +
         '</span>'
@@ -1050,15 +888,16 @@ function createAnswer(container, commandName, oldCommandAnswer, lastChangedAnswe
 }
 
 /**
- * Creates a new available variable form inside the @param varsContainer 
+ * Creates a new available variable form inside the @param varsContainer
  * with the @param varName and with the @param varIdentifier
  */
 function createAvailableVariable(varsContainer, varName, varIdentifier) {
     varsContainer.append(
-        '<button type="button" class="btn btn-link availableVariable" href="#" data-toggle="tooltip" data-placement="bottom" title="' + varName + '">' + varIdentifier + '</button>'
+        '<button type="button" class="btn btn-link availableVariable" data-toggle="tooltip" data-placement="bottom" title="' + varName + '">' + varIdentifier + '</button>'
     );
 }
 
+// noinspection JSUnusedGlobalSymbols
 /**
  * Adds a new variable to a jumbotron or the new command modal
  */
@@ -1066,10 +905,10 @@ function addVariable() {
     var varIdentifier = $('#newVariableIdentifier').val();
     var varDefinition = $('#newVariableDescription').val();
     $(lastClickedAddVariableBtn).closest("label").next("div").prepend(
-        '<button type="button" class="btn btn-link availableVariable" href="#" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="' + varDefinition + '">' +
+        '<button type="button" class="btn btn-link availableVariable" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="' + varDefinition + '">' +
         varIdentifier +
         '</button>'
-    )
+    );
     $('#addVariable').modal('hide');
     $('[data-toggle="tooltip"]').tooltip();
 
@@ -1082,8 +921,8 @@ function addVariable() {
  * Checks if the edit mode command has changed
  */
 function checkCommandInEditMode() {
-    var editCommand = new Object();
-    editCommand[openCommand] = new Object();
+    var editCommand = {};
+    editCommand[openCommand] = {};
 
     //add each default answer
     $(".oldAnswerEdit").each(function(i, e) {
@@ -1091,17 +930,16 @@ function checkCommandInEditMode() {
         var answerOutput = $(e).closest(".row").next("div").children("div").eq(0).children("div").eq(0).children("textarea").val();
         var lastChangedText = $(e).closest(".row").next("div").children("div").eq(0).children("div").eq(1).children("small").text();
 
-        editCommand[openCommand][answerName] = new Object();
+        editCommand[openCommand][answerName] = {};
         //add answer key and value to answer object
         editCommand[openCommand][answerName]["answer"] = answerOutput;
         editCommand[openCommand][answerName]["lastChangedAnswer"] = lastChangedText;
         //add variables object
-        editCommand[openCommand][answerName]["variables"] = new Object();
+        editCommand[openCommand][answerName]["variables"] = {};
         //add each variable object
         $(".availableVariable", $(e).closest(".row").next("div").children("div").eq(1).children("div")).each(function(i, e) {
             var variableName = e.innerHTML;
-            var variableIdentifier = $(e).attr("data-original-title");
-            editCommand[openCommand][answerName]["variables"][variableName] = variableIdentifier;
+            editCommand[openCommand][answerName]["variables"][variableName] = $(e).attr("data-original-title");
 
         })
     });
@@ -1112,27 +950,22 @@ function checkCommandInEditMode() {
         var answerOutput = $(e).closest(".row").next("div").children("div").eq(0).children("textarea").val();
         var lastChangedText = $(e).closest(".row").next("div").children("div").eq(0).children("div").eq(1).children("small").text();
 
-        editCommand[openCommand][answerName] = new Object();
+        editCommand[openCommand][answerName] = {};
         //add answer key and value to answer object
         editCommand[openCommand][answerName]["answer"] = answerOutput;
         editCommand[openCommand][answerName]["lastChangedAnswer"] = lastChangedText;
         //add variables object
-        editCommand[openCommand][answerName]["variables"] = new Object();
+        editCommand[openCommand][answerName]["variables"] = {};
 
         //add each variable object
         $(".availableVariable", $(e).closest(".row").next("div").children("div").eq(1)).each(function(i, e) {
             var variableName = e.innerHTML;
-            var variableIdentifier = $(e).attr("data-original-title");
-            editCommand[openCommand][answerName]["variables"][variableName] = variableIdentifier;
+            editCommand[openCommand][answerName]["variables"][variableName] = $(e).attr("data-original-title");
 
         })
     });
 
-    if (JSON.stringify(editCommand[openCommand]) !== JSON.stringify(botCommandObject[openCommand])) {
-        editModeCommandNew = true;
-    } else {
-        editModeCommandNew = false;
-    }
+    editModeCommandNew = (JSON.stringify(editCommand[openCommand]) !== JSON.stringify(botCommandObject[openCommand]));
 
     setCommitChangesBtnEditMode();
 }
@@ -1166,11 +999,11 @@ function openDeleteVariableModal(element) {
     lastClickedAddVariableBtn = element;
     $('#deleteVariable').modal('show');
 
-    lastOpendVarContainer = $(element).closest("label").next("div");
+    lastOpenedVarContainer = $(element).closest("label").next("div");
     var deleteVarContainer = $("#deleteVariableContainer");
     deleteVarContainer.html("");
 
-    $(".availableVariable", lastOpendVarContainer).each(function(key, value) {
+    $(".availableVariable", lastOpenedVarContainer).each(function(key, value) {
         var varName = value.innerHTML;
         deleteVarContainer.append(
             '<tr><th style="font-size: 18px;">' + varName + '</th>' +
@@ -1186,9 +1019,9 @@ function openDeleteVariableModal(element) {
 function deleteVariable(btn) {
     var varNameToDelete = $(btn).attr('id');
     $(btn).closest("td").closest("tr").remove();
-    $(".availableVariable", lastOpendVarContainer).each(function(key, value) {
+    $(".availableVariable", lastOpenedVarContainer).each(function(key, value) {
         var varName = value.innerHTML;
-        if (varName == varNameToDelete) {
+        if (varName === varNameToDelete) {
             $(value).remove();
         }
     });
@@ -1211,7 +1044,7 @@ function addAnswerToJumbotron() {
         '</span>' +
         '<input type="text" onkeyup="checkNewAnswerNameJumbotron(this)" class="form-control form-control-sm commandAnswer unchanged openCommandError newAnswerEdit" id="newAnswerAnswer" placeholder="Enter answer`s name">' +
         '<span class="input-group-btn" style="border: 1px solid black; margin-right: 15px;">' +
-        '<button onclick="toggleAnswerJumbotron(this)" class="btn btn-default toggleAnswer expand closed unchanged" id="toggleNewAnswerbutton" type="button" style="padding-right: 10px; border: 0px; background-position: center; padding-left: 50px;">&nbsp; </button>' +
+        '<button onclick="toggleAnswerJumbotron(this)" class="btn btn-default toggleAnswer expand closed unchanged" id="toggleNewAnswerbutton" type="button" style="padding-right: 10px; border: 0; background-position: center; padding-left: 50px;">&nbsp; </button>' +
         '</span>' +
         '</div>' +
         '<div class="col-xs-10 col-sm-10 col-md-5 col-lg-5" style="margin-top: 25px; margin-bottom: 15px;">' +
@@ -1235,7 +1068,7 @@ function addAnswerToJumbotron() {
         '</div>' +
         '</div>' +
         '</span>'
-    )
+    );
     checkCommandInEditMode();
     setCommitButton(false);
 
@@ -1249,11 +1082,12 @@ function toggleAnswerJumbotron(element) {
     $(element).toggleClass("closed open");
 }
 
+// noinspection JSUnusedGlobalSymbols
 /**
  * Checks the input of the 'reset bot commands' object
  */
 function checkResetInput(text) {
-    if (text == "RESET") {
+    if (text === "RESET") {
         document.getElementById("resetButton").disabled = false;
     } else {
         if (!document.getElementById("resetButton").disabled) {
@@ -1285,9 +1119,7 @@ function checkVariableIdentifier(element) {
         if (e.innerHTML === name) {
             unique = false;
         }
-    })
-
-
+    });
 
     if (unique) {
         feedback.text("");
@@ -1304,6 +1136,7 @@ function checkVariableIdentifier(element) {
     }
 }
 
+// noinspection JSUnusedGlobalSymbols
 /**
  * Resets all bot commands and resorts the botCI's content
  */
@@ -1311,39 +1144,12 @@ function resetBotCommands() {
     $.getJSON(botCommandsFolderURL + language + "/botCommandsBackup.json").then(function(data) {
         botCommandObject = data;
 
-        $.ajax({
-            url: botCIPHPURL + "writeBotCommands/",
-            type: "POST",
-            data: { "botCommandJSON": JSON.stringify(botCommandObject) },
-            dataType: "JSON",
-            success: function(data) {
-                alert("ajax method | Success ajax call")
-                console.log("///////////////////////////////////////////");
-                console.log("JQuery ajax method");
-                console.log("///////////////////////////////////////////");
-                console.log("ajax:");
-                console.log(data);
-            },
-            error: function(jqXHR, textStatus, errorThrown) {
-                alert('ajax method | Error posting Data (Look inside the console!)');
-                console.log("///////////////////////////////////////////");
-                console.log("JQuery ajax method");
-                console.log("///////////////////////////////////////////");
-                console.log("jqXHR:");
-                console.log(jqXHR);
-                console.log("textStatus:");
-                console.log(textStatus);
-                console.log("errorThrown:");
-                console.log(errorThrown);
-                console.log("json string:");
-                console.log(JSON.stringify(botCommandObject));
-            }
-        });
+        postBotCommandsObject();
 
         document.getElementById("searchForCommandSelect").innerHTML = "";
         document.getElementById("jumbotronContainer").innerHTML = "";
 
-        jumbotronIsOpen = false;
+        commandIsOpen = false;
 
         fillSelect();
 
@@ -1354,5 +1160,57 @@ function resetBotCommands() {
             '<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>' +
             '<strong>Reset bot commands!</strong>' +
             '</div>';
+    });
+}
+
+/**
+ * POST botCommandsObject
+ */
+function postBotCommandsObject() {
+    $.ajax({
+        url: botCIPHPURL + "writeBotCommands/",
+        type: "POST",
+        data: { botCommandJSON: JSON.stringify(botCommandObject) },
+        //contentType: "application/json",
+        dataType: "html",
+        error: function(jqXHR, textStatus, errorThrown) {
+            alert('ajax method | Error posting Data (Look inside the console!)');
+            console.log("///////////////////////////////////////////");
+            console.log("post bot commands object!");
+            console.log("///////////////////////////////////////////");
+            console.log("jqXHR:");
+            console.log(jqXHR);
+            console.log("textStatus:");
+            console.log(textStatus);
+            console.log("errorThrown:");
+            console.log(errorThrown);
+            console.log("json string:");
+            console.log(JSON.stringify(botCommandObject));
+        }
+    });
+}
+
+/**
+ * POST botCommandsObjectBackup
+ */
+function postBotCommandsObjectBackup() {
+    $.ajax({
+        url: botCIPHPURL + "writeBotCommandsBackup/",
+        type: "POST",
+        data: { botCommandJSONBackup: JSON.stringify(botCommandObjectBackup) },
+        //contentType: "application/json",
+        dataType: "html",
+        error: function(jqXHR, textStatus, errorThrown) {
+            alert('ajax method | Error posting Data (Look inside the console!)');
+            console.log("///////////////////////////////////////////");
+            console.log("post bot commands backup object!");
+            console.log("///////////////////////////////////////////");
+            console.log("jqXHR:");
+            console.log(jqXHR);
+            console.log("textStatus:");
+            console.log(textStatus);
+            console.log("errorThrown:");
+            console.log(errorThrown);
+        }
     });
 }

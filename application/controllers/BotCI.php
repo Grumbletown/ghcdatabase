@@ -25,7 +25,7 @@ class BotCI extends MY_Controller {
 
     public function writeBotCommands() 
     {
-        $botCommands = $this->input->input_stream("botCommandJSON");
+        $botCommands = $this->input->post("botCommandJSON");
 
         if (json_decode($botCommands) != null)
         {
@@ -33,12 +33,14 @@ class BotCI extends MY_Controller {
 
             fwrite($file, $botCommands);
             fclose($file);
+            echo "<p>Written to file!\n";
         }
+        echo json_encode(array("status" => TRUE));
     }
 
     public function writeBotCommandsBackup() 
     {
-        $botCommandsBackup = $this->input->input_stream("botCommandJSONBackup");
+        $botCommandsBackup = $this->input->post("botCommandJSONBackup");
 
         if (json_decode($botCommandsBackup) != null)
         {
@@ -46,6 +48,8 @@ class BotCI extends MY_Controller {
 
             fwrite($file, $botCommandsBackup);
             fclose($file);
+            echo "<p>Written to file!\n";
         }
+        echo json_encode(array("status" => TRUE));
     }
 }
