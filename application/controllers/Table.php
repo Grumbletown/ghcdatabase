@@ -22,7 +22,7 @@ class Table extends MY_Controller {
 	public function iptable()
 	{
 
-        $this->output->enable_profiler(TRUE);
+        //$this->output->enable_profiler(TRUE);
         $data = array(
           'title' => 'IPs',
           'switch' => 'ip'
@@ -37,7 +37,7 @@ class Table extends MY_Controller {
     public function favtable()
     {
 
-        $this->output->enable_profiler(TRUE);
+        //$this->output->enable_profiler(TRUE);
         $data = array(
             'title' => 'Favourites',
             'switch' => 'fav'
@@ -52,7 +52,7 @@ class Table extends MY_Controller {
     public function repotable()
     {
 
-        $this->output->enable_profiler(TRUE);
+        //$this->output->enable_profiler(TRUE);
         $data = array(
             'title' => 'Reported IPs',
             'switch' => 'repo'
