@@ -452,17 +452,23 @@ echo json_encode($this->data);
             $this->data['msgDiscord'] = 'Discord User nicht gefunden!';
             $this->data['error'] = TRUE;
         } else {
+            if($result[0]->Role == "Admin"){
             $data = array(
-                'Banned' => TRUE,
+                'Role' => 'Banned',
 
             );
-            $result = $this->bot_model->ban_user($result[0]->ID, $data);
+            $result = $this->bot_model->ban_user($decode->DiscordIDtoBan, $data);
             if ($result < 1) {
                 $this->data['msgDiscord'] = 'Account konnte nicht gesperrt werden!';
                 $this->data['error'] = TRUE;
             } else {
                 $this->data['msgDiscord'] = 'Account erfolgreich gesperrt!';
                 $this->data['error'] = FALSE;
+            }
+            }else{
+                $this->data['msgDiscord'] = 'Du besitzt nicht genügend Rechte, um User zu bannen!';
+                $this->data['error'] = TRUE;
+
             }
         }
         echo json_encode($this->data);
