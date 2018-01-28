@@ -52,7 +52,12 @@ class User_model extends CI_Model
 		$query = $this->db->get('Loginattempt');
 		return $query->result();
 	}
-	
+    function get_role($name)
+    {
+        $this->db->where('Username', $name);
+        $query = $this->db->get('Users');
+        return $query->result();
+    }
 	function ip_update($ip)
 	{
 	    $this->db->set('Attempts', 'Attempts+1', FALSE);

@@ -166,7 +166,7 @@ class Admintab extends MY_Controller {
 
     public function attempt_delete($id)
     {
-        $this->table_ajax->delete_attempt($id, 'loginattempt');
+        $this->table_ajax->delete_attempt($id, 'Loginattempt');
         echo json_encode(array("status" => TRUE));
     }
 

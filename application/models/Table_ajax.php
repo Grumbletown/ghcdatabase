@@ -39,13 +39,18 @@ class Table_ajax extends CI_Model
             "Role",
             "Reputation",
             "Last_Login",
+            "ExpireDate",
+            "DiscordName",
 
 
 
         ),
         'attempts' => array(
+            "LIP",
             "UIP",
+            "Attempts",
             "LastAttempt",
+
         ),
     );
 

@@ -148,7 +148,7 @@
             //Ajax Load data from ajax
             $.ajax({
                 url : "<?php echo site_url('admintab/pwr_gen_admin')?>/" + id + "/",
-                type: "GET",
+                type: "POST",
                 dataType: "JSON",
 
                 success: function(data)
@@ -213,7 +213,7 @@
             {
                 // ajax delete data to database
                 $.ajax({
-                    url : "<?php echo site_url('admintab/attempt_delete/')?>" + id + "/",
+                    url : "<?php echo site_url('admintab/attempt_delete/')?>" + id,
                     type: "POST",
                     dataType: "JSON",
                     success: function(data)

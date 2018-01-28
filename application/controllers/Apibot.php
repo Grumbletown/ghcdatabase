@@ -350,14 +350,17 @@ echo json_encode($this->data);
         if(!$this->data['error'])
         {
             $expires = date('Y-m-d', strtotime("+30 days"));
-            $registerdate = $this->now();
+            $datestring = '%Y-%m-%d %h:%i %a';
+            $time = time();
+
+            $registerdate = mdate($datestring, $time);
             $data = array(
                 'Username' => $decode->name,
                 'Password' => password_hash($decode->password, PASSWORD_DEFAULT),
                 'DiscordName' => $decode->discorduser,
                 'Reputation' => 0,
                 'Role' => 'User',
-                'Last_Updated' => $registerdate,
+                'Last_Login' => $registerdate,
                 'ExpireDate' => $expires,
 
             );
@@ -468,7 +471,7 @@ echo json_encode($this->data);
             }
 
 
-        
+
         echo json_encode($this->data);
     }
         public function pwreset($json)

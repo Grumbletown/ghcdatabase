@@ -128,14 +128,20 @@ function check_database($password)
 
   //query the database
   if(!empty($username)){
-    $result = $this->user_model->login($username, $password);
+    $role = $this->user_model->get_role($username);
+      $role = $role[0]->Role;
+
+      $result = $this->user_model->login($username, $password);
+
   }
-  if(!empty($result) && !$result[0]->Role == "Banned")
+  if(!empty($result))
   {
     $sess_array = array();
     foreach($result as $row)
     {
-     $expireDate =$row->ExpireDate;
+
+        if($row->Role != 'Banned'){
+        $expireDate =$row->ExpireDate;
         $expireDate = strtotime(str_replace("-","/", $expireDate));
         $today = strtotime(date("Y/m/d"));
      if($today > $expireDate)
@@ -161,11 +167,13 @@ function check_database($password)
       );
       $this->session->set_userdata($sess_array);
         $this->user_model->update(array('ID' => $row->ID), $data, 'Users');
-    }
+
       $this->user_model->delete_ip_attmepts($this->input->ip_address());
 
 
     return TRUE;
+     }
+    }
   }
   else
   {
@@ -177,11 +185,11 @@ function check_database($password)
       }
       else
       {
-          if(!empty($username) && !$result[0]->Role == "Banned") {
+          if(!empty($username) && !$role == "Banned") {
               $this->data['error'] = TRUE;
               $this->data['errormsg'] = 'Zu viele fehlgeschlagene versuche!';
           }else{
-              if($result[0]->Role == "Banned"){
+              if($role == "Banned"){
                   $this->data['error'] = TRUE;
                   $this->data['errormsg'] = 'Account gesperrt!';
               }
