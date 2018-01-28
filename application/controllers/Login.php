@@ -130,7 +130,7 @@ function check_database($password)
   if(!empty($username)){
     $result = $this->user_model->login($username, $password);
   }
-  if(!empty($result))
+  if(!empty($result) && !$result[0]->Role == "Banned")
   {
     $sess_array = array();
     foreach($result as $row)
@@ -177,8 +177,16 @@ function check_database($password)
       }
       else
       {
-          $this->data['error'] = TRUE;
-          $this->data['errormsg'] = 'Zu viele fehlgeschlagene versuche!';
+          if(!empty($username) && !$result[0]->Role == "Banned") {
+              $this->data['error'] = TRUE;
+              $this->data['errormsg'] = 'Zu viele fehlgeschlagene versuche!';
+          }else{
+              if($result[0]->Role == "Banned"){
+                  $this->data['error'] = TRUE;
+                  $this->data['errormsg'] = 'Account gesperrt!';
+              }
+
+          }
 
       }
 
