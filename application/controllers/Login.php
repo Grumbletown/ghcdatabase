@@ -127,9 +127,10 @@ function check_database($password)
   $username = $this->input->post('email');
 
   //query the database
-  $result = $this->user_model->login($username, $password);
-
-  if($result)
+  if(!empty($username)){
+    $result = $this->user_model->login($username, $password);
+  }
+  if(!empty($result))
   {
     $sess_array = array();
     foreach($result as $row)
@@ -168,7 +169,7 @@ function check_database($password)
   }
   else
   {
-      if($this->now >= $this->sperre)
+      if($this->now >= $this->sperre && !empty($username))
       {
           $this->data['error'] = FALSE;
           $this->data['errormsg'] = '';
@@ -215,7 +216,7 @@ function check_database($password)
         else
         {
             $data['inputerror'][] = 'pass';
-            $data['error_string'][] = 'Passwörter stimmen nicht überein!';
+            $data['error_string'][] = 'Passwï¿½rter stimmen nicht ï¿½berein!';
             $data['status'] = FALSE;
         }
 

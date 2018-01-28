@@ -18,9 +18,10 @@
 <!-- CSS -->
 
 <!-- dark bootstrap theme -->
-<link rel="stylesheet" href="https://bootswatch.com/darkly/bootstrap.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="<?php echo base_url('assets/css/darkly.min.css') ?>" crossorigin="anonymous">
 
-<!-- datatables -->
+
+    <!-- datatables -->
 <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/js/datatables.min.css') ?>">
 
 <!-- bootstrap -->
