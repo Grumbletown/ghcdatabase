@@ -47,7 +47,7 @@ class Apibot extends CI_Controller {
             'password' => 'adsadsadas',
         );*/
         $test = json_encode($data);
-        $url = base_url('index.php/apibot/addip/');
+        $url = base_url('index.php/apibot/dbstats/');
         $urlencoded = rawurlencode($test);
         echo $url . $urlencoded;
     }
@@ -474,6 +474,71 @@ echo json_encode($this->data);
 
         echo json_encode($this->data);
     }
+    public function changerole($json)
+    {
+        $decode = urldecode($json);
+        $decode = json_decode($decode);
+        if (empty($decode->token)) {
+            $this->data['msgToken'] = 'Token ungültig!';
+            $this->data['error'] = TRUE;
+        } else {
+            $counttoken = $this->bot_model->get_token($decode->token);
+            if ($counttoken < 1) {
+                $this->data['msgToken'] = 'Token ungültig!';
+                $this->data['error'] = TRUE;
+
+            }
+        }
+        if (empty($decode->role)) {
+            $this->data['msgDiscord'] = 'Rolle nicht angegeben!';
+            $this->data['error'] = TRUE;
+        }
+
+        if (empty($decode->discorduser)) {
+            $this->data['msgDiscord'] = 'Discord User nicht angegeben!';
+            $this->data['error'] = TRUE;
+        } else {
+            $result = $this->bot_model->get_user_by_discord($decode->discorduser);
+        }
+        if (empty($decode->discordtochange)) {
+            $this->data['msgDiscord'] = 'Discord User nicht angegeben!';
+            $this->data['error'] = TRUE;
+        } else {
+            $result2 = $this->bot_model->get_user_by_discord($decode->discordtochange);
+            if (!$result2 && !$this->data['error']) {
+                $this->data['msgDiscord'] = 'Kein registrierter Account gefunden!';
+                $this->data['error'] = TRUE;
+            }
+        }
+        if (!$result && !$this->data['error']) {
+            $this->data['msgDiscord'] = 'Discord User nicht gefunden!';
+            $this->data['error'] = TRUE;
+        } else {
+            if($result[0]->Role == "Admin"){
+                $data = array(
+                    'Role' => $decode->role,
+
+                );
+                $result = $this->bot_model->ban_user($decode->discordtochange, $data);
+                if ($result < 1) {
+                    $this->data['msgDiscord'] = 'Rolle konnte nicht geändert werden!';
+                    $this->data['error'] = TRUE;
+                } else {
+                    $this->data['msgDiscord'] = 'Rolle erfolgreich geändert!';
+                    $this->data['error'] = FALSE;
+                }
+            }else{
+                $this->data['msgDiscord'] = 'Du besitzt nicht genügend Rechte, um Rollen zu ändern!';
+                $this->data['error'] = TRUE;
+
+            }
+        }
+
+
+
+        echo json_encode($this->data);
+    }
+
         public function pwreset($json)
     {
         $decode = urldecode($json);
@@ -526,6 +591,53 @@ echo json_encode($this->data);
             }
             }
         }
+        echo json_encode($this->data);
+    }
+
+    /**
+     * @param $json
+     */
+    public function dbstats($json)
+    {
+        $decode = urldecode($json);
+        $decode = json_decode($decode);
+        if (empty($decode->token)) {
+            $this->data['msgToken'] = 'Token ungültig!';
+            $this->data['error'] = TRUE;
+        } else {
+            $counttoken = $this->bot_model->get_token($decode->token);
+            if ($counttoken < 1) {
+                $this->data['msgToken'] = 'Token ungültig!';
+                $this->data['error'] = TRUE;
+
+            }
+        }
+        if(!$this->data['error']){
+            $lastUpdatedInDays = 0;
+            for($i = 0; $i <= 9; $i++){
+
+                $date = date('Y-m-d', strtotime("-{$i} days"));
+                $ipCount = $this->bot_model->get_datecount($date);
+                $lastUpdatedInDays = $lastUpdatedInDays + intval($ipCount);
+               /*$this->data['days'] = array(
+                   'day' => $date,
+                   'number' => $ipCount,
+               );*/
+                $days[] = array(
+                    'day' => $date,
+                    'number' => $ipCount,
+                );
+            }
+
+
+            $tableCount = intval($this->bot_model->get_datetotalcount());
+            $prior = $tableCount - $lastUpdatedInDays;
+            $this->data['total'] = $prior;
+            $this->data['days'] = $days;
+
+        }
+
+
         echo json_encode($this->data);
     }
 }

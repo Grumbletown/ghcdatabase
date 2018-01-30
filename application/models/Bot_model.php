@@ -15,6 +15,17 @@ class Bot_model extends CI_Model
         return $query->result();
     }
 
+    public function get_datecount($date){
+        $this->db->like('Last_Updated', $date);
+        $this->db->from('HackersIP');
+        return $this->db->count_all_results(); // Produces an integer, like 17
+    }
+
+    public function get_datetotalcount(){
+
+        return $this->db->count_all_results('HackersIP');
+    }
+
     public function get_user($column, $ip){
         $this->db->from('Users');
         $this->db->where($column, $ip);

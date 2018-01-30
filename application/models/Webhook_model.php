@@ -17,7 +17,7 @@ class Webhook_model extends CI_Model
     }
     */
 
-    protected $url = "https://discordapp.com/api/webhooks/344500669157212164/rxV7m5gQbGtUYaS15-c_pqm_o9mT-J7Vkx_oLojQYpc8RYPG0oAWVwMqnV9YpDGq_l7C";
+    protected $url = "https://canary.discordapp.com/api/webhooks/344500669157212164/rxV7m5gQbGtUYaS15-c_pqm_o9mT-J7Vkx_oLojQYpc8RYPG0oAWVwMqnV9YpDGq_l7C";
 
     /*
      * (Optional) The name that should be shown as the user sending the message

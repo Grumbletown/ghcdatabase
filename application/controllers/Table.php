@@ -10,7 +10,7 @@ class Table extends MY_Controller {
     public function __construct()
     {
         parent::__construct();
-
+        $this->load->model('webhook_model');
         $this->load->model('table_ajax');
 		$this->load->helper('url');
         $this->load->helper('date');
@@ -94,13 +94,28 @@ class Table extends MY_Controller {
             'Last_Updated' => $date,
         );
         $insert = $this->table_ajax->save($data, $this->table);
-        //echo json_encode($insert);
+        $added = array(
+            'event' => 'addip',
+            'addedby' => $_SESSION['Discord'],
+
+        );
+
+
+        $this->webhook_model->send(json_encode($added));
         echo json_encode(array("status" => TRUE));
     }
 
     public function ajax_update()
     {
+        $result = $this->table_ajax->get_reported_ip($this->input->post('id'));
+        $i=0;
 
+        for($i; $i < count($result); $i++){
+
+            $userid[] = $result[$i]->UserID;
+            $discord = $this->table_ajax->get_discord($userid[$i]);
+            $discordid[] = $discord[0]->Discordname;
+        }
         $datestring = '%Y-%m-%d';
         $time = time();
         $date = mdate($datestring, $time);
@@ -115,13 +130,40 @@ class Table extends MY_Controller {
             'Added_By' => $_SESSION['uid'],
             'Last_Updated' => $date,
         );
+        if(empty($discordid)){
+            $discordid[0] = "Niemand hat die IP gemeldet";
+        }
+        $added = array(
+            'event' => 'editip',
+            'editedby' => $_SESSION['Discord'],
+            'reportedby' => $discordid
+        );
+        $this->webhook_model->send(json_encode($added));
         $update = $this->table_ajax->update(array('id' => $this->input->post('id')), $data, $this->table);
         echo json_encode(array("status" => TRUE, "message" => $this->input->post('id')));
     }
 
     public function ajax_delete()
     {
+        $result = $this->table_ajax->get_reported_ip($this->input->post('id'));
+        $i=0;
+
+        for($i; $i < count($result); $i++){
+
+            $userid[] = $result[$i]->UserID;
+            $discord = $this->table_ajax->get_discord($userid[$i]);
+            $discordid[] = $discord[0]->Discordname;
+        }
+        if(empty($discordid)){
+            $discordid[0] = "Niemand hat die IP gemeldet";
+        }
         $this->table_ajax->delete_by_id($this->input->post('id'), $this->table);
+        $added = array(
+            'event' => 'deleteip',
+            'deletedby' => $_SESSION['Discord'],
+            'reportedby' => $discordid
+        );
+        $this->webhook_model->send(json_encode($added));
         echo json_encode(array("status" => TRUE));
     }
 

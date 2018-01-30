@@ -358,6 +358,7 @@
                             <option><div data-value="User">User</div></option>
                             <option><div data-value="Moderator">Moderator</div></option>
                             <option><div data-value="Admin">Admin</div></option>
+                            <option><div data-value="Banned">Banned</div></option>
                         </select>
                     </div>
                     <div class="form-group" id="reputationDiv">

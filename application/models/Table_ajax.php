@@ -127,7 +127,21 @@ WHERE `Users`.`Last_Login` < DATE_SUB( now(), INTERVAL 30 DAY) OR `Users`.`Last_
             $this->db->order_by(key($order), $order[key($order)]);
         }
     }
-
+    public function get_reported_ip($id)
+    {
+        $this->db->from('IPUserReport');
+        $this->db->where('IPID',$id);
+        $query = $this->db->get();
+        return $query->result();
+    }
+    public function get_discord($id)
+    {
+        $this->db->select('Discordname');
+        $this->db->from('Users');
+        $this->db->where('ID',$id);
+        $query = $this->db->get();
+        return $query->result();
+    }
     public function debug_ips($sql){
 
         $query = $this->db->get($sql);
