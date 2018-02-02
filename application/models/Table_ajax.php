@@ -274,6 +274,12 @@ WHERE `Users`.`Last_Login` < DATE_SUB( now(), INTERVAL 30 DAY) OR `Users`.`Last_
             $this->db->where('UserID', $_SESSION['uid']);
             $this->db->delete($table);
         }
+
+    }
+    public function addipcounter($id){
+        $this->db->set('IPprovided', 'IPprovided+1', FALSE);
+        $this->db->where('ID', $id);
+        $this->db->update('Users');
     }
 }
 

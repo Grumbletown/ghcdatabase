@@ -109,4 +109,9 @@ class Bot_model extends CI_Model
         $this->db->update('Users', $data, array("DiscordName" => $where));
         return $this->db->affected_rows();
     }
+    public function addipcounter($id){
+        $this->db->set('IPprovided', 'IPprovided+1', FALSE);
+        $this->db->where('ID', $id);
+        $this->db->update('Users');
+    }
 }

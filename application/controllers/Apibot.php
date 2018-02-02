@@ -11,6 +11,7 @@ class Apibot extends CI_Controller {
         $this->load->helper(array('form','url','html', 'date'));
         $this->load->model('bot_model');
         $this->load->model('user_model');
+
         $this->data = array(
             'error' => FALSE
         );
@@ -47,7 +48,7 @@ class Apibot extends CI_Controller {
             'password' => 'adsadsadas',
         );*/
         $test = json_encode($data);
-        $url = base_url('index.php/apibot/dbstats/');
+        $url = base_url('index.php/apibot/addip/');
         $urlencoded = rawurlencode($test);
         echo $url . $urlencoded;
     }
@@ -59,6 +60,8 @@ class Apibot extends CI_Controller {
 
         $decode = urldecode($json);
         $decode = json_decode($decode);
+        $ergebnis2 = 0;
+        $ergebnis =0;
         if(!empty($decode->token))
         {
             $counttoken = $this->bot_model->get_token($decode->token);
@@ -134,10 +137,12 @@ class Apibot extends CI_Controller {
             $this->data['error'] = TRUE;
 
         }
+        $today = date("Y-m-d");
+        
         if(!$this->data['error'])
         {
-        $today = strtotime(date("Y/m/d"));
-        $data = array(
+
+            $data = array(
             'IP' => $decode->ip,
             'Name' => $decode->name,
             'Added_By' => $result[0]->ID,
@@ -150,11 +155,17 @@ class Apibot extends CI_Controller {
         if($decode->update == FALSE)
         {
             $ergebnis = $this->bot_model->add_ip($data);
+            $addcounter = $this->bot_model->addipcounter($data['Added_By']);
         }
 
         if($decode->update == TRUE)
         {
-            $ergebnis2 = $this->bot_model->update_ip($decode->IPID, $data);
+            if(!empty($decode->IPID)){
+            $ergebnis2 = $this->bot_model->update($decode->IPID, $data);
+            }else{
+                $ergebnis2 = $this->bot_model->add_ip($data);
+                $addcounter = $this->bot_model->addipcounter($data['Added_By']);
+            }
         }
 
         if($ergebnis || $ergebnis2 == 1)
@@ -166,7 +177,11 @@ class Apibot extends CI_Controller {
 
             if($decode->update == TRUE)
             {
+                if(!empty($decode->IPID)){
                 $this->data['msgIP'] = 'IP erfolgreich geändert!';
+                }else{
+                    $this->data['msgIP'] = 'IP erfolgreich hinzugefügt!';
+                }
             }
 
             $this->data['error'] = FALSE;
@@ -176,7 +191,7 @@ class Apibot extends CI_Controller {
             if($today < $expireDate)
             {
                 $expires = date('Y-m-d', strtotime("+30 days"));
-                $this->bot_model_refresh_user($result[0]->ID, $expires);
+                $this->bot_model->refresh_user($result[0]->ID, $expires);
             }
 
         }

@@ -94,6 +94,7 @@ class Table extends MY_Controller {
             'Last_Updated' => $date,
         );
         $insert = $this->table_ajax->save($data, $this->table);
+        $incount = $this->table_ajax->addipcounter($_SESSION['uid']);
         $added = array(
             'event' => 'addip',
             'addedby' => $_SESSION['Discord'],
