@@ -1,6 +1,6 @@
 <div class="container">
     <div class="text-right">
-        <a href="#" data-toggle="modal" data-target="#TableInfo" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-question-sign" ></span></a>
+        <a href="#" data-toggle="modal" data-target="#TableInfo" class="btn btn-primary btn-xs icon-btn"><span class="glyphicon glyphicon-question-sign" ></span></a>
 
 
     </div>
@@ -9,6 +9,18 @@
 </div>
     <?php
 
+    //highlights the active navbar element
+    if ($title == "IPs") {
+        
+        echo '<script type="text/javascript">',
+            'setNavElemActive(["navIPs"]);',
+            '</script>';
+    } else if ($title == "Favourites") {
+        echo '<script type="text/javascript">',
+        'setNavElemActive(["navFavoriten"]);',
+        '</script>';
+    }
+        
 
    
     if($_SESSION['Rep'] ==  0){
@@ -99,20 +111,20 @@
                             if (type === 'display') {
 
                                 if (row[7] === '1') {
-                                    data = '<a id="' + row[8] + '" href="javascript:void(0)" onclick="favreport_js('+row[8]+',0,\''+favtab+'\')" data-placement="top" data-toggle="tooltip" title="UnFavourite" class="btn btn-success btn-xs"><span class="glyphicon glyphicon-star"></span></a>'
+                                    data = '<a id="' + row[8] + '" href="javascript:void(0)" onclick="favreport_js('+row[8]+',0,\''+favtab+'\')" data-placement="top" data-toggle="tooltip" title="UnFavourite" class="btn btn-success btn-xs icon-btn"><span class="glyphicon glyphicon-star"></span></a>'
                                 }
                                 else {
-                                    data = '<a id="' + row[8] + '" href="javascript:void(0)" onclick="favreport_js('+row[8]+',1,\''+favtab+'\')" data-placement="top" data-toggle="tooltip" title="Favourite" class="btn btn-info btn-xs"><span class="glyphicon glyphicon glyphicon-star-empty"></span></a>'
+                                    data = '<a id="' + row[8] + '" href="javascript:void(0)" onclick="favreport_js('+row[8]+',1,\''+favtab+'\')" data-placement="top" data-toggle="tooltip" title="Favourite" class="btn btn-info btn-xs icon-btn"><span class="glyphicon glyphicon glyphicon-star-empty"></span></a>'
                                 }
                                 if (row[9] === '1') {
-                                    data += '<a id="' + row[8] + '" onclick="favreport_js('+row[8]+',0,\''+repotab+'\')" data-placement="top" data-toggle="tooltip" title="UnReport" class="btn btn-warning btn-xs"><span class="glyphicon glyphicon-ok"></span></a>'
+                                    data += '<a id="' + row[8] + '" onclick="favreport_js('+row[8]+',0,\''+repotab+'\')" data-placement="top" data-toggle="tooltip" title="UnReport" class="btn btn-warning btn-xs icon-btn"><span class="glyphicon glyphicon-ok"></span></a>'
                                 }
                                 else {
-                                    data += '<a id="' + row[8] + '" onclick="favreport_js('+row[8]+',1,\''+repotab+'\')" data-placement="top" data-toggle="tooltip" title="Report" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon glyphicon-alert"></span></a>'
+                                    data += '<a id="' + row[8] + '" onclick="favreport_js('+row[8]+',1,\''+repotab+'\')" data-placement="top" data-toggle="tooltip" title="Report" class="btn btn-danger btn-xs icon-btn"><span class="glyphicon glyphicon glyphicon-alert"></span></a>'
                                 }
 
                                 if (role === 'Admin' || role === 'Moderator'){
-                                    data += '<a id="editiplink"  onclick="edit_ip('+row[8]+')" data-placement="top" data-toggle="tooltip" title="Edit" ><button id="editip'+row[8]+'" class="btn btn-primary btn-xs" ><span class="glyphicon glyphicon-pencil" id="editipclass"></span></button></a>';
+                                    data += '<a id="editiplink"  onclick="edit_ip('+row[8]+')" data-placement="top" data-toggle="tooltip" title="Edit" ><button id="editip'+row[8]+'" class="btn btn-primary btn-xs icon-btn" ><span class="glyphicon glyphicon-pencil" id="editipclass"></span></button></a>';
 
 
 
@@ -408,7 +420,7 @@
             </div> <!-- Modal -->
             <div class="page">
             <div class="table-responsive text-center">
-                <center><b><caption class="btn btn-danger"><?php echo $title; ?></caption></b></center>
+                <center><h4 style="margin-top: 0px;"><caption class="btn btn-danger"><?php echo $title; ?></caption></h4></center>
                 <table class="table dt-responsive nowrap table-bordered table-condensed " id="myTable" style="margin-top: 25px; margin: 0px auto;" width="100%">
 
                 <thead>
@@ -429,7 +441,7 @@
                                 <form class="form-inline">
 
 
-                                    <button type="button" id="neueip" class="btn btn-primary" onclick="add_ip()" style="height: 25px; line-height: 1px;">Neue IP</button>
+                                    <button type="button" id="neueip" class="btn btn-primary icon-btn" onclick="add_ip()" style="height: 25px; line-height: 1px;">Neue IP</button>
                                 </form>
 
 

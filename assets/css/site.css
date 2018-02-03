@@ -8,6 +8,10 @@ select {
     border-radius: 0 !important;
 }*/
 
+body {
+    font-size: 16px;
+}
+
 .footer-p {
     display: inline-block;
     text-align: center;
@@ -20,4 +24,19 @@ select {
 
 .navbar-brand {
     line-height: 0;
+}
+
+.nav-tabs.ip-rankings>li.active>a,
+.nav-tabs.ip-rankings>li.active>a:hover,
+.nav-tabs.ip-rankings>li.active>a:focus {
+    font-size: 19px;
+}
+
+.nav.ip-rankings>li:not(.active)>a {
+    padding-bottom: 13px;
+    padding-top: 13px;
+}
+
+.icon-btn {
+    padding: 5px !important;
 }

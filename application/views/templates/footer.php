@@ -2,9 +2,14 @@
     <hr style="margin-top: 75px;">
     <footer>
         <div class="row">
-            <p class="footer-p col-xs-12 col-sm-4 col-md-4 col-lg-4">© GHC-Community 2017-2018 <br>Fronted developed by atalantus & Grumbledore <br>Backend by Grumbledore</p>
+            <p class="footer-p col-xs-12 col-sm-4 col-md-4 col-lg-4">© GHC-Community 2017-2018</p>
             <p class="footer-p col-xs-12 col-sm-4 col-md-4 col-lg-4"><a href="https://discord.gg/BW9fuPw">Join us on Discord</a></p>
             <p class="footer-p col-xs-12 col-sm-4 col-md-4 col-lg-4">Loading Time: <?php echo $this->benchmark->elapsed_time();?></p>
+        </div>
+        <div class="row">
+            <p class="footer-p col-xs-12 col-sm-4 col-md-4 col-lg-4">Developed by Grumbledore & atalantus</p>
+            <p class="footer-p col-xs-12 col-sm-4 col-md-4 col-lg-4"></p>
+            <p class="footer-p col-xs-12 col-sm-4 col-md-4 col-lg-4"></p>
         </div>
     </footer>
 </div>
