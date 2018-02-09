@@ -2,6 +2,11 @@
 if(isset($_SESSION['login'])){
 ?>
 <script type="text/javascript">
+    function ranking() {
+        $('#IPRankingModal').modal('show'); // show bootstrap modal when complete loaded
+
+    }
+
 
 function edit_userset() {
     var id = "<?php echo $_SESSION['uid'];?>";
@@ -208,6 +213,7 @@ else
           <!--<li><a href='usersettings.php'><i class='fa fa-bar-chart fa-fw' aria-hidden='true'></i>&nbsp; Stats</a></li>
             <li><a href='usersettings.php'><i class='fa fa-bar-chart fa-fw' aria-hidden='true'></i>&nbsp; Game Account wechseln</a></li>-->
         <li><a  class="MainNavText liNavElement" id="navSettings" onclick="edit_userset()"><i class='fa fa-wrench fa-fw' aria-hidden='true'></i>&nbsp; Settings</a></li>
+        <li><a  class="MainNavText liNavElement" id="navRanking" onclick="ranking()"><i class='fa fa-trophy fa-fw' aria-hidden='true'></i>&nbsp; Ranking</a></li>
         <?php
         if($this->session->userdata('Role') == "Admin" OR $this->session->userdata('Role') == "Moderator")
        {
@@ -348,4 +354,89 @@ else
         </div>
     </div>
 </div>
+</div>
+
+<!-- IPRanking-Modal -->
+<div class="modal fade" id="IPRankingModal" tabindex="-1" role="dialog" aria-labelledby="IPRankingModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title" id="IPRankingModalLabel">IP Rankings</h3>
+            </div>
+            <div class="modal-body">
+
+                <div>
+                    <!-- Nav tabs -->
+                    <ul class="nav nav-tabs ip-rankings" role="tablist">
+                        <li role="presentation" class="active"><a href="#IPsAddedUsers" aria-controls="IPsAddedUsers" role="tab" data-toggle="tab">Most IPs added</a></li>
+                        <li role="presentation"><a href="#IPsReportedUsers" aria-controls="IPsReportedUsers" role="tab" data-toggle="tab">Most IPs reported</a></li>
+                    </ul>
+
+                    <!-- Tab panes -->
+                    <div class="tab-content" style="margin-top: 25px;">
+                        <div role="tabpanel" class="tab-pane fade in active" id="IPsAddedUsers">
+                            <h4>Added IPs Ranking</h4>
+                            <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Perspiciatis, ex? Quidem voluptatum, exercitationem vero quis odio repellendus rerum voluptates modi beatae placeat repellat quos doloribus molestiae ducimus recusandae earum ut.</p>
+                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo unde, ipsa voluptates architecto dolores porro quaerat, velit quod culpa numquam ex voluptas maiores perferendis fugiat molestias laborum non voluptatem consequuntur.</p>
+                        </div>
+                        <div role="tabpanel" class="tab-pane fade" id="IPsReportedUsers">
+                            <h4>Reported IPs Ranking</h4>
+                            <p><strong>We will check reported IPs!<br>If it's a false report this won't count as a reported IP!</strong></p>
+                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo unde, ipsa voluptates architecto dolores porro quaerat, velit quod culpa numquam ex voluptas maiores perferendis fugiat molestias laborum non voluptatem consequuntur.</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Userprofile-Modal -->
+<div class="modal fade" id="userprofileModal" tabindex="-1" role="dialog" aria-labelledby="userprofileModalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title" id="userprofileModalLabel">Userprofile</h3>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <img src="http://via.placeholder.com/75x75" class="img-responsive img-circle" alt="Responsive image" style="margin: auto;">
+                    </div>
+                    <div class="col-xs-12" style="margin-bottom: 20px;">
+                        <h5 style="text-align: center;" id="userprofileModal-username">Username</h5>
+                    </div>
+
+                    <div class="row" style="margin: auto;">
+                        <p class="col-xs-5">Reputation:</p>
+                        <p class="col-xs-7"><strong id="userprofileModal-reputation">999</strong></p>
+                    </div>
+
+                    <div class="row" style="margin: auto;">
+                        <p class="col-xs-5">Visited:</p>
+                        <p class="col-xs-7"><strong id="userprofileModal-visited">56</strong> days</p>
+                    </div>
+
+                    <div class="row" style="margin: auto;">
+                        <p class="col-xs-5">Added IPs:</p>
+                        <p class="col-xs-7"><strong id="userprofileModal-IPsAdded">25</strong> (<span id="userprofileModal-IPAddedRanking">3</span> Rank)</p>
+                    </div>
+
+                    <div class="row" style="margin: auto;">
+                        <p class="col-xs-5">Reported IPs:</p>
+                        <p class="col-xs-7"><strong id="userprofileModal-IPsAdded">66</strong> (<span id="userprofileModal-IPAddedRanking">1</span> Rank)</p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
 </div>
