@@ -17,41 +17,7 @@ class Apibot extends CI_Controller {
         );
     }
 
-    public function index()
-    {
-        $this->load->view('templates/header.php');
-        $this->load->view('templates/navbar.php');
-        // $this->load->view('welcome_message');
-        $this->load->view('templates/footer.php');
-        $data = array(
-            'ip' => '1.51.1.12',
-            'name' => 'aaa',
-            'rep' => 12,
-            'desc' => '???',
-            'clan' => 'clan',
-            'miners' => 3,
-            'discorduser' => '145348181880733697',
-            'token' => 'vnlTNf3aE*0C(8i6maOLk_8GiU-OH*zY388rlJEk)UrjuqpB9C',
-            'update' => FALSE,
 
-        );
-        /*$datafind = array(
-            'name' => 'Dad',
-            'token' => '9QAi(POGA3Gexu9jThSVLK1rtT0Q6MT9a_1SXEJRpkumTDgOL.',
-
-        );
-
-        $datauser = array(
-            'name' => 'Dad',
-            'token' => '9QAi(POGA3Gexu9jThSVLK1rtT0Q6MT9a_1SXEJRpkumTDgOL.',
-            'discorduser' => '123456',
-            'password' => 'adsadsadas',
-        );*/
-        $test = json_encode($data);
-        $url = base_url('index.php/apibot/addip/');
-        $urlencoded = rawurlencode($test);
-        echo $url . $urlencoded;
-    }
 
 
     public function addip($json)
