@@ -45,12 +45,33 @@ class User_model extends CI_Model
         $this->db->update('Loginattempt');
 
     }
+    public function rankingip()
+    {
+
+
+        $this->db->select('ID, Username, IPprovided');
+        $this->db->order_by('IPprovided', 'DESC');
+        $query = $this->db->get('Users');
+        return $query->result();
+
+    }
+
+    public function rankingrepo()
+    {
+
+
+        $this->db->select('ID, Username, IPreported');
+        $this->db->order_by('IPreported', 'DESC');
+        $query = $this->db->get('Users');
+        return $query->result();
+
+    }
 
 	function ip_check($ip)
 	{
 		$this->db->where('UIP', $ip);
 		$query = $this->db->get('Loginattempt');
-		return $query->result();
+        return $query->result();
 	}
     function get_role($name)
     {

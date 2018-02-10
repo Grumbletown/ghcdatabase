@@ -170,6 +170,16 @@ class Admintab extends MY_Controller {
         echo json_encode(array("status" => TRUE));
     }
 
+    public function ranking()
+    {
+        $data = array(
+            'add' => $this->user_model->rankingip(),
+            'repo' => $this->user_model->rankingrepo()
+        );
+        //var_dump($data);
+        echo json_encode($data);
+    }
+    
     public function user_edit($id)
     {
         $data = $this->table_ajax->get_by_id($id, $this->table);

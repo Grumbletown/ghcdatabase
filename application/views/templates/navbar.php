@@ -3,8 +3,41 @@ if(isset($_SESSION['login'])){
 ?>
 <script type="text/javascript">
     function ranking() {
-        $('#IPRankingModal').modal('show'); // show bootstrap modal when complete loaded
+        var tablebase = "<table><tr><td>Rank</td><td>Name</td><td>Punkte</td><tr>";
+        var ipadded = tablebase;
+        var iprepo = tablebase;
+        var user = "";
+        var adds = "";
+        var rank = 0;
+        $.ajax({
+            url: "<?php echo site_url('admintab/ranking')?>/",
+            type: "POST",
+            dataType: "json",
+            success: function (data)
+            {
 
+                for (i = 0, len = data['add'].length; i < len; i++) {
+                    rank = i+1;
+                    user = data['add'][i].Username;
+                    adds = data['add'][i].IPprovided;
+                    ipadded += "<tr><td>" + rank +"</td><td>" + user + "</td><td>" + adds + "</td></tr>";
+                }
+
+
+
+
+
+                ipadded += "</table>";
+                console.log(ipadded);
+                //$( "div.IPsAddedUsers" ).html(ipadded);
+                document.getElementById('IPsAddedUsers').innerHTML = ipadded;
+                $('#IPRankingModal').modal('show'); // show bootstrap modal when complete loaded
+            },
+            error: function (jqXHR, textStatus, errorThrown)
+            {
+                alert('Error get data from ajax');
+            }
+        });
     }
 
 
@@ -376,9 +409,7 @@ else
                     <!-- Tab panes -->
                     <div class="tab-content" style="margin-top: 25px;">
                         <div role="tabpanel" class="tab-pane fade in active" id="IPsAddedUsers">
-                            <h4>Added IPs Ranking</h4>
-                            <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Perspiciatis, ex? Quidem voluptatum, exercitationem vero quis odio repellendus rerum voluptates modi beatae placeat repellat quos doloribus molestiae ducimus recusandae earum ut.</p>
-                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo unde, ipsa voluptates architecto dolores porro quaerat, velit quod culpa numquam ex voluptas maiores perferendis fugiat molestias laborum non voluptatem consequuntur.</p>
+
                         </div>
                         <div role="tabpanel" class="tab-pane fade" id="IPsReportedUsers">
                             <h4>Reported IPs Ranking</h4>
@@ -407,7 +438,7 @@ else
             <div class="modal-body">
                 <div class="row">
                     <div class="col-xs-12">
-                        <img src="http://via.placeholder.com/75x75" class="img-responsive img-circle" alt="Responsive image" style="margin: auto;">
+                        <img src="https://via.placeholder.com/75x75" class="img-responsive img-circle" alt="Responsive image" style="margin: auto;">
                     </div>
                     <div class="col-xs-12" style="margin-bottom: 20px;">
                         <h5 style="text-align: center;" id="userprofileModal-username">Username</h5>
