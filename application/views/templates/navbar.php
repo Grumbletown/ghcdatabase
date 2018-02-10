@@ -3,34 +3,26 @@ if(isset($_SESSION['login'])){
 ?>
 <script type="text/javascript">
     function ranking() {
-        var tablebase = "<table><tr><td>Rank</td><td>Name</td><td>Punkte</td><tr>";
-        var ipadded = tablebase;
-        var iprepo = tablebase;
-        var user = "";
-        var adds = "";
-        var rank = 0;
+        let ipAddedUsersTable = $("#IPsAddedUsersTable");
+        let ipReportedUsersTable = $("#IPsReportedUsersTable");
+        let user = "";
+        let adds = "";
+        let rank = 0;
+
         $.ajax({
             url: "<?php echo site_url('admintab/ranking')?>/",
             type: "POST",
             dataType: "json",
             success: function (data)
             {
-
                 for (i = 0, len = data['add'].length; i < len; i++) {
                     rank = i+1;
                     user = data['add'][i].Username;
                     adds = data['add'][i].IPprovided;
-                    ipadded += "<tr><td>" + rank +"</td><td>" + user + "</td><td>" + adds + "</td></tr>";
+                    ipAddedUsersTable.append("<tr><td>" + rank +"</td><td>" + user + "</td><td>" + adds + "</td></tr>");
                 }
 
-
-
-
-
-                ipadded += "</table>";
-                console.log(ipadded);
-                //$( "div.IPsAddedUsers" ).html(ipadded);
-                document.getElementById('IPsAddedUsers').innerHTML = ipadded;
+                
                 $('#IPRankingModal').modal('show'); // show bootstrap modal when complete loaded
             },
             error: function (jqXHR, textStatus, errorThrown)
@@ -409,12 +401,17 @@ else
                     <!-- Tab panes -->
                     <div class="tab-content" style="margin-top: 25px;">
                         <div role="tabpanel" class="tab-pane fade in active" id="IPsAddedUsers">
-
+                        <table class="table table-hover large-table" id="IPsAddedUsersTable">
+                        <tr><th class="col-md-3">Rank</th><th class="col-md-5">Name</th><th class="col-md-4">Points</th></tr>
+                        </table>
                         </div>
                         <div role="tabpanel" class="tab-pane fade" id="IPsReportedUsers">
                             <h4>Reported IPs Ranking</h4>
                             <p><strong>We will check reported IPs!<br>If it's a false report this won't count as a reported IP!</strong></p>
                             <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo unde, ipsa voluptates architecto dolores porro quaerat, velit quod culpa numquam ex voluptas maiores perferendis fugiat molestias laborum non voluptatem consequuntur.</p>
+                            <table class="table table-hover large-table" id="IPsReportedUsersTable">
+                            <tr><th class="col-md-3">Rank</th><th class="col-md-5">Name</th><th class="col-md-4">Points</th></tr>
+                            </table>
                         </div>
                     </div>
                 </div>

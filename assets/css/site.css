@@ -26,6 +26,16 @@ body {
     line-height: 0;
 }
 
+.dropdown-menu li {
+    cursor: pointer;
+}
+
+.large-table {
+    overflow-y: scroll;
+    display: block;
+    height: 40%;
+}
+
 .nav-tabs.ip-rankings>li.active>a,
 .nav-tabs.ip-rankings>li.active>a:hover,
 .nav-tabs.ip-rankings>li.active>a:focus {
