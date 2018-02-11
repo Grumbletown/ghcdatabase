@@ -19,6 +19,8 @@ if(isset($_SESSION['login'])){
             dataType: "json",
             success: function (data)
             {
+                ipAddedUsersTable.empty();
+                ipAddedUsersTable.append('<tr><th class="col-md-3">Rank</th><th class="col-md-5">Name</th><th class="col-md-4">Points</th></tr>');
 
                 for (i = 0, len = data['add'].length; i < len; i++) {
                     if(startup == true){
@@ -429,7 +431,6 @@ else
                     <div class="tab-content" style="margin-top: 25px;">
                         <div role="tabpanel" class="tab-pane fade in active" id="IPsAddedUsers">
                         <table class="table table-hover large-table" border="1" id="IPsAddedUsersTable">
-                        <tr><th class="col-md-3">Rank</th><th class="col-md-5">Name</th><th class="col-md-4">Points</th></tr>
                         </table>
                         </div>
                         <div role="tabpanel" class="tab-pane fade" id="IPsReportedUsers">
@@ -437,7 +438,6 @@ else
                             <p><strong>We will check reported IPs!<br>If it's a false report this won't count as a reported IP!</strong></p>
                             <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo unde, ipsa voluptates architecto dolores porro quaerat, velit quod culpa numquam ex voluptas maiores perferendis fugiat molestias laborum non voluptatem consequuntur.</p>
                             <table class="table table-hover large-table" id="IPsReportedUsersTable">
-                            <tr><th class="col-md-3">Rank</th><th class="col-md-5">Name</th><th class="col-md-4">Points</th></tr>
                             </table>
                         </div>
                     </div>
