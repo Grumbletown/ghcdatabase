@@ -7,7 +7,11 @@ if(isset($_SESSION['login'])){
         let ipReportedUsersTable = $("#IPsReportedUsersTable");
         let user = "";
         let adds = "";
-        let rank = 0;
+        let rank = "";
+        let startup = true;
+        let previousadd = 0;
+        let id = "<?php echo $_SESSION['uid'];?>";
+        let classcolor = "bg-info";
 
         $.ajax({
             url: "<?php echo site_url('admintab/ranking')?>/",
@@ -15,11 +19,34 @@ if(isset($_SESSION['login'])){
             dataType: "json",
             success: function (data)
             {
+
                 for (i = 0, len = data['add'].length; i < len; i++) {
-                    rank = i+1;
+                    if(startup == true){
+                        rank = "1";
+                        startup = false;
+
+                    }else{
+                        if(previousadd == data['add'][i].IPprovided){
+                          rank = "-";
+
+                        }else{
+                            rank = i+1;
+                        }
+
+                    }
+
+                    if(id == data['add'][i].ID){
+                        classcolor = "bg-success";
+                    }else{
+                        classcolor = "bg-info";
+
+                    }
+
+                    //rank = i+1;
                     user = data['add'][i].Username;
                     adds = data['add'][i].IPprovided;
-                    ipAddedUsersTable.append("<tr><td>" + rank +"</td><td>" + user + "</td><td>" + adds + "</td></tr>");
+                    previousadd = adds;
+                    ipAddedUsersTable.append("<tr class='"+ classcolor +"'><td>" + rank +"</td><td>" + user + "</td><td>" + adds + "</td></tr>");
                 }
 
                 
@@ -401,7 +428,7 @@ else
                     <!-- Tab panes -->
                     <div class="tab-content" style="margin-top: 25px;">
                         <div role="tabpanel" class="tab-pane fade in active" id="IPsAddedUsers">
-                        <table class="table table-hover large-table" id="IPsAddedUsersTable">
+                        <table class="table table-hover large-table" border="1" id="IPsAddedUsersTable">
                         <tr><th class="col-md-3">Rank</th><th class="col-md-5">Name</th><th class="col-md-4">Points</th></tr>
                         </table>
                         </div>
