@@ -50,8 +50,3 @@ body {
 .icon-btn {
     padding: 5px !important;
 }
-
-.tab-pane{
-    height:300px;
-    overflow-y:scroll;
-}
